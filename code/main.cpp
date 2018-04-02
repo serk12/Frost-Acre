@@ -3,7 +3,4 @@
 
 #include "header/SoundSimulator.h"
 
-int main() {
-  SoundSimulator aux;
-  aux.test();
-}
+int main() {}
