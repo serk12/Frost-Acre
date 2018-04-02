@@ -4,23 +4,30 @@
 #include <Eigen/Dense>
 #include <iostream>
 
-#include "Instrument"
+#include "Instrument.h"
 
 class SoundSimulator {
 public:
+  SoundSimulator();
+  SoundSimulator(Instrument instrument, bool calculateNow);
+
+  void setInstrument(Instrument instrument);
   void calculateMassSpringSystem();
-  
+  void calcuateDoformationModeling();
+  void calculateImpulsForces(Eigen::VectorXf forcesF);
 
 private:
   Instrument instrument;
 
-  bool massesSpringsAreCalculated;
+  bool massSpringIsCalculated;
+  Eigen::MatrixXf mass;
+  Eigen::MatrixXf spring;
 
-  Eigen::MatrixXd mass;
-  Eigen::MatrixXd spring;
-
-
-
+  bool deformationModelingIsCalculated;
+  Eigen::VectorXf modesOfVibrationZ;
+  Eigen::MatrixXf dampingCoefficientModeWR;
+  Eigen::MatrixXf angularFrequencyModeWI;
+  Eigen::VectorXf gainOfModeC;
 };
 
 #endif

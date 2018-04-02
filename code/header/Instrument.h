@@ -3,10 +3,14 @@
 
 #include <Eigen/Dense>
 #include <iostream>
+#include <cmath>
 
 class Instrument {
 
 public:
+  Instrument();
+  double euler;
+
   Eigen::MatrixXd vertex;
   Eigen::MatrixXd edge;
 
@@ -14,6 +18,9 @@ public:
   float thicknessT;
   float youngsModulus;
   float density;
+
+  float fluidDamping;
+  float viscoelasticDamping;
 
 };
 
