@@ -1,15 +1,14 @@
-#ifndef NOTE_HH
-#define NOTE_HH
+#ifndef SOUND_HH
+#define SOUND_HH
 
 #include <vector>
 
 #include "Frequency.h"
 
-class Note {
+class Sound {
 public:
-
-    Note();
-    Note(std::vector<Frequency>frequency);
+    Sound();
+    Sound(std::vector<Frequency>frequency);
 
     void setFrequencys(std::vector<Frequency>frequency);
 
@@ -17,8 +16,7 @@ public:
     std::vector<Frequency>getFrequencysByPosition();
 
 private:
-
     std::vector<Frequency>frequency;
 };
 
-#endif // ifndef NOTE_HH
+#endif // ifndef SOUND_HH

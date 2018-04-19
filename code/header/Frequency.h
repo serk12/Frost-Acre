@@ -3,7 +3,6 @@
 
 class Frequency {
 public:
-
     Frequency();
     Frequency(float possString);
     Frequency(float freq, float possString);
@@ -19,8 +18,7 @@ public:
     void  setAmplitude(float amplitude);
 
 private:
-
-    // la posicion 0 sera siempre el clavijero del instrumento
+    // la posicion 0 sera siguiendo el clavijero del instrumento
     float possString;
     float freq;
     float amplitude;
