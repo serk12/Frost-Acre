@@ -1,9 +1,7 @@
 #ifndef INSTRUMENT_HH
 #define INSTRUMENT_HH
 
-#include <Eigen/Dense>
-#include <iostream>
-#include <cmath>
+#include "Utils.h"
 
 class Instrument {
 public:
@@ -13,8 +11,7 @@ public:
 
     double euler;
 
-    Eigen::MatrixXd vertex;
-    Eigen::MatrixXd edge;
+    Model3D model3D;
 
     float elasticityK;
     float thicknessT;
@@ -23,6 +20,8 @@ public:
 
     float fluidDampingV;
     float viscoelasticDampingN;
+
+    std::string name; // optional
 };
 
 #endif // ifndef INSTRUMENT_HH

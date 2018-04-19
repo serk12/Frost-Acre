@@ -1,6 +1,6 @@
 #include <iostream>
 #include <Eigen/Dense>
 
-#include "header/SoundManager.h"
+#include "header/InstrumentSimulator.h"
 
 int main() {}

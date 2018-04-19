@@ -7,7 +7,7 @@ Instrument::Instrument() {
 Instrument::Instrument(Eigen::MatrixXd ver, Eigen::MatrixXd ed, float e,
                        float t, float y, float d, float v, float n)
     : Instrument() {
-    vertex        = ver; edge = ed;
-    elasticityK   = e; thicknessT = t; youngsModulusY = y; densityD = d;
-    fluidDampingV = v; viscoelasticDampingN = n;
+    model3D.vertex = ver; model3D.edge   = ed; elasticityK = e;
+    thicknessT     = t;   youngsModulusY = y;  densityD    = d;
+    fluidDampingV  = v;   viscoelasticDampingN = n;
 }

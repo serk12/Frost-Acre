@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <diagram program="umlet" version="14.2">
-  <zoom_level>9</zoom_level>
+  <zoom_level>14</zoom_level>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>261</x>
-      <y>99</y>
-      <w>198</w>
-      <h>171</h>
+      <x>378</x>
+      <y>0</y>
+      <w>308</w>
+      <h>266</h>
     </coordinates>
     <panel_attributes>Intrsument
 --
@@ -15,7 +15,7 @@
 - config : json
 - name : string  //id
 - string : vector&lt;String&gt;
-- pickup: config
+- pickup: Pickup
 --
 - getResonance() : Resonance
 - generateString(id) : String</panel_attributes>
@@ -24,10 +24,10 @@
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>522</x>
-      <y>99</y>
-      <w>198</w>
-      <h>171</h>
+      <x>784</x>
+      <y>0</y>
+      <w>308</w>
+      <h>266</h>
     </coordinates>
     <panel_attributes>String
 --
@@ -43,25 +43,26 @@
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>405</x>
-      <y>387</y>
-      <w>198</w>
-      <h>171</h>
+      <x>602</x>
+      <y>448</y>
+      <w>308</w>
+      <h>266</h>
     </coordinates>
-    <panel_attributes>InstrumentSimulator
+    <panel_attributes>StringSimulator
 --
 
 --
-</panel_attributes>
+- getPrecalc() : &amp;PrecalModel
+- setPrecalc(&amp;precalModel) </panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>477</x>
-      <y>1053</y>
-      <w>198</w>
-      <h>171</h>
+      <x>714</x>
+      <y>1484</y>
+      <w>308</w>
+      <h>266</h>
     </coordinates>
     <panel_attributes>Sound
 --
@@ -71,10 +72,10 @@
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>738</x>
-      <y>1053</y>
-      <w>198</w>
-      <h>171</h>
+      <x>1120</x>
+      <y>1484</y>
+      <w>308</w>
+      <h>266</h>
     </coordinates>
     <panel_attributes>Frequency
 --
@@ -91,10 +92,10 @@
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>405</x>
-      <y>801</y>
-      <w>198</w>
-      <h>171</h>
+      <x>602</x>
+      <y>1092</y>
+      <w>308</w>
+      <h>266</h>
     </coordinates>
     <panel_attributes>ResonanceSimulator
 --
@@ -106,10 +107,10 @@
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>702</x>
-      <y>603</y>
-      <w>198</w>
-      <h>171</h>
+      <x>1064</x>
+      <y>784</y>
+      <w>308</w>
+      <h>266</h>
     </coordinates>
     <panel_attributes>/SimulatorManager/
 --
@@ -121,10 +122,10 @@
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>405</x>
-      <y>603</y>
-      <w>198</w>
-      <h>171</h>
+      <x>602</x>
+      <y>784</y>
+      <w>308</w>
+      <h>266</h>
     </coordinates>
     <panel_attributes>PickupSimulator
 --
@@ -136,10 +137,10 @@
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>594</x>
-      <y>477</y>
-      <w>126</w>
-      <h>216</h>
+      <x>896</x>
+      <y>588</y>
+      <w>196</w>
+      <h>336</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;.</panel_attributes>
     <additional_attributes>120.0;220.0;10.0;10.0</additional_attributes>
@@ -147,10 +148,10 @@
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>594</x>
-      <y>666</y>
-      <w>126</w>
-      <h>27</h>
+      <x>896</x>
+      <y>882</y>
+      <w>196</w>
+      <h>42</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;.</panel_attributes>
     <additional_attributes>120.0;10.0;10.0;10.0</additional_attributes>
@@ -158,10 +159,10 @@
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>594</x>
-      <y>666</y>
-      <w>126</w>
-      <h>234</h>
+      <x>896</x>
+      <y>882</y>
+      <w>196</w>
+      <h>364</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;.</panel_attributes>
     <additional_attributes>120.0;10.0;10.0;240.0</additional_attributes>
@@ -169,10 +170,10 @@
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>774</x>
-      <y>99</y>
-      <w>198</w>
-      <h>171</h>
+      <x>1176</x>
+      <y>0</y>
+      <w>308</w>
+      <h>266</h>
     </coordinates>
     <panel_attributes>Resonance
 --
@@ -184,10 +185,10 @@
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>1035</x>
-      <y>99</y>
-      <w>198</w>
-      <h>171</h>
+      <x>1582</x>
+      <y>0</y>
+      <w>308</w>
+      <h>266</h>
     </coordinates>
     <panel_attributes>Pickup
 --
@@ -199,10 +200,10 @@
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>108</x>
-      <y>315</y>
-      <w>1269</w>
-      <h>45</h>
+      <x>140</x>
+      <y>336</y>
+      <w>1974</w>
+      <h>70</h>
     </coordinates>
     <panel_attributes>lt=-
 INPUT / INTERNAL USE
@@ -212,14 +213,50 @@ INTERNAL USE</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>45</x>
-      <y>999</y>
-      <w>1350</w>
-      <h>45</h>
+      <x>42</x>
+      <y>1400</y>
+      <w>2100</w>
+      <h>70</h>
     </coordinates>
     <panel_attributes>lt=-
 INTERNAL USE
 OUTPUT / INTERNAL USE</panel_attributes>
     <additional_attributes>10.0;20.0;1480.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1498</x>
+      <y>448</y>
+      <w>308</w>
+      <h>266</h>
+    </coordinates>
+    <panel_attributes>PrecalModel
+--
+- massM;
+- springK;
+- modesOfVibrationZ;
+- dampingCoefficientModeWR;
+- angularFrequencyModeWI;
+- gainOfModeC;
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>0</x>
+      <y>0</y>
+      <w>308</w>
+      <h>266</h>
+    </coordinates>
+    <panel_attributes>Model3D
+--
+- vertex
+- edge
+--
+</panel_attributes>
+    <additional_attributes/>
   </element>
 </diagram>
