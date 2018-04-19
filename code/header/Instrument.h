@@ -8,12 +8,6 @@
 class Instrument {
 public:
     Instrument();
-    double euler;
-
-    Eigen::MatrixXd vertex;
-    Eigen::MatrixXd edge;
-
-    Instrument();
     Instrument(Eigen::MatrixXd ver, Eigen::MatrixXd ed, float e, float t,
                float y, float d, float f, float v);
 
