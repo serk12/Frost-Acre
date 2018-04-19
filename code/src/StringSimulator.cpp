@@ -4,8 +4,7 @@ StringSimulator::StringSimulator() {
     string = new String();
 }
 
-StringSimulator::StringSimulator(String& string, bool calculateNow)
-    : StringSimulator() {
+StringSimulator::StringSimulator(String& string, bool calculateNow) {
     this->setString(string);
 
     if (calculateNow) {
@@ -15,12 +14,7 @@ StringSimulator::StringSimulator(String& string, bool calculateNow)
 }
 
 void StringSimulator::setString(String& string) {
-    this->string = string;
-}
-
-void StringSimulator::updatePrecalModelToString(String& string) {
-    this->string = string;
-    calculatePrecal();
+    this->string = &string;
 }
 
 void StringSimulator::calculatePrecal() {
@@ -28,6 +22,8 @@ void StringSimulator::calculatePrecal() {
     this->calcuateDoformationModeling();
 }
 
-void StringSimulator::calculateMassSpringSystem() {}
+void StringSimulator::calculateMassSpringSystem() {
+    std::cout << "NANI" << std::endl;
+}
 
 void StringSimulator::calcuateDoformationModeling() {}

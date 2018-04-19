@@ -2,10 +2,11 @@
 #define SIMULATORMANAGER_HH
 
 #include "Utils.h"
-#include "InstrumentSimulator.h"
+#include "StringSimulator.h"
 
-class SimulatorManager : protected InstrumentSimulator {
+class SimulatorManager : protected StringSimulator {
 public:
+    SimulatorManager();
     Sound simulateAll(String string);
     Sound simulateString(String string);
     // Sound simulatePickup(Sound sound);
