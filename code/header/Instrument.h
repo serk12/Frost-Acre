@@ -2,11 +2,12 @@
 #define INSTRUMENT_HH
 
 #include "Utils.h"
+#include "String.h"
 
 class Instrument {
 public:
     Instrument();
-    Instrument(Eigen::MatrixXd ver, Eigen::MatrixXd ed, float e, float t,
+    Instrument(Eigen::Matrix4Xd ver, Eigen::MatrixXd ed, float e, float t,
                float y, float d, float f, float v);
 
     double euler;
