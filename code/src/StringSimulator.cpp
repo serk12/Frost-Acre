@@ -60,40 +60,42 @@ void StringSimulator::calcuateDoformationModeling() {
     string->getPrecalModel(precalModel);
     Eigen::EigenSolver<Eigen::MatrixXd> es(precalModel.springK, false);
     Eigen::MatrixXcd eigenvaluesD = es.eigenvalues();
-    precalModel.angularFrequencyModeWI   = Eigen::VectorXd(eigenvaluesD.size());
-    precalModel.dampingCoefficientModeWR = Eigen::VectorXd(eigenvaluesD.size());
+    precalModel.possitiveW = Eigen::VectorXcd(eigenvaluesD.size());
+    precalModel.negativeW  = Eigen::VectorXcd(eigenvaluesD.size());
+    std::complex<double> fluidDampingV        =  instrument->fluidDampingV;
+    std::complex<double> viscoelasticDampingN =  instrument->viscoelasticDampingN;
 
     for (int i = 0; i < eigenvaluesD.size(); ++i) {
-        double auxI =
-            instrument->fluidDampingV *eigenvaluesD(i).imag() +
-            instrument->viscoelasticDampingN;
-        precalModel.angularFrequencyModeWI(i) =
-            (-auxI + std::sqrt(auxI * auxI - 4.0f * eigenvaluesD(i).imag())) / 2.0f;
+        std::complex<double> aux =
+            fluidDampingV * eigenvaluesD(i) + viscoelasticDampingN;
 
-        double auxR =
-            instrument->fluidDampingV *eigenvaluesD(i).real() +
-            instrument->viscoelasticDampingN;
-        precalModel.dampingCoefficientModeWR(i) =
-            (-auxR + std::sqrt(auxR * auxR - 4.0f * eigenvaluesD(i).real())) / 2.0f;
+        precalModel.possitiveW(i) =
+            (-aux + std::sqrt(aux * aux - 4. * eigenvaluesD(i))) / 2.;
+
+        precalModel.negativeW(i) =
+            (-aux - std::sqrt(aux * aux - 4. * eigenvaluesD(i))) / 2.;
     }
 
-    precalModel.gainOfModeC = Eigen::VectorXd(eigenvaluesD.size());
+    precalModel.gainOfModeC = Eigen::VectorXcd(eigenvaluesD.size());
     precalModel.gainOfModeC.fill(0.0f);
 }
 
-void  StringSimulator::calculateImpulsForces(Eigen::VectorXd forcesF, double time) {
+void  StringSimulator::calculateImpulsForces(Eigen::MatrixXd forcesF, double time) {
     PrecalModel precalModel;
     string->getPrecalModel(precalModel);
+    // G es real unicament
     Eigen::EigenSolver<Eigen::MatrixXd> es(precalModel.springK, false);
-    auto eigenvectorsG = es.eigenvectors().inverse() * forcesF;
+    auto forcesG = es.eigenvectors().inverse() * forcesF;
 
     for (int i = 0; i < precalModel.gainOfModeC.size(); ++i) {
-        double diff = precalModel.dampingCoefficientModeWR(i) - precalModel.angularFrequencyModeWI(i);
+        std::complex<double> diff =
+            precalModel.possitiveW(i) - precalModel.possitiveW(i);
+        std::complex<double> poweredEuler =
+            std::pow(instrument->euler, precalModel.possitiveW(i).real()) *
+            (cos(precalModel.possitiveW(i).imag() * time) +
+             sin(precalModel.possitiveW(i).imag() * time) * 1.i);
         // precalModel.gainOfModeC(i) =
         //     precalModel.gainOfModeC(i) +
-        //     ((eigenvectorsG(i)) /
-        //      (precalModel.massM(i) * diff *
-        //       std::pow(instrument->euler,
-        // precalModel.dampingCoefficientModeWR(i) * time)));
+        //     (forcesG / (precalModel.massM(i) * diff * poweredEuler));
     }
 }

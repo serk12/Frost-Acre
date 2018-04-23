@@ -4,19 +4,19 @@
 #include "Utils.h"
 
 struct Model3D {
-    Eigen::Matrix4Xd vertex; // rows indicate vertex 0,1,2,3 = x, y, z, ¿w?
+    Eigen::Matrix3Xd vertex; // rows indicate vertex 0,1,2 = x, y, z
     Eigen::MatrixXd  edge;   // matriz de adyacencia 1 o 0 si hay o no hay
 };
 
 struct PrecalModel {
-    Eigen::VectorXd massM;                    // calculateMassSpringSystem
+    Eigen::VectorXd massM;              // calculateMassSpringSystem
     Eigen::MatrixXd springK;
 
-    Eigen::VectorXd dampingCoefficientModeWR; // calcuateDoformationModeling
-    Eigen::VectorXd angularFrequencyModeWI;
+    Eigen::VectorXcd possitiveW;        // calcuateDoformationModeling
+    Eigen::VectorXcd negativeW;
 
-    Eigen::VectorXd modesOfVibrationZ;        // calculateImpulsForces
-    Eigen::VectorXd gainOfModeC;
+    Eigen::VectorXd  modesOfVibrationZ; // calculateImpulsForces
+    Eigen::VectorXcd gainOfModeC;
 };
 
 class String {

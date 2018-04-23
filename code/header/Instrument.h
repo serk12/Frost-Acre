@@ -7,7 +7,7 @@
 class Instrument {
 public:
     Instrument();
-    Instrument(Eigen::Matrix4Xd ver, Eigen::MatrixXd ed, float e, float t,
+    Instrument(Eigen::Matrix3Xd ver, Eigen::MatrixXd ed, float e, float t,
                float y, float d, float f, float v);
 
     double euler;
