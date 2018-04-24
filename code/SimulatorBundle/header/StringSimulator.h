@@ -2,6 +2,7 @@
 #define STRINGSIMULATOR_HH
 
 #include "../../Utils.h"
+
 #include "String.h"
 #include "Sound.h"
 #include "Instrument.h"
