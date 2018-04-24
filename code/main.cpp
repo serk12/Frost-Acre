@@ -4,7 +4,7 @@
 #include "SimulatorBundle/header/SimulatorManager.h"
 #include "SimulatorBundle/header/Instrument.h"
 #include "SimulatorBundle/header/String.h"
-#include "UtilsDebug.h"
+#include "DebugUtils.h"
 
 #include "InputBundle/header/ObjManager.h"
 
@@ -31,5 +31,5 @@ int main() {
     // delete simMan;
     // delete string;
 
-    ObjManager::readObj("./test/cube.obj");
+    Model3D test = ObjManager::readObj("./test/cube.obj");
 }

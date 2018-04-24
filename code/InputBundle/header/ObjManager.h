@@ -7,7 +7,7 @@
 #include <vector>
 #include <queue>
 
-// #include "../../UtilsDebug.h"
+#include "../../DebugUtils.h"
 #include "../../EigenUtils.h"
 
 class ObjManager {

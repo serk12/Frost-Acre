@@ -1,7 +1,7 @@
 #ifndef STRINGSIMULATOR_HH
 #define STRINGSIMULATOR_HH
 
-// #include "../../UtilsDebug.h"
+// #include "../../DebugUtils.h"
 
 #include "String.h"
 #include "Sound.h"

@@ -40,14 +40,14 @@ Model3D ObjManager::readObj(std::string filepath) {
     }
 
     Model3D model3d;
-    model3d.vertex = Eigen::MatrixXd(3, edgesQueue.size());
-    model3d.edge   = MatrixXB::Zero(edgesQueue.size(), edgesQueue.size());
+    model3d.vertex = Eigen::MatrixXd(3, vertexQueue.size());
+    model3d.edge   = MatrixXB::Zero(vertexQueue.size(), vertexQueue.size());
     int i = 0;
 
     while (!vertexQueue.empty()) {
-        model3d.vertex(i, 0) = std::stod(vertexQueue.front()[1]);
-        model3d.vertex(i, 1) = std::stod(vertexQueue.front()[2]);
-        model3d.vertex(i, 2) = std::stod(vertexQueue.front()[3]);
+        model3d.vertex(0, i) = std::stod(vertexQueue.front()[1]);
+        model3d.vertex(1, i) = std::stod(vertexQueue.front()[2]);
+        model3d.vertex(2, i) = std::stod(vertexQueue.front()[3]);
         vertexQueue.pop();
         ++i;
     }
@@ -55,9 +55,9 @@ Model3D ObjManager::readObj(std::string filepath) {
     i = 0;
 
     while (!edgesQueue.empty()) {
-        int el1 = std::stod(edgesQueue.front()[0]);
-        int el2 = std::stod(edgesQueue.front()[1]);
-        int el3 = std::stod(edgesQueue.front()[2]);
+        int el1 = std::stod(edgesQueue.front()[0]) - 1;
+        int el2 = std::stod(edgesQueue.front()[1]) - 1;
+        int el3 = std::stod(edgesQueue.front()[2]) - 1;
 
         model3d.edge(el1, el3) = true;
         model3d.edge(el3, el1) = true;
