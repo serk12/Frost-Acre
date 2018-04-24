@@ -3,7 +3,7 @@
 
 #include <Eigen/Eigenvalues>
 
-#include "Utils.h"
+#include "../../Utils.h"
 #include "StringSimulator.h"
 
 class SimulatorManager : protected StringSimulator {

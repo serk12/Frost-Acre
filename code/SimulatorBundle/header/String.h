@@ -1,11 +1,14 @@
 #ifndef STRING_HH
 #define STRING_HH
 
-#include "Utils.h"
+#include "../../Utils.h"
+
+typedef Eigen::Matrix<bool, Eigen::Dynamic, Eigen::Dynamic> MatrixXB;
 
 struct Model3D {
     Eigen::Matrix3Xd vertex; // rows indicate vertex 0,1,2 = x, y, z
-    Eigen::MatrixXd  edge;   // matriz de adyacencia 1 o 0 si hay o no hay
+    MatrixXB         edge;   // matriz de adyacencia 1 o 0 si hay o
+    // no hay
 };
 
 struct PrecalModel {

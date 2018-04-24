@@ -8,7 +8,7 @@ TARGET = frostAcre.exe
 BUILD_DIR = build
 
 # All source files. Header files are detected automatically
-SRCS = code/main.cpp code/src/*.cpp
+SRCS = code/main.cpp code/*/src/*.cpp
 
 # Compiler. On non-gnu systems you may want to change this
 CC = g++
