@@ -1,7 +1,10 @@
 #ifndef INSTRUMENT_HH
 #define INSTRUMENT_HH
 
-#include "../../Utils.h"
+#include <string>
+#include <cmath>
+
+// #include "../../UtilsDebug.h"
 #include "String.h"
 
 
