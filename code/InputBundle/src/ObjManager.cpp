@@ -68,7 +68,7 @@ Model3D ObjManager::readObj(std::string filepath) {
         model3d.edge(el2, el3) = true;
         model3d.edge(el3, el2) = true;
 
-        vertexQueue.pop();
+        edgesQueue.pop();
         ++i;
     }
 
