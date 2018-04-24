@@ -4,7 +4,7 @@
 #include "SimulatorBundle/header/SimulatorManager.h"
 #include "SimulatorBundle/header/Instrument.h"
 #include "SimulatorBundle/header/String.h"
-#include "Utils.h"
+#include "UtilsDebug.h"
 
 #include "InputBundle/header/ObjManager.h"
 
