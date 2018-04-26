@@ -83,12 +83,11 @@ void InstrumentSimulator::calculateMass() {
 void InstrumentSimulator::calculateMassSpringSystem() {
     this->calculateSpring();
     this->calculateMass();
-    Debug::print(this->instrument->precalModel);
 }
 
 
 void InstrumentSimulator::calcuateDoformationModeling() {
-    PrecalModel precalModel;
+    PrecalModel& precalModel = instrument->precalModel;
     instrument->getPrecalModel(precalModel);
     Eigen::EigenSolver<Eigen::MatrixXd> es(precalModel.springK, false);
     Eigen::MatrixXcd eigenvaluesD = es.eigenvalues();
@@ -113,8 +112,8 @@ void InstrumentSimulator::calcuateDoformationModeling() {
 }
 
 void InstrumentSimulator::calculateImpulsForces(Eigen::VectorXd forcesF, double time) {
-    PrecalModel precalModel;
-    instrument->getPrecalModel(precalModel);
+    PrecalModel& precalModel = instrument->precalModel;
+
     // G es real unicament
     Eigen::EigenSolver<Eigen::MatrixXd> es(precalModel.springK, false);
     auto forcesG = es.eigenvectors().inverse() * forcesF;

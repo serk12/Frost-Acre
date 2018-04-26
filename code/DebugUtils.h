@@ -3,6 +3,8 @@
 
 #include <iostream>
 #include <string>
+
+#include "SimulatorBundle/header/Instrument.h"
 #include "EigenUtils.h"
 
 class Debug {
@@ -17,8 +19,13 @@ public:
         std::cout << "springK: "           << std::endl << precalModel.springK           << std::endl << std::endl;
         std::cout << "possitiveW: "        << std::endl << precalModel.possitiveW        << std::endl << std::endl;
         std::cout << "negativeW: "         << std::endl << precalModel.negativeW         << std::endl << std::endl;
-        std::cout << "modesOfVibrationZ: " << std::endl << precalModel.modesOfVibrationZ << std::endl << std::endl;
         std::cout << "gainOfModeC: "       << std::endl << precalModel.gainOfModeC       << std::endl << std::endl;
+        std::cout << "modesOfVibrationZ: " << std::endl << precalModel.modesOfVibrationZ << std::endl << std::endl;
+    }
+
+    static void print(const Instrument& instrument) {
+        Debug::print(instrument.model3d);
+        Debug::print(instrument.precalModel);
     }
 };
 

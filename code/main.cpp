@@ -14,7 +14,7 @@ int main() {
     SimulatorManager *simMan = new SimulatorManager();
 
     Sound sound = simMan->simulateAll(*instrument);
-
+    Debug::print(*instrument);
     delete instrument;
     delete simMan;
 }
