@@ -1,11 +1,11 @@
-#include "../header/StringSimulator.h"
+#include "../header/InstrumentSimulator.h"
 
-StringSimulator::StringSimulator() {
-    string = new String();
+InstrumentSimulator::InstrumentSimulator() {
+    instrument = nullptr;
 }
 
-StringSimulator::StringSimulator(String& string, bool calculateNow) {
-    this->setString(string);
+InstrumentSimulator::InstrumentSimulator(Instrument& instrument, bool calculateNow) {
+    this->setInstrument(instrument);
 
     if (calculateNow) {
         this->calculateMassSpringSystem();
@@ -13,22 +13,17 @@ StringSimulator::StringSimulator(String& string, bool calculateNow) {
     }
 }
 
-void StringSimulator::setString(String& string) {
-    this->string = &string;
-}
-
-void StringSimulator::setInstrument(Instrument& instrument) {
+void InstrumentSimulator::setInstrument(Instrument& instrument) {
     this->instrument = &instrument;
 }
 
-void StringSimulator::calculatePrecal() {
+void InstrumentSimulator::calculatePrecal() {
     this->calculateMassSpringSystem();
     this->calcuateDoformationModeling();
 }
 
-void StringSimulator::makeDiagonalSpring(int x, int y, int negative, double Cx, double Cy, double Cz) {
-    PrecalModel precalModel;
-    string->getPrecalModel(precalModel);
+void InstrumentSimulator::makeDiagonalSpring(int x, int y, int negative, double Cx, double Cy, double Cz) {
+    PrecalModel& precalModel = instrument->precalModel;
 
     precalModel.springK(x,     y) += negative * Cx * Cx;
     precalModel.springK(x + 1, y) += negative * Cx * Cy;
@@ -43,22 +38,21 @@ void StringSimulator::makeDiagonalSpring(int x, int y, int negative, double Cx, 
     precalModel.springK(x + 2, y + 2) += negative * Cz * Cz;
 }
 
-void StringSimulator::calculateMassSpringSystem() {
-    Model3D model3d;
-    string->getModel3D(model3d);
-    PrecalModel precalModel;
-    string->setPrecalModel(precalModel);
-    precalModel.springK = Eigen::MatrixXd::Zero(model3d.vertex.rows() * 3,
-                                                model3d.vertex.cols() * 3);
+void InstrumentSimulator::calculateSpring() {
+    Model3D& model3d         = instrument->model3d;
+    PrecalModel& precalModel = instrument->precalModel;
+    precalModel.springK = Eigen::MatrixXd::Zero(model3d.edge.rows() * 3,
+                                                model3d.edge.cols() * 3);
 
-    for (int j = 0; j < model3d.vertex.cols(); ++j) {
-        for (int i = 0; i < model3d.vertex.rows(); ++i) {
-            if (model3d.vertex(i, j) != 0) {
-                double Cx = model3d.edge(j, 0) - model3d.edge(i, 0);
-                double Cy = model3d.edge(j, 1) - model3d.edge(i, 1);
-                double Cz = model3d.edge(j, 2) - model3d.edge(i, 2);
+    for (int j = 0; j < model3d.edge.cols(); ++j) {
+        for (int i = 0; i < model3d.edge.rows(); ++i) {
+            if (model3d.edge(i, j) != 0) {
+                double Cx = model3d.vertex(0, j) - model3d.vertex(0, i);
+                double Cy = model3d.vertex(1, j) - model3d.vertex(1, i);
+                double Cz = model3d.vertex(2, j) - model3d.vertex(2, i);
                 double L  = std::sqrt(Cx * Cx + Cy * Cy + Cz * Cz);
                 Cx /= L; Cy /= L; Cz /= L;
+
                 this->makeDiagonalSpring(i,     j,      1, Cx, Cy, Cz);
                 this->makeDiagonalSpring(i,     j + 3, -1, Cx, Cy, Cz);
                 this->makeDiagonalSpring(i + 3, j,     -1, Cx, Cy, Cz);
@@ -66,8 +60,13 @@ void StringSimulator::calculateMassSpringSystem() {
             }
         }
     }
+}
 
-    precalModel.massM = Eigen::VectorXd(model3d.vertex.rows());
+void InstrumentSimulator::calculateMass() {
+    Model3D& model3d         = instrument->model3d;
+    PrecalModel& precalModel = instrument->precalModel;
+
+    precalModel.massM = Eigen::VectorXd(model3d.vertex.cols());
 
     for (int i = 0; i < model3d.edge.cols(); ++i) {
         int a = 0;
@@ -81,9 +80,16 @@ void StringSimulator::calculateMassSpringSystem() {
     }
 }
 
-void StringSimulator::calcuateDoformationModeling() {
+void InstrumentSimulator::calculateMassSpringSystem() {
+    this->calculateSpring();
+    this->calculateMass();
+    Debug::print(this->instrument->precalModel);
+}
+
+
+void InstrumentSimulator::calcuateDoformationModeling() {
     PrecalModel precalModel;
-    string->getPrecalModel(precalModel);
+    instrument->getPrecalModel(precalModel);
     Eigen::EigenSolver<Eigen::MatrixXd> es(precalModel.springK, false);
     Eigen::MatrixXcd eigenvaluesD = es.eigenvalues();
     precalModel.possitiveW = Eigen::VectorXcd(eigenvaluesD.size());
@@ -106,9 +112,9 @@ void StringSimulator::calcuateDoformationModeling() {
     precalModel.gainOfModeC.fill(0.0f);
 }
 
-void  StringSimulator::calculateImpulsForces(Eigen::VectorXd forcesF, double time) {
+void InstrumentSimulator::calculateImpulsForces(Eigen::VectorXd forcesF, double time) {
     PrecalModel precalModel;
-    string->getPrecalModel(precalModel);
+    instrument->getPrecalModel(precalModel);
     // G es real unicament
     Eigen::EigenSolver<Eigen::MatrixXd> es(precalModel.springK, false);
     auto forcesG = es.eigenvectors().inverse() * forcesF;

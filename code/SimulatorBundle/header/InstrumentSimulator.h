@@ -1,34 +1,30 @@
 #ifndef STRINGSIMULATOR_HH
 #define STRINGSIMULATOR_HH
 
-// #include "../../DebugUtils.h"
+#include "../../DebugUtils.h"
 
-#include "String.h"
 #include "Sound.h"
 #include "Instrument.h"
 
 // posible mejora, hacer la clase unica y estatica
-class StringSimulator {
+class InstrumentSimulator {
 public:
-    StringSimulator();
-    StringSimulator(String& string, bool calculateNow);
-    void setString(String& string);
+    InstrumentSimulator();
+    InstrumentSimulator(Instrument& instrument, bool calculateNow);
     void setInstrument(Instrument& instrument);
     // Sound runSimulator(String& string);
     // Sound runSimulator();
 
 protected:
-
     void calculatePrecal();
     void calculateMassSpringSystem();
     void calcuateDoformationModeling();
     void calculateImpulsForces(Eigen::VectorXd forcesF, double time);
 
 private:
-
+    void calculateMass();
+    void calculateSpring();
     void makeDiagonalSpring(int x, int y, int negative, double Cx, double Cy, double Cz);
-    // posible mejora, tenerlos por referencia
-    String *string;
     Instrument *instrument;
 };
 

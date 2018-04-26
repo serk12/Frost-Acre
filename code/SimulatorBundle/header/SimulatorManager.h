@@ -4,13 +4,13 @@
 #include <Eigen/Eigenvalues>
 
 // #include "../../DebugUtils.h"
-#include "StringSimulator.h"
+#include "InstrumentSimulator.h"
 
-class SimulatorManager : protected StringSimulator {
+class SimulatorManager : protected InstrumentSimulator {
 public:
     SimulatorManager();
-    Sound simulateAll(String& string, Instrument& instrument);
-    Sound simulateString(String& string, Instrument& instrument);
+    Sound simulateAll(Instrument& instrument);
+    Sound simulateString(Instrument& instrument);
     // Sound simulatePickup(Sound sound);
     // Sound simulateResonance(Sound sound);
 
