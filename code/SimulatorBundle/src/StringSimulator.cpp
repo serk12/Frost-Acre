@@ -51,18 +51,18 @@ void StringSimulator::calculateMassSpringSystem() {
     precalModel.springK = Eigen::MatrixXd::Zero(model3d.vertex.rows() * 3,
                                                 model3d.vertex.cols() * 3);
 
-    for (int j = 0; j < model3d.edge.cols(); ++j) {
-        for (int i = 0; i < model3d.edge.rows(); ++i) {
+    for (int j = 0; j < model3d.vertex.cols(); ++j) {
+        for (int i = 0; i < model3d.vertex.rows(); ++i) {
             if (model3d.vertex(i, j) != 0) {
                 double Cx = model3d.edge(j, 0) - model3d.edge(i, 0);
                 double Cy = model3d.edge(j, 1) - model3d.edge(i, 1);
                 double Cz = model3d.edge(j, 2) - model3d.edge(i, 2);
                 double L  = std::sqrt(Cx * Cx + Cy * Cy + Cz * Cz);
                 Cx /= L; Cy /= L; Cz /= L;
-                this->makeDiagonalSpring(j,     j,      1, Cx, Cy, Cz);
-                this->makeDiagonalSpring(j,     j + 3, -1, Cx, Cy, Cz);
-                this->makeDiagonalSpring(j + 3, j,     -1, Cx, Cy, Cz);
-                this->makeDiagonalSpring(j + 3, j + 3,  1, Cx, Cy, Cz);
+                this->makeDiagonalSpring(i,     j,      1, Cx, Cy, Cz);
+                this->makeDiagonalSpring(i,     j + 3, -1, Cx, Cy, Cz);
+                this->makeDiagonalSpring(i + 3, j,     -1, Cx, Cy, Cz);
+                this->makeDiagonalSpring(i + 3, j + 3,  1, Cx, Cy, Cz);
             }
         }
     }
@@ -106,7 +106,7 @@ void StringSimulator::calcuateDoformationModeling() {
     precalModel.gainOfModeC.fill(0.0f);
 }
 
-void  StringSimulator::calculateImpulsForces(Eigen::MatrixXd forcesF, double time) {
+void  StringSimulator::calculateImpulsForces(Eigen::VectorXd forcesF, double time) {
     PrecalModel precalModel;
     string->getPrecalModel(precalModel);
     // G es real unicament
@@ -120,8 +120,8 @@ void  StringSimulator::calculateImpulsForces(Eigen::MatrixXd forcesF, double tim
             std::pow(instrument->euler, precalModel.possitiveW(i).real()) *
             (cos(precalModel.possitiveW(i).imag() * time) +
              sin(precalModel.possitiveW(i).imag() * time) * 1.i);
-        // precalModel.gainOfModeC(i) =
-        //     precalModel.gainOfModeC(i) +
-        //     (forcesG / (precalModel.massM(i) * diff * poweredEuler));
+        precalModel.gainOfModeC(i) =
+            precalModel.gainOfModeC(i) +
+            (forcesG(i) / (precalModel.massM(i) * diff * poweredEuler));
     }
 }

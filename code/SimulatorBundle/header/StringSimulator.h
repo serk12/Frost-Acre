@@ -22,7 +22,7 @@ protected:
     void calculatePrecal();
     void calculateMassSpringSystem();
     void calcuateDoformationModeling();
-    void calculateImpulsForces(Eigen::MatrixXd forcesF, double time);
+    void calculateImpulsForces(Eigen::VectorXd forcesF, double time);
 
 private:
 
