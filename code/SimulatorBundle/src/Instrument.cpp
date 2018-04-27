@@ -8,12 +8,12 @@ Instrument::Instrument(Model3D& model3d) : Instrument() {
     this->model3d = model3d;
 }
 
-Instrument::Instrument(Model3D& model3d, double e, double t,
-                       double y, double d, double f, double v, double n)
+Instrument::Instrument(double k, double t, double y, double d,
+                       double v, double n, Model3D& model3d)
     : Instrument(model3d) {
-    elasticityK   = e;
-    thicknessT    = t;   youngsModulusY = y;  densityD    = d;
-    fluidDampingV = v;   viscoelasticDampingN = n;
+    elasticityK    = k; thicknessT           = t;
+    youngsModulusY = y; densityD             = d;
+    fluidDampingV  = v; viscoelasticDampingN = n;
 }
 
 void Instrument::setModel3D(Model3D& model3d) {

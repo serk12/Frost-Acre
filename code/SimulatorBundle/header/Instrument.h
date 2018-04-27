@@ -12,8 +12,8 @@ class Instrument {
 public:
     Instrument();
     Instrument(Model3D& model3d);
-    Instrument(Model3D& model3d, double e, double t,
-               double y, double d, double f, double v, double n);
+    Instrument(double k, double t, double y, double d,
+               double v, double n, Model3D& model3d);
 
     void setModel3D(Model3D& model3d);
     void getModel3D(Model3D& model3d);

@@ -1,0 +1,8 @@
+{
+    "elasticityK" : 0.23,
+    "thicknessT" : 0.002,
+    "youngsModulusY" : 32,
+    "densityD" : 1.123,
+    "fluidDampingV" : 2,
+    "viscoelasticDampingN": 21
+}
