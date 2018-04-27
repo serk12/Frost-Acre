@@ -1,10 +1,17 @@
-#ifndef JSONREADER_HH
-#define JSONREADER_HH
+#ifndef JSONMANAGER_HH
+#define JSONMANAGER_HH
+
+#include <iostream>
+#include <fstream>
 
 #include "../../../lib/rapidjson/document.h"
 #include "../../../lib/rapidjson/filereadstream.h"
+#include "../../../lib/rapidjson/stringbuffer.h"
+#include "../../../lib/rapidjson/writer.h"
 
 #include "../../DebugUtils.h"
+
+
 
 class JsonManager {
 public:
@@ -19,4 +26,4 @@ public:
     static void writeFile(std::string path, rapidjson::Document& document);
 };
 
-#endif // ifndef JSONREADER_HH
+#endif // ifndef JSONMANAGER_HH

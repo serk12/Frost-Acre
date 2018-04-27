@@ -11,7 +11,7 @@
 int main() {
     Model3D model           = ObjManager::readObj("./test/cube.obj");
     rapidjson::Document doc = JsonManager::readFile("./test/cube.json");
-
+    JsonManager::writeFile("./test/cube.json", doc);
     Instrument *instrument =
         new Instrument(doc[JsonManager::ELASTICITYK.c_str()].GetDouble(),
                        doc[JsonManager::THICKNESST.c_str()].GetDouble(),
