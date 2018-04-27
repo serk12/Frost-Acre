@@ -12,7 +12,8 @@ int main() {
     Model3D model           = ObjManager::readObj("./test/cube.obj");
     rapidjson::Document doc = JsonManager::readFile("./test/cube.json");
 
-    Instrument *instrument =
+    SimulatorManager *simMan = new SimulatorManager();
+    Instrument *instrument   =
         new Instrument(doc[JsonManager::ELASTICITYK.c_str()].GetDouble(),
                        doc[JsonManager::THICKNESST.c_str()].GetDouble(),
                        doc[JsonManager::YOUNGSMODULUSY.c_str()].GetDouble(),
@@ -20,7 +21,6 @@ int main() {
                        doc[JsonManager::FLUIDDAMPINGV.c_str()].GetDouble(),
                        doc[JsonManager::VISCOELASTICDAMPINGN.c_str()].GetDouble(),
                        model);
-    SimulatorManager *simMan = new SimulatorManager();
 
     Sound sound = simMan->simulateAll(*instrument);
 
