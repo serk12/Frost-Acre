@@ -1,6 +1,6 @@
 #include "../header/ObjManager.h"
 
-std::vector<std::string>ObjManager::splitString(const std::string& s, const char token) {
+std::vector<std::string> ObjManager::splitString(const std::string& s, const char token) {
     std::stringstream ss(s);
     std::vector<std::string> result;
 

@@ -15,7 +15,7 @@ public:
     static Model3D readObj(std::string filepath);
 
 private:
-    static std::vector<std::string>splitString(const std::string& s, const char token);
+    static std::vector<std::string> splitString(const std::string& s, const char token);
 };
 
 #endif // ifndef OBJMANAGER_HH

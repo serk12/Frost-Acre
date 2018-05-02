@@ -7,13 +7,20 @@
 // #include "../../DebugUtils.h"
 #include "../../EigenUtils.h"
 
+struct Material {
+    double elasticityK;
+    double thicknessT;
+    double youngsModulusY;
+    double densityD;
+    double fluidDampingV;
+    double viscoelasticDampingN;
+};
 
 class Instrument {
 public:
     Instrument();
     Instrument(Model3D& model3d);
-    Instrument(double k, double t, double y, double d,
-               double v, double n, Model3D& model3d);
+    Instrument(std::vector<Material>& material, Model3D& model3d);
 
     void setModel3D(Model3D& model3d);
     void getModel3D(Model3D& model3d);
@@ -21,17 +28,11 @@ public:
     void setPrecalModel(PrecalModel& precalModel);
     void getPrecalModel(PrecalModel& precalModel);
 
-    double elasticityK;
-    double thicknessT;
-    double youngsModulusY;
-    double densityD;
-    double fluidDampingV;
-    double viscoelasticDampingN;
-
     double euler;
 
     Model3D model3d;
     PrecalModel precalModel;
+    std::vector<Material> material;
 private:
 };
 

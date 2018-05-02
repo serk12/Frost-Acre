@@ -8,12 +8,11 @@ Instrument::Instrument(Model3D& model3d) : Instrument() {
     this->model3d = model3d;
 }
 
-Instrument::Instrument(double k, double t, double y, double d,
-                       double v, double n, Model3D& model3d)
+Instrument::Instrument(std::vector<Material>& material, Model3D& model3d)
     : Instrument(model3d) {
-    elasticityK    = k; thicknessT           = t;
-    youngsModulusY = y; densityD             = d;
-    fluidDampingV  = v; viscoelasticDampingN = n;
+    for (int i = 0; i < material.size(); ++i) {
+        this->material[i] = material[i];
+    }
 }
 
 void Instrument::setModel3D(Model3D& model3d) {
