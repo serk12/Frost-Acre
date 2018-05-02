@@ -15,6 +15,7 @@
 
 class JsonManager {
 public:
+    static const std::string MATERIAL;
     static const std::string ELASTICITYK;
     static const std::string YOUNGSMODULUSY;
     static const std::string THICKNESST;

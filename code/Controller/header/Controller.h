@@ -11,6 +11,8 @@
 
 #include "../../DebugUtils.h"
 
+#include "../../../lib/rapidjson/document.h"
+
 class Controller {
 public:
     Controller();
@@ -22,7 +24,7 @@ public:
 private:
     void parseMaterial();
 
-    std::vector<Material> materials;
+    std::vector<Material> material;
     std::string objFile;
     std::string jsonFile;
 };

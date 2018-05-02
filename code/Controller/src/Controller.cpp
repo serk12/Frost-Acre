@@ -17,20 +17,11 @@ void Controller::setjsonFile(std::string jsonFile) {
 }
 
 void Controller::run() {
-    Model3D model           = ObjManager::readObj(objFile);
-    rapidjson::Document doc = JsonManager::readFile(jsonFile);
-    Material material;
-    material.elasticityK          = doc[JsonManager::ELASTICITYK.c_str()].GetDouble();
-    material.thicknessT           = doc[JsonManager::THICKNESST.c_str()].GetDouble();
-    material.youngsModulusY       = doc[JsonManager::YOUNGSMODULUSY.c_str()].GetDouble();
-    material.densityD             = doc[JsonManager::DENSITYD.c_str()].GetDouble();
-    material.fluidDampingV        = doc[JsonManager::FLUIDDAMPINGV.c_str()].GetDouble();
-    material.viscoelasticDampingN = doc[JsonManager::VISCOELASTICDAMPINGN.c_str()].GetDouble();
-
-    materials.push_back(material);
+    Model3D model = ObjManager::readObj(objFile);
+    this->parseMaterial();
 
     SimulatorManager *simMan = new SimulatorManager();
-    Instrument *instrument   = new Instrument(materials, model);
+    Instrument *instrument   = new Instrument(material, model);
 
     Sound sound = simMan->simulateAll(*instrument);
 
@@ -41,4 +32,18 @@ void Controller::run() {
     delete simMan;
 }
 
-void Controller::parseMaterial() {}
+void Controller::parseMaterial() {
+    rapidjson::Document doc = JsonManager::readFile(jsonFile);
+
+    for (auto& val : doc[JsonManager::MATERIAL.c_str()].GetArray()) {
+        Material material;
+        material.elasticityK          = val[JsonManager::ELASTICITYK.c_str()].GetDouble();
+        material.thicknessT           = val[JsonManager::THICKNESST.c_str()].GetDouble();
+        material.youngsModulusY       = val[JsonManager::YOUNGSMODULUSY.c_str()].GetDouble();
+        material.densityD             = val[JsonManager::DENSITYD.c_str()].GetDouble();
+        material.fluidDampingV        = val[JsonManager::FLUIDDAMPINGV.c_str()].GetDouble();
+        material.viscoelasticDampingN = val[JsonManager::VISCOELASTICDAMPINGN.c_str()].GetDouble();
+
+        this->material.push_back(material);
+    }
+}

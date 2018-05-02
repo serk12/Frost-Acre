@@ -23,6 +23,21 @@ public:
         std::cout << "modesOfVibrationZ: " << std::endl << precalModel.modesOfVibrationZ << std::endl << std::endl;
     }
 
+    static void print(const Material& material) {
+        std::cout << "elasticityK: "          << material.elasticityK          << std::endl;
+        std::cout << "thicknessT: "           << material.thicknessT           << std::endl;
+        std::cout << "youngsModulusY: "       << material.youngsModulusY       << std::endl;
+        std::cout << "densityD: "             << material.densityD             << std::endl;
+        std::cout << "fluidDampingV: "        << material.fluidDampingV        << std::endl;
+        std::cout << "viscoelasticDampingN: " << material.viscoelasticDampingN << std::endl << std::endl;
+    }
+
+    static void print(const std::vector<Material>& material) {
+        for (auto mat : material) {
+            Debug::print(mat);
+        }
+    }
+
     static void print(const Instrument& instrument) {
         Debug::print(instrument.model3d);
         Debug::print(instrument.precalModel);
