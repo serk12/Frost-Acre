@@ -7,8 +7,8 @@ typedef Eigen::Matrix<bool, Eigen::Dynamic, Eigen::Dynamic> MatrixXB;
 
 struct Model3D {
     Eigen::Matrix3Xd vertex; // rows indicate vertex 0,1,2 = x, y, z
-    MatrixXB         edge;   // matriz de adyacencia 1 o 0 si hay o
-                             // no hay
+    MatrixXB         edge;   // matriz de adyacencia 0 si no hay
+                             // texturaID en caso que aya
 };
 
 struct PrecalModel {
