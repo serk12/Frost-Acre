@@ -3,9 +3,10 @@
 
 #include <string>
 #include <cmath>
+#include <vector>
 
-// #include "../../DebugUtils.h"
 #include "../../EigenUtils.h"
+
 
 struct Material {
     double elasticityK;
@@ -35,5 +36,7 @@ public:
     std::vector<Material> material;
 private:
 };
+
+#include "../../DebugUtils.h"
 
 #endif // ifndef INSTRUMENT_HH
