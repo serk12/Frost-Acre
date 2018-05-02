@@ -76,7 +76,7 @@ void InstrumentSimulator::calculateMass() {
         }
 
         precalModel.massM(i) =
-            float(a) * instrument->densityD * instrument->thicknessT;
+            float(a) * instrument->material[0].densityD * instrument->material[0].thicknessT;
     }
 }
 
@@ -93,8 +93,8 @@ void InstrumentSimulator::calcuateDoformationModeling() {
     Eigen::MatrixXcd eigenvaluesD = es.eigenvalues();
     precalModel.possitiveW = Eigen::VectorXcd(eigenvaluesD.size());
     precalModel.negativeW  = Eigen::VectorXcd(eigenvaluesD.size());
-    std::complex<double> fluidDampingV        =  instrument->fluidDampingV;
-    std::complex<double> viscoelasticDampingN =  instrument->viscoelasticDampingN;
+    std::complex<double> fluidDampingV        =  instrument->material[0].fluidDampingV;
+    std::complex<double> viscoelasticDampingN =  instrument->material[0].viscoelasticDampingN;
 
     for (int i = 0; i < eigenvaluesD.size(); ++i) {
         std::complex<double> aux =
