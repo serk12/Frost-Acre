@@ -42,6 +42,10 @@ public:
         Debug::print(instrument.model3d);
         Debug::print(instrument.precalModel);
     }
+
+    static void print(std::string text) {
+        std::cout << text << std::endl;
+    }
 };
 
 #endif // ifndef UTILS_HH
