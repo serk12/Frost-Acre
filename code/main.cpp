@@ -2,7 +2,7 @@
 #include "DebugUtils.h"
 
 int main() {
-    Controller controller("./test/cube/cube.obj", "./test/cube/cube.json");
+    Controller controller("./test/E4/E4_100.obj", "./test/E4/E4.json");
 
     controller.run();
 }
