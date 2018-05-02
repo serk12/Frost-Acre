@@ -7,8 +7,8 @@
 #include <vector>
 #include <queue>
 
-#include "../../DebugUtils.h"
-#include "../../EigenUtils.h"
+#include "../../Controller/header/DebugController.h"
+#include "../../SimulatorBundle/header/EigenUtils.h"
 
 class ObjManager {
 public:

@@ -5,7 +5,7 @@
 #include <cmath>
 #include <vector>
 
-#include "../../EigenUtils.h"
+#include "EigenUtils.h"
 
 
 struct Material {
@@ -37,6 +37,6 @@ public:
 private:
 };
 
-#include "../../DebugUtils.h"
+#include "../../Controller/header/DebugController.h"
 
 #endif // ifndef INSTRUMENT_HH

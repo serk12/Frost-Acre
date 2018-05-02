@@ -9,7 +9,7 @@
 #include "../../../lib/rapidjson/stringbuffer.h"
 #include "../../../lib/rapidjson/writer.h"
 
-#include "../../DebugUtils.h"
+#include "../../Controller/header/DebugController.h"
 
 
 

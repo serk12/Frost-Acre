@@ -17,21 +17,23 @@ void Controller::setjsonFile(std::string jsonFile) {
 }
 
 void Controller::run() {
-    Debug::print("INIT RUN");
-    Debug::print("INIT PARSE");
+    DebugController::startClock();
+
+    DebugController::print("INIT RUN");
+    DebugController::print("INIT PARSE");
     Model3D model = ObjManager::readObj(objFile);
     this->parseMaterial();
-    Debug::print("END PARSE");
+    DebugController::print("END PARSE");
 
     SimulatorManager *simMan = new SimulatorManager();
     Instrument *instrument   = new Instrument(material, model);
 
-    Debug::print("INIT SIMULATION");
+    DebugController::print("INIT SIMULATION");
     Sound sound = simMan->simulateAll(*instrument);
 
-    Debug::print("END SIMULATION");
-    Debug::print(model);
-    Debug::print(*instrument);
+    DebugController::print("END SIMULATION");
+    DebugController::print(model);
+    DebugController::print(*instrument);
 
     delete instrument;
     delete simMan;

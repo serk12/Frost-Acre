@@ -9,7 +9,7 @@
 #include "../../SimulatorBundle/header/SimulatorManager.h"
 #include "../../SimulatorBundle/header/Instrument.h"
 
-#include "../../DebugUtils.h"
+#include "DebugController.h"
 
 #include "../../../lib/rapidjson/document.h"
 
