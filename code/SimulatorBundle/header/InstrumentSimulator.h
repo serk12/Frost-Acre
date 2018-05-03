@@ -1,7 +1,7 @@
 #ifndef STRINGSIMULATOR_HH
 #define STRINGSIMULATOR_HH
 
-// #include "../../Controller/header/DebugUtils.h"
+#include "../../Controller/header/DebugController.h"
 
 #include "Sound.h"
 #include "Instrument.h"
@@ -19,7 +19,10 @@ protected:
     void calculatePrecal();
     void calculateMassSpringSystem();
     void calcuateDoformationModeling();
+
     void calculateImpulsForces(Eigen::VectorXd forcesF, double time);
+
+    void calculateVibrations(double time);
 
 private:
     void calculateMass();

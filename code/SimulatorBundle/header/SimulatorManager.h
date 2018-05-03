@@ -3,14 +3,16 @@
 
 #include <Eigen/Eigenvalues>
 
-// #include "../../Controller/header/DebugController.h"
+#include "../../Controller/header/DebugController.h"
 #include "InstrumentSimulator.h"
 
 class SimulatorManager : protected InstrumentSimulator {
 public:
     SimulatorManager();
-    Sound simulateAll(Instrument& instrument);
-    Sound simulateString(Instrument& instrument);
+    void precallSimulator(Instrument& instrument);
+    void calculateFrame(Eigen::VectorXd forcesF, double timeF, double timeV);
+
+private:
     // Sound simulatePickup(Sound sound);
     // Sound simulateResonance(Sound sound);
 

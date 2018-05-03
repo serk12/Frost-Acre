@@ -15,17 +15,23 @@ BASE = $(foreach f, $(SRCS), $(notdir $(basename $(f))))
 OBJECTS = $(foreach f, $(BASE), $(BUILD_DIR)/$(f).o)
 
 # PHONY converts all "file conversors" to simple commands
-.PHONY: all clean test
+.PHONY: all clean test run
 
 all: $(TARGET)
+
 clean:
 	rm build/*
-test: $(TARGET)
+
+run: $(BUILD_DIR)/$(TARGET)
+	$(BUILD_DIR)/$(TARGET)
+
+test: $(BUILD_DIR)/$(TARGET)
 	$(BUILD_DIR)/$(TARGET) > $(BUILD_DIR)/$(RESULTS_DEFAULT)
+
 # SECONDEXPANSION works like first strike ($) and second strike ($$) on magic
 .SECONDEXPANSION:
 %.o: $$(shell find ./code/ -name  $$(notdir $$(basename $$@)).cpp)
 	$(CC) -I $(LIBS) $(EXTRAFLAGS) -g -c $< -o $@
 
-$(TARGET): $(OBJECTS)
+$(BUILD_DIR)/$(TARGET): $(OBJECTS)
 	$(CC) -I $(LIBS) $(EXTRAFLAGS) $^ -o $(BUILD_DIR)/$(TARGET)

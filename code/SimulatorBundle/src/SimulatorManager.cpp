@@ -2,16 +2,15 @@
 
 SimulatorManager::SimulatorManager() : InstrumentSimulator() {}
 
-Sound SimulatorManager::simulateAll(Instrument& instrument) {
-    Sound sound = this->simulateString(instrument);
-    // sound this->simulatePickup(sound);
-    // sound this->simulateResonance(sound);
-    return sound;
-}
-Sound SimulatorManager::simulateString(Instrument& instrument) {
+void SimulatorManager::precallSimulator(Instrument& instrument) {
     this->setInstrument(instrument);
     this->calculatePrecal();
+}
 
-    Sound *sound = new Sound();
-    return *sound;
+void SimulatorManager::calculateFrame(Eigen::VectorXd forcesF, double timeF, double timeV) {
+    DebugController::print("NANI");
+    this->calculateImpulsForces(forcesF, timeF);
+    DebugController::print("NANI2");
+    this->calculateVibrations(timeV);
+    DebugController::print("NANI3");
 }

@@ -115,18 +115,34 @@ void InstrumentSimulator::calculateImpulsForces(Eigen::VectorXd forcesF, double 
     PrecalModel& precalModel = instrument->precalModel;
 
     // G es real unicament
-    Eigen::EigenSolver<Eigen::MatrixXd> es(precalModel.springK, false);
-    auto forcesG = es.eigenvectors().inverse() * forcesF;
+    Eigen::EigenSolver<Eigen::MatrixXd> es(precalModel.springK, true);
+    Eigen::MatrixXcd forcesG = es.eigenvectors().inverse() * forcesF;
 
     for (int i = 0; i < precalModel.gainOfModeC.size(); ++i) {
-        std::complex<double> diff =
-            precalModel.possitiveW(i) - precalModel.possitiveW(i);
+        std::complex<double> diff         = precalModel.possitiveW(i) - precalModel.possitiveW(i);
         std::complex<double> poweredEuler =
             std::pow(instrument->euler, precalModel.possitiveW(i).real()) *
-            (cos(precalModel.possitiveW(i).imag() * time) +
-             sin(precalModel.possitiveW(i).imag() * time) * 1.i);
+            (cos(precalModel.possitiveW(i).imag() * time) + (sin(precalModel.possitiveW(i).imag() * time) * 1.i));
         precalModel.gainOfModeC(i) =
-            precalModel.gainOfModeC(i) +
-            (forcesG(i) / (precalModel.massM(i) * diff * poweredEuler));
+            precalModel.gainOfModeC(i) + (forcesG(i) / (precalModel.massM(i / 3) * diff * poweredEuler));
+    }
+}
+
+void InstrumentSimulator::calculateVibrations(double time) {
+    PrecalModel& precalModel = instrument->precalModel;
+
+    precalModel.modesOfVibrationZ = Eigen::VectorXcd(precalModel.gainOfModeC);
+
+    for (int i = 0; i < precalModel.modesOfVibrationZ.size(); ++i) {
+        std::complex<double> Ci          = precalModel.gainOfModeC(i);
+        std::complex<double> CiConj      = std::conj(precalModel.gainOfModeC(i));
+        std::complex<double> eulerPowPos =
+            std::pow(instrument->euler, precalModel.possitiveW(i).real()) *
+            (cos(precalModel.possitiveW(i).imag() * time) + (sin(precalModel.possitiveW(i).imag() * time) * 1.i));
+        std::complex<double> eulerPowNeg =
+            std::pow(instrument->euler, precalModel.negativeW(i).real()) *
+            (cos(precalModel.negativeW(i).imag() * time)  + (sin(precalModel.negativeW(i).imag()  * time) * 1.i));
+
+        precalModel.modesOfVibrationZ(i) = (Ci * eulerPowPos) + (CiConj * eulerPowNeg);
     }
 }
