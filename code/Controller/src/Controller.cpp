@@ -30,8 +30,10 @@ void Controller::run() {
 
     DebugController::print("INIT PRECAlC");
     simMan->precallSimulator(*instrument);
+    DebugController::print("END PRECAlC");
 
-    Eigen::VectorXd f(24);
+    Eigen::VectorXd f(8 * 3); // 384 vectors * 3 dim
+    f.fill(0);
     f(0) = 1; f(1)  = 0; f(2)  = 0.2;
     f(3) = 2; f(4)  = 0; f(5)  = 0.4;
     f(6) = 1; f(7)  = 0; f(8)  = 0.3;
@@ -44,9 +46,9 @@ void Controller::run() {
 
     DebugController::print("INIT FRAME");
     simMan->calculateFrame(f, 0.001, 0.01);
+    DebugController::print("END FRAME");
 
     DebugController::print("END SIMULATION");
-    DebugController::print(model);
     DebugController::print(*instrument);
 
     delete instrument;

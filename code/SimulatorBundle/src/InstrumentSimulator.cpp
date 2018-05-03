@@ -88,9 +88,9 @@ void InstrumentSimulator::calculateMassSpringSystem() {
 
 void InstrumentSimulator::calcuateDoformationModeling() {
     PrecalModel& precalModel = instrument->precalModel;
-    instrument->getPrecalModel(precalModel);
-    Eigen::EigenSolver<Eigen::MatrixXd> es(precalModel.springK, false);
-    Eigen::MatrixXcd eigenvaluesD = es.eigenvalues();
+
+    precalModel.solver = Eigen::EigenSolver<Eigen::MatrixXd>(precalModel.springK, true);
+    Eigen::MatrixXcd eigenvaluesD =  precalModel.solver.eigenvalues();
     precalModel.possitiveW = Eigen::VectorXcd(eigenvaluesD.size());
     precalModel.negativeW  = Eigen::VectorXcd(eigenvaluesD.size());
     std::complex<double> fluidDampingV        =  instrument->material[0].fluidDampingV;
@@ -115,8 +115,8 @@ void InstrumentSimulator::calculateImpulsForces(Eigen::VectorXd forcesF, double 
     PrecalModel& precalModel = instrument->precalModel;
 
     // G es real unicament
-    Eigen::EigenSolver<Eigen::MatrixXd> es(precalModel.springK, true);
-    Eigen::MatrixXcd forcesG = es.eigenvectors().inverse() * forcesF;
+    // std::cout << precalModel.solver.eigenvectors().cols() << std::endl;
+    Eigen::MatrixXcd forcesG =  precalModel.solver.eigenvectors().inverse() * forcesF;
 
     for (int i = 0; i < precalModel.gainOfModeC.size(); ++i) {
         std::complex<double> diff         = precalModel.possitiveW(i) - precalModel.possitiveW(i);

@@ -20,6 +20,8 @@ struct PrecalModel {
 
     Eigen::VectorXcd modesOfVibrationZ; // calculateImpulsForces
     Eigen::VectorXcd gainOfModeC;
+
+    Eigen::EigenSolver<Eigen::MatrixXd> solver;
 };
 
 #endif // ifndef EIGENUTILS_HH

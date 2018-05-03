@@ -2,9 +2,9 @@
     {
         "elasticityK":0.23,
         "thicknessT":0.002,
-        "youngsModulusY":32,
-        "densityD":1.123,
-        "fluidDampingV":2,
-        "viscoelasticDampingN":21
+        "youngsModulusY":0.86,
+        "densityD":0.123,
+        "fluidDampingV":0.75,
+        "viscoelasticDampingN":0.5
     }
 ]}
