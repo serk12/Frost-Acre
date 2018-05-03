@@ -8,9 +8,6 @@ void SimulatorManager::precallSimulator(Instrument& instrument) {
 }
 
 void SimulatorManager::calculateFrame(Eigen::VectorXd forcesF, double timeF, double timeV) {
-    DebugController::print("NANI");
     this->calculateImpulsForces(forcesF, timeF);
-    DebugController::print("NANI2");
     this->calculateVibrations(timeV);
-    DebugController::print("NANI3");
 }

@@ -28,7 +28,7 @@ void Controller::run() {
     SimulatorManager *simMan = new SimulatorManager();
     Instrument *instrument   = new Instrument(material, model);
 
-    DebugController::print("INIT PRECAll");
+    DebugController::print("INIT PRECAlC");
     simMan->precallSimulator(*instrument);
 
     Eigen::VectorXd f(24);
