@@ -12,7 +12,7 @@ Frequency::Frequency(float freq, float possString) : Frequency(possString) {
 
 Frequency::Frequency(float freq, float possString, float amplitude)
     : Frequency(freq, possString) {
-    this->amplitude = freq;
+    this->amplitude = amplitude;
 }
 
 float Frequency::getFreq() {
@@ -28,7 +28,7 @@ float Frequency::getPossString() {
 }
 
 void Frequency::setPossString(float poss) {
-    this->possString = possString;
+    this->possString = poss;
 }
 
 float Frequency::getAmplitude() {
@@ -36,5 +36,5 @@ float Frequency::getAmplitude() {
 }
 
 void Frequency::setAmplitude(float amplitude) {
-    this->amplitude = freq;
+    this->amplitude = amplitude;
 }

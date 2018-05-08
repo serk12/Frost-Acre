@@ -3,8 +3,8 @@
 
 #include <vector>
 
-#include "../../InputBundle/header/ObjManager.h"
-#include "../../InputBundle/header/JsonManager.h"
+#include "../../IOBundle/header/ObjManager.h"
+#include "../../IOBundle/header/JsonManager.h"
 
 #include "../../SimulatorBundle/header/SimulatorManager.h"
 #include "../../SimulatorBundle/header/Instrument.h"

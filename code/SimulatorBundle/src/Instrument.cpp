@@ -12,7 +12,7 @@ Instrument::Instrument(std::vector<Material>& material, Model3D& model3d)
     : Instrument(model3d) {
     this->material = std::vector<Material>(material.size());
 
-    for (int i = 0; i < material.size(); ++i) {
+    for (unsigned int i = 0; i < material.size(); ++i) {
         this->material[i] = material[i];
     }
 }
