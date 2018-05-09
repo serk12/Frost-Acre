@@ -13,7 +13,7 @@
 struct Pluck {
     Eigen::VectorXd force;
     float           timeForce;
-    float           timeEnd;
+    float           timeDur;
     float           timeStart;
 };
 
@@ -21,7 +21,7 @@ class MidiManager {
 public:
     static std::vector<Pluck> parseMidiFile(std::string midiPath, std::string jsonFile);
 private:
-    static std::map<smf::MidiMessage, Eigen::VectorXd> getMapForces(std::string jsonFIle);
+    static std::map<std::string, Eigen::VectorXd> getMapForces(std::string jsonFIle);
 };
 
 #endif // ifndef MIDIMANAGER_HH
