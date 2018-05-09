@@ -10,7 +10,7 @@ CC = g++
 EXTRAFLAGS = -std=gnu++14 -Wall -Wextra
 
 # All source files. Header files are detected automatically
-SRCS = $(shell find ./code/ -name \*.cpp)
+SRCS = $(shell find ./code/ ./lib/midifile -name \*.cpp)
 BASE = $(foreach f, $(SRCS), $(notdir $(basename $(f))))
 OBJECTS = $(foreach f, $(BASE), $(BUILD_DIR)/$(f).o)
 
@@ -30,7 +30,7 @@ test: $(BUILD_DIR)/$(TARGET)
 
 # SECONDEXPANSION works like first strike ($) and second strike ($$) on magic
 .SECONDEXPANSION:
-%.o: $$(shell find ./code/ -name  $$(notdir $$(basename $$@)).cpp)
+%.o: $$(shell find ./code/ ./lib/midifile -name  $$(notdir $$(basename $$@)).cpp)
 	$(CC) -I $(LIBS) $(EXTRAFLAGS) -g -c $< -o $@
 
 $(BUILD_DIR)/$(TARGET): $(OBJECTS)
