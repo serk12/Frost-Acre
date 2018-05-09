@@ -1,6 +1,6 @@
 #include "Controller/header/Controller.h"
 
 int main() {
-    Controller controller("./test/cube/cube.obj", "./test/E4/E4.json");
+    Controller controller("./test/cube/cube.obj", "./test/cube/cube.json");
     controller.run();
 }

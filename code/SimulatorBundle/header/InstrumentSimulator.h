@@ -3,7 +3,6 @@
 
 #include "../../Controller/header/DebugController.h"
 
-#include "Sound.h"
 #include "Instrument.h"
 
 // posible mejora, hacer la clase unica y estatica
@@ -12,8 +11,6 @@ public:
     InstrumentSimulator();
     InstrumentSimulator(Instrument& instrument, bool calculateNow);
     void setInstrument(Instrument& instrument);
-    // Sound runSimulator(String& string);
-    // Sound runSimulator();
 
 protected:
     void calculatePrecal();

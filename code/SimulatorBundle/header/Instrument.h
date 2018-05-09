@@ -15,6 +15,14 @@ struct Material {
     double densityD;
     double fluidDampingV;
     double viscoelasticDampingN;
+    Material() {}
+    Material(int k) :
+        elasticityK(k),
+        thicknessT(k),
+        youngsModulusY(k),
+        densityD(k),
+        fluidDampingV(k),
+        viscoelasticDampingN(k) {}
 };
 
 class Instrument {

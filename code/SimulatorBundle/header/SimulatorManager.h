@@ -13,8 +13,6 @@ public:
     void calculateFrame(Eigen::VectorXd forcesF, double timeF, double timeV);
 
 private:
-    // Sound simulatePickup(Sound sound);
-    // Sound simulateResonance(Sound sound);
 
 private:
 };

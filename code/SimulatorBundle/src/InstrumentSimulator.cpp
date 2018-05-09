@@ -72,7 +72,7 @@ void InstrumentSimulator::calculateMass() {
         int a = 0;
 
         for (int j = 0; j < model3d.edge.rows(); ++j) {
-            a += model3d.edge(j, i);
+            a += (model3d.edge(j, i) != 0) ? 1 : 0;
         }
 
         precalModel.massM(i) =

@@ -57,6 +57,8 @@ void Controller::run() {
 
 void Controller::parseMaterial() {
     rapidjson::Document doc = JsonManager::readFile(jsonFile);
+    Material material(0);
+    this->material.push_back(material);
 
     for (auto& val : doc[JsonManager::MATERIAL.c_str()].GetArray()) {
         Material material;
