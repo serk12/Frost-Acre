@@ -5,17 +5,10 @@
 #include <vector>
 #include <map>
 
-
 #include "../../../lib/midifile/include/MidiFile.h"
+#include "../../Controller/header/DebugController.h"
 #include "JsonManager.h"
-
-
-struct Pluck {
-    Eigen::VectorXd force;
-    float           timeForce;
-    float           timeDur;
-    float           timeStart;
-};
+#include "MidiUtils.h"
 
 class MidiManager {
 public:

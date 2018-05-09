@@ -5,6 +5,7 @@
 
 #include "../../IOBundle/header/ObjManager.h"
 #include "../../IOBundle/header/JsonManager.h"
+#include "../../IOBundle/header/MidiManager.h"
 
 #include "../../SimulatorBundle/header/SimulatorManager.h"
 #include "../../SimulatorBundle/header/Instrument.h"
@@ -16,7 +17,8 @@
 class Controller {
 public:
     Controller();
-    Controller(std::string objFile, std::string jsonFile);
+    Controller(std::string objFile, std::string jsonFile,
+               std::string midiFile, std::string midiJsonFile);
 
     void setObjFile(std::string objFile);
     void setjsonFile(std::string jsonFile);
@@ -27,6 +29,8 @@ private:
     std::vector<Material> material;
     std::string objFile;
     std::string jsonFile;
+    std::string midiFile;
+    std::string midiJsonFile;
 };
 
 #endif // ifndef CONTROLLER_HH

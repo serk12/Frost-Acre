@@ -26,8 +26,7 @@ Model3D ObjManager::readObj(std::string filepath) {
             std::vector<std::string> vertex = ObjManager::splitString(line, ' ');
             vertexQueue.push(vertex);
         }
-        else if (line[0] == 'f')
-        {
+        else if (line[0] == 'f') {
             std::vector<std::string> faces = ObjManager::splitString(line, ' ');
             std::vector<std::string> face(3);
 

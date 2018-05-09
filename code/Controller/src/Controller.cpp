@@ -2,10 +2,13 @@
 
 Controller::Controller() {}
 
-Controller::Controller(std::string objFile, std::string jsonFile)
+Controller::Controller(std::string objFile, std::string jsonFile,
+                       std::string midiFile, std::string midiJsonFile)
     : Controller() {
-    this->objFile  = objFile;
-    this->jsonFile = jsonFile;
+    this->objFile      = objFile;
+    this->jsonFile     = jsonFile;
+    this->midiFile     = midiFile;
+    this->midiJsonFile = midiJsonFile;
 }
 
 void Controller::setObjFile(std::string objFile) {
@@ -17,42 +20,45 @@ void Controller::setjsonFile(std::string jsonFile) {
 }
 
 void Controller::run() {
-    DebugController::startClock();
+    MidiManager::parseMidiFile(midiFile, midiJsonFile);
 
-    DebugController::print("INIT RUN");
-    DebugController::print("INIT PARSE");
-    Model3D model = ObjManager::readObj(objFile);
-    this->parseMaterial();
-    DebugController::print("END PARSE");
+    /*
+       DebugController::startClock();
 
-    SimulatorManager *simMan = new SimulatorManager();
-    Instrument *instrument   = new Instrument(material, model);
+       DebugController::print("INIT RUN");
+       DebugController::print("INIT PARSE");
+       Model3D model = ObjManager::readObj(objFile);
+       this->parseMaterial();
+       DebugController::print("END PARSE");
 
-    DebugController::print("INIT PRECAlC");
-    simMan->precallSimulator(*instrument);
-    DebugController::print("END PRECAlC");
+       SimulatorManager *simMan = new SimulatorManager();
+       Instrument *instrument   = new Instrument(material, model);
 
-    Eigen::VectorXd f(8 * 3); // 384 vectors * 3 dim
-    f.fill(0);
-    f(0) = 1; f(1)  = 0; f(2)  = 0.2;
-    f(3) = 2; f(4)  = 0; f(5)  = 0.4;
-    f(6) = 1; f(7)  = 0; f(8)  = 0.3;
-    f(9) = 3; f(10) = 0; f(11) = 0.1;
+       DebugController::print("INIT PRECAlC");
+       simMan->precallSimulator(*instrument);
+       DebugController::print("END PRECAlC");
 
-    f(12) = 1; f(13) = 0; f(14) = 0.2;
-    f(15) = 2; f(16) = 0; f(17) = 0.4;
-    f(18) = 1; f(19) = 0; f(20) = 0.3;
-    f(21) = 3; f(22) = 0; f(23) = 0.1;
+       Eigen::VectorXd f(8 * 3); // 384 vectors * 3 dim
+       f.fill(0);
+       f(0) = 1; f(1)  = 0; f(2)  = 0.2;
+       f(3) = 2; f(4)  = 0; f(5)  = 0.4;
+       f(6) = 1; f(7)  = 0; f(8)  = 0.3;
+       f(9) = 3; f(10) = 0; f(11) = 0.1;
 
-    DebugController::print("INIT FRAME");
-    simMan->calculateFrame(f, 0.001, 0.01);
-    DebugController::print("END FRAME");
+       f(12) = 1; f(13) = 0; f(14) = 0.2;
+       f(15) = 2; f(16) = 0; f(17) = 0.4;
+       f(18) = 1; f(19) = 0; f(20) = 0.3;
+       f(21) = 3; f(22) = 0; f(23) = 0.1;
 
-    DebugController::print("END SIMULATION");
-    DebugController::print(*instrument);
+       DebugController::print("INIT FRAME");
+       simMan->calculateFrame(f, 0.001, 0.01);
+       DebugController::print("END FRAME");
 
-    delete instrument;
-    delete simMan;
+       DebugController::print("END SIMULATION");
+       DebugController::print(*instrument);
+
+       delete instrument;
+       delete simMan;*/
 }
 
 void Controller::parseMaterial() {

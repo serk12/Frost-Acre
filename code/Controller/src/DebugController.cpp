@@ -8,11 +8,11 @@ void DebugController::print(const Model3D& model3d) {
 }
 
 void DebugController::print(const PrecalModel& precalModel) {
-    std::cout << "massM: "             << std::endl << precalModel.massM             << std::endl << std::endl;
-    std::cout << "springK: "           << std::endl << precalModel.springK           << std::endl << std::endl;
-    std::cout << "possitiveW: "        << std::endl << precalModel.possitiveW        << std::endl << std::endl;
-    std::cout << "negativeW: "         << std::endl << precalModel.negativeW         << std::endl << std::endl;
-    std::cout << "gainOfModeC: "       << std::endl << precalModel.gainOfModeC       << std::endl << std::endl;
+    std::cout << "massM: "             << std::endl << precalModel.massM             << std::endl;
+    std::cout << "springK: "           << std::endl << precalModel.springK           << std::endl;
+    std::cout << "possitiveW: "        << std::endl << precalModel.possitiveW        << std::endl;
+    std::cout << "negativeW: "         << std::endl << precalModel.negativeW         << std::endl;
+    std::cout << "gainOfModeC: "       << std::endl << precalModel.gainOfModeC       << std::endl;
     std::cout << "modesOfVibrationZ: " << std::endl << precalModel.modesOfVibrationZ << std::endl << std::endl;
 }
 
@@ -34,6 +34,13 @@ void DebugController::print(const std::vector<Material>& material) {
 void DebugController::print(const Instrument& instrument) {
     DebugController::print(instrument.model3d);
     DebugController::print(instrument.precalModel);
+}
+
+void DebugController::print(const Pluck& pluck) {
+    std::cout << "force:     " << pluck.force     << std::endl;
+    std::cout << "timeForce: " << pluck.timeForce << std::endl;
+    std::cout << "timeDur:   " << pluck.timeDur   << std::endl;
+    std::cout << "timeStart: " << pluck.timeStart << std::endl << std::endl;
 }
 
 void DebugController::startClock() {

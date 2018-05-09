@@ -46,7 +46,7 @@ void InstrumentSimulator::calculateSpring() {
 
     for (int j = 0; j < model3d.edge.cols(); ++j) {
         for (int i = 0; i < model3d.edge.rows(); ++i) {
-            if (model3d.edge(i, j) != 0) {
+            if (model3d.edge(i, j)) {
                 double Cx = model3d.vertex(0, j) - model3d.vertex(0, i);
                 double Cy = model3d.vertex(1, j) - model3d.vertex(1, i);
                 double Cz = model3d.vertex(2, j) - model3d.vertex(2, i);

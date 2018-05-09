@@ -9,6 +9,7 @@
 
 #include "../../SimulatorBundle/header/Instrument.h"
 #include "../../SimulatorBundle/header/EigenUtils.h"
+#include "../../IOBundle/header/MidiUtils.h"
 
 class DebugController {
 public:
@@ -19,6 +20,7 @@ public:
     static void print(const Material& material);
     static void print(const std::vector<Material>& material);
     static void print(const Instrument& instrument);
+    static void print(const Pluck& pluck);
     static void print(std::string text);
 
     static void startClock();
