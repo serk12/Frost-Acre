@@ -20,9 +20,10 @@ public:
     Controller(std::string objFile, std::string jsonFile,
                std::string midiFile, std::string midiJsonFile);
 
-    void setObjFile(std::string objFile);
-    void setjsonFile(std::string jsonFile);
+    Controller(std::string midiFile, std::string midiJsonFile);
+
     void run();
+    void writeJsonMidi();
 private:
     void parseMaterial();
 

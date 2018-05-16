@@ -3,20 +3,16 @@
 Controller::Controller() {}
 
 Controller::Controller(std::string objFile, std::string jsonFile,
-                       std::string midiFile, std::string midiJsonFile)
-    : Controller() {
+                       std::string midiFile, std::string midiJsonFile) {
     this->objFile      = objFile;
     this->jsonFile     = jsonFile;
     this->midiFile     = midiFile;
     this->midiJsonFile = midiJsonFile;
 }
 
-void Controller::setObjFile(std::string objFile) {
-    this->objFile = objFile;
-}
-
-void Controller::setjsonFile(std::string jsonFile) {
-    this->jsonFile = jsonFile;
+Controller::Controller(std::string midiFile, std::string midiJsonFile) {
+    this->midiFile     = midiFile;
+    this->midiJsonFile = midiJsonFile;
 }
 
 void Controller::run() {
@@ -69,3 +65,20 @@ void Controller::parseMaterial() {
         this->material.push_back(material);
     }
 }
+
+
+
+void Controller::writeJsonMidi() {
+    std::vector<Pluck> a = MidiManager::parseMidiFile(midiFile, midiJsonFile);
+
+    for (auto i : a) {
+        DebugController::print(i);
+    }
+}
+
+
+
+
+
+
+//

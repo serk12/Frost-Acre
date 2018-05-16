@@ -46,17 +46,21 @@ void InstrumentSimulator::calculateSpring() {
 
     for (int j = 0; j < model3d.edge.cols(); ++j) {
         for (int i = 0; i < model3d.edge.rows(); ++i) {
-            if (model3d.edge(i, j) != 0) {
+            int id = model3d.edge(i, j);
+
+            if (id != 0) {
                 double Cx = model3d.vertex(0, j) - model3d.vertex(0, i);
                 double Cy = model3d.vertex(1, j) - model3d.vertex(1, i);
                 double Cz = model3d.vertex(2, j) - model3d.vertex(2, i);
                 double L  = std::sqrt(Cx * Cx + Cy * Cy + Cz * Cz);
-                Cx /= L; Cy /= L; Cz /= L;
+                Cx *= L; Cy *= L; Cz *= L;
+                double youngThick = instrument->material[id].thicknessT *
+                                    instrument->material[id].youngsModulusY;
 
-                this->makeDiagonalSpring(i,     j,      1, Cx, Cy, Cz);
-                this->makeDiagonalSpring(i,     j + 3, -1, Cx, Cy, Cz);
-                this->makeDiagonalSpring(i + 3, j,     -1, Cx, Cy, Cz);
-                this->makeDiagonalSpring(i + 3, j + 3,  1, Cx, Cy, Cz);
+                this->makeDiagonalSpring(i,     j,      youngThick, Cx, Cy, Cz);
+                this->makeDiagonalSpring(i,     j + 3, -youngThick, Cx, Cy, Cz);
+                this->makeDiagonalSpring(i + 3, j,     -youngThick, Cx, Cy, Cz);
+                this->makeDiagonalSpring(i + 3, j + 3,  youngThick, Cx, Cy, Cz);
             }
         }
     }
