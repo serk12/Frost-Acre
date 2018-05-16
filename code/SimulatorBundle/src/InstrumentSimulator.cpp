@@ -53,7 +53,7 @@ void InstrumentSimulator::calculateSpring() {
                 double Cy = abs(model3d.vertex(1, j) - model3d.vertex(1, i));
                 double Cz = abs(model3d.vertex(2, j) - model3d.vertex(2, i));
                 double L  = std::sqrt(Cx * Cx + Cy * Cy + Cz * Cz);
-                Cx /= L; Cy /= L; Cz /= L;
+                Cx /= L; Cy /= L; Cz /= L; // Cx = Cy = Cz = 1;
                 double youngThick = instrument->material[id].youngsModulusY *
                                     instrument->material[id].thicknessT;
 
