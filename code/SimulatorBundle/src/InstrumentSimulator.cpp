@@ -50,7 +50,7 @@ void InstrumentSimulator::calculateSpring() {
                 double Cx = model3d.vertex(0, j) - model3d.vertex(0, i);
                 double Cy = model3d.vertex(1, j) - model3d.vertex(1, i);
                 double Cz = model3d.vertex(2, j) - model3d.vertex(2, i);
-                double L  = std::sqrt(Cx * Cx + Cy * Cy + Cz * Cz);
+                double L = std::sqrt(Cx * Cx + Cy * Cy + Cz * Cz)/instrument->material[model3d.edge(i,j)].youngsModulusY;
                 Cx /= L; Cy /= L; Cz /= L;
 
                 this->makeDiagonalSpring(i,     j,      1, Cx, Cy, Cz);
