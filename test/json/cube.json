@@ -1,7 +1,7 @@
 {"Material":[
     {
         "thicknessT" : 0.3,
-        "youngsModulusY":32,
+        "youngsModulusY":1400000000,
         "densityD":1,
         "fluidDampingV":0.000001,
         "viscoelasticDampingN":10
