@@ -31,7 +31,7 @@ void InstrumentSimulator::makeDiagonalSpring(int x, int y, int negative, double 
 
     precalModel.springK(x,     y + 1) += negative * Cy * Cx;
     precalModel.springK(x + 1, y + 1) += negative * Cy * Cy;
-    precalModel.springK(x + 2, y + 1) += negative * Cz * Cy;
+    precalModel.springK(x + 2, y + 1) += negative * Cy * Cz;
 
     precalModel.springK(x,     y + 2) += negative * Cz * Cx;
     precalModel.springK(x + 1, y + 2) += negative * Cz * Cy;
@@ -50,13 +50,13 @@ void InstrumentSimulator::calculateSpring() {
                 double Cx = model3d.vertex(0, j) - model3d.vertex(0, i);
                 double Cy = model3d.vertex(1, j) - model3d.vertex(1, i);
                 double Cz = model3d.vertex(2, j) - model3d.vertex(2, i);
-                double L = std::sqrt(Cx * Cx + Cy * Cy + Cz * Cz)/instrument->material[model3d.edge(i,j)].youngsModulusY;
-                Cx /= L; Cy /= L; Cz /= L;
+                double L = instrument->material[model3d.edge(i,j)].youngsModulusY/std::sqrt(Cx * Cx + Cy * Cy + Cz * Cz);
+                Cx *= L; Cy *= L; Cz *= L;
 
-                this->makeDiagonalSpring(i,     j,      1, Cx, Cy, Cz);
-                this->makeDiagonalSpring(i,     j + 3, -1, Cx, Cy, Cz);
-                this->makeDiagonalSpring(i + 3, j,     -1, Cx, Cy, Cz);
-                this->makeDiagonalSpring(i + 3, j + 3,  1, Cx, Cy, Cz);
+                this->makeDiagonalSpring(i*3,     j*3,      1, Cx, Cy, Cz);
+                this->makeDiagonalSpring(i*3,     j*3 + 3, -1, Cx, Cy, Cz);
+                this->makeDiagonalSpring(i*3 + 3, j*3,     -1, Cx, Cy, Cz);
+                this->makeDiagonalSpring(i*3 + 3, j*3 + 3,  1, Cx, Cy, Cz);
             }
         }
     }
@@ -121,7 +121,6 @@ void InstrumentSimulator::calcuateDoformationModeling() {
 
 void InstrumentSimulator::calculateImpulsForces(Eigen::VectorXd forcesF, double time) {
     PrecalModel& precalModel = instrument->precalModel;
-
     // G es real unicament
     Eigen::MatrixXcd forcesG =  precalModel.solver.eigenvectors().inverse() * forcesF;
 
