@@ -7,7 +7,7 @@ RESULTS_DEFAULT = results.txt
 BUILD_DIR = build
 # Compiler. On non-gnu systems you may want to change this
 CC = g++
-EXTRAFLAGS = -std=gnu++14 -Wall -Wextra
+EXTRAFLAGS = -std=gnu++1y -Wall -Wextra
 
 # All source files. Header files are detected automatically
 SRCS = $(shell find ./code/ ./lib/midifile -name \*.cpp)

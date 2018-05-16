@@ -47,16 +47,16 @@ void InstrumentSimulator::calculateSpring() {
     for (int j = 0; j < model3d.edge.cols(); ++j) {
         for (int i = 0; i < model3d.edge.rows(); ++i) {
             if (model3d.edge(i, j) != 0) {
-                double Cx = model3d.vertex(0, j) - model3d.vertex(0, i);
-                double Cy = model3d.vertex(1, j) - model3d.vertex(1, i);
-                double Cz = model3d.vertex(2, j) - model3d.vertex(2, i);
+                double Cx = abs(model3d.vertex(0, j) - model3d.vertex(0, i));
+                double Cy = abs(model3d.vertex(1, j) - model3d.vertex(1, i));
+                double Cz = abs(model3d.vertex(2, j) - model3d.vertex(2, i));
                 double L = instrument->material[model3d.edge(i,j)].youngsModulusY/std::sqrt(Cx * Cx + Cy * Cy + Cz * Cz);
                 Cx *= L; Cy *= L; Cz *= L;
 
-                this->makeDiagonalSpring(i*3,     j*3,      1, Cx, Cy, Cz);
-                this->makeDiagonalSpring(i*3,     j*3 + 3, -1, Cx, Cy, Cz);
-                this->makeDiagonalSpring(i*3 + 3, j*3,     -1, Cx, Cy, Cz);
-                this->makeDiagonalSpring(i*3 + 3, j*3 + 3,  1, Cx, Cy, Cz);
+                this->makeDiagonalSpring(i*3, i*3,  1, Cx, Cy, Cz);
+                this->makeDiagonalSpring(j*3, i*3, -1, Cx, Cy, Cz);
+                this->makeDiagonalSpring(i*3, j*3, -1, Cx, Cy, Cz);
+                this->makeDiagonalSpring(j*3, j*3,  1, Cx, Cy, Cz);
             }
         }
     }
@@ -74,10 +74,10 @@ void InstrumentSimulator::calculateMass() {
             int id = model3d.edge(j, i);
 
             if (id != 0) {
-                double Cx = model3d.vertex(0, j) - model3d.vertex(0, i);
+                double Cx = model3d.vertex(0, j) - model3d.vertex(0, i); 
                 double Cy = model3d.vertex(1, j) - model3d.vertex(1, i);
                 double Cz = model3d.vertex(2, j) - model3d.vertex(2, i);
-                double L  = std::sqrt(Cx * Cx + Cy * Cy + Cz * Cz);
+                double L  = std::sqrt(Cx * Cx + Cy * Cy + Cz * Cz); 
                 volum += L * M_PI *
                          instrument->material[id].thicknessT *
                          instrument->material[id].thicknessT *
