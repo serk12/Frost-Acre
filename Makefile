@@ -23,7 +23,7 @@ clean:
 	rm build/*
 
 run: $(BUILD_DIR)/$(TARGET)
-	$(BUILD_DIR)/$(TARGET)
+	$(BUILD_DIR)/$(TARGET) "./test/obj/simpleForm/simpleForm.obj" "./test/json/cube.json" "./test/midis/moonlight_sonata.mid" "nande?"
 
 test: $(BUILD_DIR)/$(TARGET)
 	$(BUILD_DIR)/$(TARGET) > $(BUILD_DIR)/$(RESULTS_DEFAULT)
