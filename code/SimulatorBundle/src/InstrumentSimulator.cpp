@@ -31,7 +31,7 @@ void InstrumentSimulator::makeDiagonalSpring(int x, int y, int negative, double 
 
     precalModel.springK(x,     y + 1) += negative * Cy * Cx;
     precalModel.springK(x + 1, y + 1) += negative * Cy * Cy;
-    precalModel.springK(x + 2, y + 1) += negative * Cz * Cy;
+    precalModel.springK(x + 2, y + 1) += negative * Cy * Cz;
 
     precalModel.springK(x,     y + 2) += negative * Cz * Cx;
     precalModel.springK(x + 1, y + 2) += negative * Cz * Cy;
@@ -46,21 +46,17 @@ void InstrumentSimulator::calculateSpring() {
 
     for (int j = 0; j < model3d.edge.cols(); ++j) {
         for (int i = 0; i < model3d.edge.rows(); ++i) {
-            int id = model3d.edge(i, j);
-
-            if (id != 0) {
-                double Cx = model3d.vertex(0, j) - model3d.vertex(0, i);
-                double Cy = model3d.vertex(1, j) - model3d.vertex(1, i);
-                double Cz = model3d.vertex(2, j) - model3d.vertex(2, i);
-                double L  = std::sqrt(Cx * Cx + Cy * Cy + Cz * Cz);
+            if (model3d.edge(i, j) != 0) {
+                double Cx = abs(model3d.vertex(0, j) - model3d.vertex(0, i));
+                double Cy = abs(model3d.vertex(1, j) - model3d.vertex(1, i));
+                double Cz = abs(model3d.vertex(2, j) - model3d.vertex(2, i));
+                double L  = instrument->material[model3d.edge(i, j)].youngsModulusY / std::sqrt(Cx * Cx + Cy * Cy + Cz * Cz);
                 Cx *= L; Cy *= L; Cz *= L;
-                double youngThick = instrument->material[id].thicknessT *
-                                    instrument->material[id].youngsModulusY;
 
-                this->makeDiagonalSpring(i,     j,      youngThick, Cx, Cy, Cz);
-                this->makeDiagonalSpring(i,     j + 3, -youngThick, Cx, Cy, Cz);
-                this->makeDiagonalSpring(i + 3, j,     -youngThick, Cx, Cy, Cz);
-                this->makeDiagonalSpring(i + 3, j + 3,  youngThick, Cx, Cy, Cz);
+                this->makeDiagonalSpring(i * 3, i * 3,  youngThick, Cx, Cy, Cz);
+                this->makeDiagonalSpring(j * 3, i * 3, -youngThick, Cx, Cy, Cz);
+                this->makeDiagonalSpring(i * 3, j * 3, -youngThick, Cx, Cy, Cz);
+                this->makeDiagonalSpring(j * 3, j * 3,  youngThick, Cx, Cy, Cz);
             }
         }
     }
@@ -125,7 +121,6 @@ void InstrumentSimulator::calcuateDoformationModeling() {
 
 void InstrumentSimulator::calculateImpulsForces(Eigen::VectorXd forcesF, double time) {
     PrecalModel& precalModel = instrument->precalModel;
-
     // G es real unicament
     Eigen::MatrixXcd forcesG =  precalModel.solver.eigenvectors().inverse() * forcesF;
 
