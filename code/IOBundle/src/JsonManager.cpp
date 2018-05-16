@@ -1,9 +1,8 @@
 #include "../header/JsonManager.h"
 
 const std::string JsonManager::MATERIAL             = "Material";
-const std::string JsonManager::ELASTICITYK          = "elasticityK";
-const std::string JsonManager::YOUNGSMODULUSY       = "thicknessT";
-const std::string JsonManager::THICKNESST           = "youngsModulusY";
+const std::string JsonManager::YOUNGSMODULUSY       = "youngsModulusY";
+const std::string JsonManager::THICKNESST           = "thicknessT";
 const std::string JsonManager::DENSITYD             = "densityD";
 const std::string JsonManager::FLUIDDAMPINGV        = "fluidDampingV";
 const std::string JsonManager::VISCOELASTICDAMPINGN = "viscoelasticDampingN";

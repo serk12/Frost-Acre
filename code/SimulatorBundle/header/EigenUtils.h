@@ -3,11 +3,11 @@
 
 #include <Eigen/Dense>
 
-typedef Eigen::Matrix<bool, Eigen::Dynamic, Eigen::Dynamic> MatrixXB;
+// typedef Eigen::Matrix<bool, Eigen::Dynamic, Eigen::Dynamic> MatrixXB;
 
 struct Model3D {
     Eigen::Matrix3Xd vertex; // rows indicate vertex 0,1,2 = x, y, z
-    MatrixXB         edge;   // matriz de adyacencia 0 si no hay
+    Eigen::MatrixXi  edge;   // matriz de adyacencia 0 si no hay
                              // texturaID en caso que aya
 };
 

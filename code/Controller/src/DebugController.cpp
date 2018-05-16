@@ -17,7 +17,6 @@ void DebugController::print(const PrecalModel& precalModel) {
 }
 
 void DebugController::print(const Material& material) {
-    std::cout << "elasticityK: "          << material.elasticityK          << std::endl;
     std::cout << "thicknessT: "           << material.thicknessT           << std::endl;
     std::cout << "youngsModulusY: "       << material.youngsModulusY       << std::endl;
     std::cout << "densityD: "             << material.densityD             << std::endl;

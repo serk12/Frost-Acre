@@ -46,7 +46,7 @@ void InstrumentSimulator::calculateSpring() {
 
     for (int j = 0; j < model3d.edge.cols(); ++j) {
         for (int i = 0; i < model3d.edge.rows(); ++i) {
-            if (model3d.edge(i, j)) {
+            if (model3d.edge(i, j) != 0) {
                 double Cx = model3d.vertex(0, j) - model3d.vertex(0, i);
                 double Cy = model3d.vertex(1, j) - model3d.vertex(1, i);
                 double Cz = model3d.vertex(2, j) - model3d.vertex(2, i);
@@ -65,18 +65,28 @@ void InstrumentSimulator::calculateSpring() {
 void InstrumentSimulator::calculateMass() {
     Model3D& model3d         = instrument->model3d;
     PrecalModel& precalModel = instrument->precalModel;
-
     precalModel.massM = Eigen::VectorXd(model3d.vertex.cols());
 
     for (int i = 0; i < model3d.edge.cols(); ++i) {
-        int a = 0;
+        double volum = 0;
 
         for (int j = 0; j < model3d.edge.rows(); ++j) {
-            a += (model3d.edge(j, i) != 0) ? 1 : 0;
-        }
+            int id = model3d.edge(j, i);
 
-        precalModel.massM(i) =
-            float(a) * instrument->material[0].densityD * instrument->material[0].thicknessT;
+            if (id != 0) {
+                double Cx = model3d.vertex(0, j) - model3d.vertex(0, i);
+                double Cy = model3d.vertex(1, j) - model3d.vertex(1, i);
+                double Cz = model3d.vertex(2, j) - model3d.vertex(2, i);
+                double L  = std::sqrt(Cx * Cx + Cy * Cy + Cz * Cz);
+                volum += L * M_PI *
+                         instrument->material[id].thicknessT *
+                         instrument->material[id].thicknessT *
+                         instrument->material[id].densityD;
+                std::cout << i << std::endl;
+            }
+        }
+        std::cout << std::endl;
+        precalModel.massM(i) = volum;
     }
 }
 
@@ -93,8 +103,8 @@ void InstrumentSimulator::calcuateDoformationModeling() {
     Eigen::MatrixXcd eigenvaluesD =  precalModel.solver.eigenvalues();
     precalModel.possitiveW = Eigen::VectorXcd(eigenvaluesD.size());
     precalModel.negativeW  = Eigen::VectorXcd(eigenvaluesD.size());
-    std::complex<double> fluidDampingV        =  instrument->material[0].fluidDampingV;
-    std::complex<double> viscoelasticDampingN =  instrument->material[0].viscoelasticDampingN;
+    std::complex<double> fluidDampingV        =  instrument->material[1].fluidDampingV;
+    std::complex<double> viscoelasticDampingN =  instrument->material[1].viscoelasticDampingN;
 
     for (int i = 0; i < eigenvaluesD.size(); ++i) {
         std::complex<double> aux =
@@ -115,7 +125,6 @@ void InstrumentSimulator::calculateImpulsForces(Eigen::VectorXd forcesF, double 
     PrecalModel& precalModel = instrument->precalModel;
 
     // G es real unicament
-    // std::cout << precalModel.solver.eigenvectors().cols() << std::endl;
     Eigen::MatrixXcd forcesG =  precalModel.solver.eigenvectors().inverse() * forcesF;
 
     for (int i = 0; i < precalModel.gainOfModeC.size(); ++i) {

@@ -9,7 +9,6 @@
 
 
 struct Material {
-    double elasticityK;
     double thicknessT;
     double youngsModulusY;
     double densityD;
@@ -17,7 +16,6 @@ struct Material {
     double viscoelasticDampingN;
     Material() {}
     Material(int k) :
-        elasticityK(k),
         thicknessT(k),
         youngsModulusY(k),
         densityD(k),

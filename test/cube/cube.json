@@ -1,18 +1,9 @@
 {"Material":[
     {
-        "elasticityK":0.23,
-        "thicknessT":0.002,
+        "thicknessT" : 0.3,
         "youngsModulusY":32,
-        "densityD":1.123,
-        "fluidDampingV":2,
-        "viscoelasticDampingN":21
-    },
-    {
-        "elasticityK":0.23,
-        "thicknessT":0.002,
-        "youngsModulusY":32,
-        "densityD":1.123,
-        "fluidDampingV":2,
-        "viscoelasticDampingN":21
+        "densityD":1,
+        "fluidDampingV":0.000001,
+        "viscoelasticDampingN":10
     }
 ]}
