@@ -82,10 +82,8 @@ void InstrumentSimulator::calculateMass() {
                          instrument->material[id].thicknessT *
                          instrument->material[id].thicknessT *
                          instrument->material[id].densityD;
-                std::cout << i << std::endl;
             }
         }
-        std::cout << std::endl;
         precalModel.massM(i) = volum;
     }
 }
@@ -128,7 +126,7 @@ void InstrumentSimulator::calculateImpulsForces(Eigen::VectorXd forcesF, double 
     Eigen::MatrixXcd forcesG =  precalModel.solver.eigenvectors().inverse() * forcesF;
 
     for (int i = 0; i < precalModel.gainOfModeC.size(); ++i) {
-        std::complex<double> diff         = precalModel.possitiveW(i) - precalModel.possitiveW(i);
+        std::complex<double> diff         = precalModel.possitiveW(i) - precalModel.negativeW(i);
         std::complex<double> poweredEuler =
             std::pow(instrument->euler, precalModel.possitiveW(i).real()) *
             (cos(precalModel.possitiveW(i).imag() * time) + (sin(precalModel.possitiveW(i).imag() * time) * 1.i));
