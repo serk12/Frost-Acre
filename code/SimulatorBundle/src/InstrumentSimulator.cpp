@@ -109,25 +109,23 @@ void InstrumentSimulator::calcuateDoformationModeling() {
     double viscoelasticDampingN =  instrument->material[1].viscoelasticDampingN;
 
     for (int i = 0; i < eigenvaluesD.size(); ++i) {
-        double aux =
-            fluidDampingV * eigenvaluesD(i).real() + viscoelasticDampingN;
+        double aux                = fluidDampingV * eigenvaluesD(i).real() + viscoelasticDampingN;
         std::complex<double> root = std::sqrt(std::complex<double>(aux * aux - 4. * eigenvaluesD(i).real(), 0));
 
         precalModel.possitiveW(i) = (-aux + root) / 2.;
 
         precalModel.negativeW(i) = (-aux - root) / 2.;
     }
+    cleanMatrix(precalModel.possitiveW);
+    cleanMatrix(precalModel.negativeW);
 
     precalModel.gainOfModeC = Eigen::VectorXcd(eigenvaluesD.size());
     precalModel.gainOfModeC.fill(0.0f);
-
-    std::cout << eigenvaluesD << std::endl;
 }
 
 void InstrumentSimulator::calculateImpulsForces(Eigen::VectorXd forcesF, double time) {
     PrecalModel& precalModel = instrument->precalModel;
-    // G es real unicament (en reales)
-    Eigen::MatrixXcd forcesG =  precalModel.solver.eigenvectors().inverse() * forcesF;
+    Eigen::MatrixXd forcesG  = precalModel.solver.eigenvectors().inverse().real() * forcesF;
 
     for (int i = 0; i < precalModel.gainOfModeC.size(); ++i) {
         std::complex<double> diff         = precalModel.possitiveW(i) - precalModel.negativeW(i);
@@ -137,6 +135,7 @@ void InstrumentSimulator::calculateImpulsForces(Eigen::VectorXd forcesF, double 
         precalModel.gainOfModeC(i) =
             precalModel.gainOfModeC(i) + (forcesG(i) / (precalModel.massM(i / 3) * diff * poweredEuler));
     }
+    cleanMatrix(precalModel.gainOfModeC);
 }
 
 void InstrumentSimulator::calculateVibrations(double time) {
@@ -155,5 +154,19 @@ void InstrumentSimulator::calculateVibrations(double time) {
             (cos(precalModel.negativeW(i).imag() * time)  + (sin(precalModel.negativeW(i).imag()  * time) * 1.i));
 
         precalModel.modesOfVibrationZ(i) = (Ci * eulerPowPos) + (CiConj * eulerPowNeg);
+    }
+}
+
+void InstrumentSimulator::cleanMatrix(Eigen::VectorXcd& mat, double precision) {
+    for (int j = 0; j < mat.cols(); ++j) {
+        for (int i = 0; i < mat.rows(); ++i) {
+            if (abs(mat(i, j).real()) < precision) {
+                mat(i, j).real(0);
+            }
+
+            if (abs(mat(i, j).imag()) < precision) {
+                mat(i, j).imag(0);
+            }
+        }
     }
 }

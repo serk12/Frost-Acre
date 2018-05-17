@@ -23,6 +23,7 @@ protected:
     void calculateVibrations(double time);
 
 private:
+    void cleanMatrix(Eigen::VectorXcd& mat, double precision = 0.000000000001);
     void calculateMass();
     void calculateSpring();
     void makeDiagonalSpring(int x, int y, int negative, double Cx, double Cy, double Cz);
