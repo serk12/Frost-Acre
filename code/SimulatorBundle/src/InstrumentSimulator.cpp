@@ -45,7 +45,7 @@ void InstrumentSimulator::calculateSpring() {
                                                 model3d.edge.cols() * 3);
 
     for (int j = 0; j < model3d.edge.cols(); ++j) {
-        for (int i = 0; i < model3d.edge.rows(); ++i) {
+        for (int i = j + 1; i < model3d.edge.rows(); ++i) {
             int id = model3d.edge(i, j);
 
             if (id != 0) {
@@ -105,27 +105,28 @@ void InstrumentSimulator::calcuateDoformationModeling() {
     Eigen::MatrixXcd eigenvaluesD =  precalModel.solver.eigenvalues();
     precalModel.possitiveW = Eigen::VectorXcd(eigenvaluesD.size());
     precalModel.negativeW  = Eigen::VectorXcd(eigenvaluesD.size());
-    std::complex<double> fluidDampingV        =  instrument->material[1].fluidDampingV;
-    std::complex<double> viscoelasticDampingN =  instrument->material[1].viscoelasticDampingN;
+    double fluidDampingV        =  instrument->material[1].fluidDampingV;
+    double viscoelasticDampingN =  instrument->material[1].viscoelasticDampingN;
 
     for (int i = 0; i < eigenvaluesD.size(); ++i) {
-        std::complex<double> aux =
-            fluidDampingV * eigenvaluesD(i) + viscoelasticDampingN;
+        double aux =
+            fluidDampingV * eigenvaluesD(i).real() + viscoelasticDampingN;
+        std::complex<double> root = std::sqrt(std::complex<double>(aux * aux - 4. * eigenvaluesD(i).real(), 0));
 
-        precalModel.possitiveW(i) =
-            (-aux + std::sqrt(aux * aux - 4. * eigenvaluesD(i))) / 2.;
+        precalModel.possitiveW(i) = (-aux + root) / 2.;
 
-        precalModel.negativeW(i) =
-            (-aux - std::sqrt(aux * aux - 4. * eigenvaluesD(i))) / 2.;
+        precalModel.negativeW(i) = (-aux - root) / 2.;
     }
 
     precalModel.gainOfModeC = Eigen::VectorXcd(eigenvaluesD.size());
     precalModel.gainOfModeC.fill(0.0f);
+
+    std::cout << eigenvaluesD << std::endl;
 }
 
 void InstrumentSimulator::calculateImpulsForces(Eigen::VectorXd forcesF, double time) {
     PrecalModel& precalModel = instrument->precalModel;
-    // G es real unicament
+    // G es real unicament (en reales)
     Eigen::MatrixXcd forcesG =  precalModel.solver.eigenvectors().inverse() * forcesF;
 
     for (int i = 0; i < precalModel.gainOfModeC.size(); ++i) {
