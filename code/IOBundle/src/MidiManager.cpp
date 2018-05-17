@@ -2,8 +2,7 @@
 
 std::vector<Pluck> MidiManager::parseMidiFile(std::string midiPath, std::string jsonFile) {
     smf::MidiFile midiFile;
-    midiFile.read(midiPath);
-    midiFile.doTimeAnalysis();
+    midiFile.read(midiPath);  midiFile.joinTracks(); midiFile.doTimeAnalysis();
     int size = 0;
 
     for (int track = 0; track < midiFile.getTrackCount(); ++track)  {
@@ -53,36 +52,17 @@ std::map<std::string, Eigen::VectorXd> MidiManager::getMapForces(std::string jso
 
 std::map<std::string, Eigen::VectorXd> MidiManager::buildMapForces(std::string midiPath) {
     smf::MidiFile midiFile;
-    midiFile.read(midiPath);
-    midiFile.doTimeAnalysis();
-    int size = 0;
-
-    for (int track = 0; track < midiFile.getTrackCount(); ++track)  {
-        size += midiFile[track].size();
-    }
-
-    // std::map<std::string, Eigen::VectorXd> notes =
-    // MidiManager::getMapForces(jsonFile);
-    std::vector<Pluck> v(size);
-    int i = 0;
+    midiFile.read(midiPath); midiFile.joinTracks(); midiFile.doTimeAnalysis();
+    std::map<std::string, Eigen::VectorXd> notes;
 
     for (int track = 0; track < midiFile.getTrackCount(); ++track) {
-        Pluck pluck;
-
         for (int event = 0; event < midiFile[track].size(); ++event) {
-            pluck.timeStart = midiFile[track][event].seconds;
-            pluck.timeDur   = midiFile[track][event].getDurationInSeconds();
-            pluck.timeForce = 0.1;
-            std::string message = "";
-
-            for (unsigned int i = 0; i < midiFile[track][event].size(); ++i) {
-                message += std::to_string(midiFile[track][event][i]);
+            if (midiFile[track][event].isNoteOn()) {
+                notes[std::to_string(midiFile[track][event].getKeyNumber())] = Eigen::VectorXd();
             }
-
-            // pluck.force = notes[message];
-            // v[i++] = pluck;
         }
     }
+    return notes;
 }
 
 

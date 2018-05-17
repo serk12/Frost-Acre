@@ -2,6 +2,7 @@
 #define CONTROLLER_HH
 
 #include <vector>
+#include <sstream>
 
 #include "../../IOBundle/header/ObjManager.h"
 #include "../../IOBundle/header/JsonManager.h"

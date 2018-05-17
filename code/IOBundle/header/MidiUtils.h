@@ -8,6 +8,7 @@ struct Pluck {
     float           timeForce;
     float           timeDur;
     float           timeStart;
+    int             note;
 };
 
 #endif // ifndef MIDIUTILS_HH

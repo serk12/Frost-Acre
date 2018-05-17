@@ -66,11 +66,21 @@ void Controller::parseMaterial() {
 
 
 void Controller::writeJsonMidi() {
-    std::vector<Pluck> a = MidiManager::parseMidiFile(midiFile, midiJsonFile);
+    std::map<std::string, Eigen::VectorXd> notes = MidiManager::buildMapForces(midiFile);
 
-    for (auto i : a) {
-        DebugController::print(i);
+    rapidjson::Document notesDoc;
+    notesDoc.SetObject();
+    rapidjson::Document::AllocatorType& allocator = notesDoc.GetAllocator();
+    rapidjson::Value array(rapidjson::kObjectType);
+
+    for (auto& note : notes) {
+        std::stringstream ss;
+        ss << note.second;
+        array.AddMember(rapidjson::Value().SetString(note.first.c_str(), allocator),
+                        rapidjson::Value().SetString(ss.str().c_str(), allocator), allocator);
     }
+    notesDoc.AddMember("Map", array, allocator);
+    JsonManager::writeFile(midiJsonFile, notesDoc);
 }
 
 
