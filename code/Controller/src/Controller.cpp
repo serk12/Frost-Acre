@@ -21,7 +21,7 @@ void Controller::run() {
     DebugController::print("INIT RUN");
     DebugController::print("INIT PARSE");
     Model3D model = ObjManager::readObj(objFile);
-    this->parseMaterial();
+    this->readJson();
     DebugController::print("END PARSE");
 
     SimulatorManager *simMan = new SimulatorManager();
@@ -31,13 +31,13 @@ void Controller::run() {
     simMan->precallSimulator(*instrument);
     DebugController::print("END PRECAlC");
 
-    Eigen::VectorXd f(4 * 3); // #vectors  * #dimensions (3)
-    f.fill(0);
-    f(0) = 100; f(1)  = 0; f(2)  = 0;
+    std::vector<Pluck> plucks = MidiManager::parseMidiFile(midiFile, midiJsonFile);
 
-    DebugController::print("INIT FRAME");
-    simMan->calculateFrame(f, 0.001, 0.01);
-    DebugController::print("END FRAME");
+    for (auto& pluck : plucks) {
+        DebugController::print("INIT FRAME");
+        simMan->calculateFrame(pluck.force, pluck.timeForce, pluck.timeDur);
+        DebugController::print("END FRAME");
+    }
 
     DebugController::print("END SIMULATION");
     DebugController::print(*instrument);
@@ -46,7 +46,7 @@ void Controller::run() {
     delete simMan;
 }
 
-void Controller::parseMaterial() {
+void Controller::readJson() {
     rapidjson::Document doc = JsonManager::readFile(jsonFile);
     Material material(0);
     this->material.push_back(material);
@@ -63,9 +63,7 @@ void Controller::parseMaterial() {
     }
 }
 
-
-
-void Controller::writeJsonMidi() {
+void Controller::writeJsonMidi(bool def) {
     std::map<std::string, Eigen::VectorXd> notes = MidiManager::buildMapForces(midiFile);
 
     rapidjson::Document notesDoc;
@@ -73,13 +71,34 @@ void Controller::writeJsonMidi() {
     rapidjson::Document::AllocatorType& allocator = notesDoc.GetAllocator();
     rapidjson::Value array(rapidjson::kObjectType);
 
+    int size = 4 * 3; // #vectors  * #dimensions (3)
+    Eigen::VectorXd f(size);
+
+    if (def) {
+        f.fill(0);
+        f(0) = 100;
+    }
+    else {
+        std::cin >> size;
+        Eigen::VectorXd f(size);
+    }
+
     for (auto& note : notes) {
+        if (!def) {
+            double point;
+
+            for (int i = 0; i < size; ++i) {
+                std::cin >> point;
+                f(i) = point;
+            }
+        }
         std::stringstream ss;
-        ss << note.second;
+        ss << f;
         array.AddMember(rapidjson::Value().SetString(note.first.c_str(), allocator),
                         rapidjson::Value().SetString(ss.str().c_str(), allocator), allocator);
     }
-    notesDoc.AddMember("Map", array, allocator);
+    std::string member = JsonManager::MAPNOTES;
+    notesDoc.AddMember(rapidjson::Value().SetString(member.c_str(), allocator), array, allocator);
     JsonManager::writeFile(midiJsonFile, notesDoc);
 }
 

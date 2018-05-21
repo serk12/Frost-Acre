@@ -24,9 +24,10 @@ public:
     Controller(std::string midiFile, std::string midiJsonFile);
 
     void run();
-    void writeJsonMidi();
+    void writeJsonMidi(bool def = true);
 private:
-    void parseMaterial();
+    void readJson();
+    void readJsonMidi();
 
     std::vector<Material> material;
     std::string objFile;

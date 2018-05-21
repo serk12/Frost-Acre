@@ -26,10 +26,10 @@ run: $(BUILD_DIR)/$(TARGET)
 	$(BUILD_DIR)/$(TARGET)
 
 test: $(BUILD_DIR)/$(TARGET)
-	$(BUILD_DIR)/$(TARGET) "./test/obj/simpleForm/simpleForm.obj" "./test/json/wood.json" "./test/midis/allNotes.mid" ""
+	$(BUILD_DIR)/$(TARGET) "./test/obj/simpleForm/simpleForm.obj" "./test/json/wood.json" "./test/midis/allNotes.mid" "./test/jsonMidi/14def.json"
 
 midi: $(BUILD_DIR)/$(TARGET)
-	$(BUILD_DIR)/$(TARGET) "./test/midis/allNotes.mid" "./test/jsonMidi/hmm.json"
+	$(BUILD_DIR)/$(TARGET) "./test/midis/allNotes.mid" "./test/jsonMidi/14def.json"
 
 # SECONDEXPANSION works like first strike ($) and second strike ($$) on magic
 .SECONDEXPANSION:

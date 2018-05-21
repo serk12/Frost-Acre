@@ -21,6 +21,7 @@ public:
     static const std::string DENSITYD;
     static const std::string FLUIDDAMPINGV;
     static const std::string VISCOELASTICDAMPINGN;
+    static const std::string MAPNOTES;
 
     static rapidjson::Document readFile(std::string path);
     static void writeFile(std::string path, rapidjson::Document& document);

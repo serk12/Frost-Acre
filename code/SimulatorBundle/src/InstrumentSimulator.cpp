@@ -4,15 +4,6 @@ InstrumentSimulator::InstrumentSimulator() {
     instrument = nullptr;
 }
 
-InstrumentSimulator::InstrumentSimulator(Instrument& instrument, bool calculateNow) {
-    this->setInstrument(instrument);
-
-    if (calculateNow) {
-        this->calculateMassSpringSystem();
-        this->calcuateDoformationModeling();
-    }
-}
-
 void InstrumentSimulator::setInstrument(Instrument& instrument) {
     this->instrument = &instrument;
 }

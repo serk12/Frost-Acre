@@ -10,7 +10,6 @@
 class InstrumentSimulator {
 public:
     InstrumentSimulator();
-    InstrumentSimulator(Instrument& instrument, bool calculateNow);
     void setInstrument(Instrument& instrument);
 
 protected:

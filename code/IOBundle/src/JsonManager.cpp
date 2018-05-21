@@ -6,6 +6,7 @@ const std::string JsonManager::THICKNESST           = "thicknessT";
 const std::string JsonManager::DENSITYD             = "densityD";
 const std::string JsonManager::FLUIDDAMPINGV        = "fluidDampingV";
 const std::string JsonManager::VISCOELASTICDAMPINGN = "viscoelasticDampingN";
+const std::string JsonManager::MAPNOTES             = "map";
 
 rapidjson::Document JsonManager::readFile(std::string path) {
     FILE *file = fopen(path.c_str(), "rb");
