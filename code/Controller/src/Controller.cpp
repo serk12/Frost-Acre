@@ -33,19 +33,20 @@ void Controller::run() {
     simMan->precallSimulator(*instrument);
     DebugController::print("END PRECAlC");
 
-    std::vector<Pluck> plucks = MidiManager::parseMidiFile(midiFile, midiJsonFile);
-    std::list<double>  sound;
+    std::vector<Pluck> plucks = MidiManager::parseMidiFile(midiFile);
+    this->getMapForces(midiJsonFile);
+    std::list<double> sound;
 
     for (auto& pluck : plucks) {
         DebugController::print("INIT FRAME");
-        sound.splice(sound.end(), simMan->calculateFrame(pluck.force, pluck.timeForce, pluck.timeDur));
+        sound.splice(sound.end(), simMan->calculateFrame(this->notes[pluck.note], pluck.timeForce, pluck.timeDur));
         DebugController::print("END FRAME");
     }
 
     DebugController::print("END SIMULATION");
     DebugController::print(*instrument);
 
-    WavManager::writeWav(wavFile, sound, 100);
+    WavManager::writeWav(wavFile, sound);
     delete instrument;
     delete simMan;
 }
@@ -79,8 +80,7 @@ void Controller::writeJsonMidi(bool def) {
     Eigen::VectorXd f(size);
 
     if (def) {
-        f.fill(0);
-        f(0) = 100;
+        f.fill(100);
     }
     else {
         std::cin >> size;
@@ -104,6 +104,30 @@ void Controller::writeJsonMidi(bool def) {
     std::string member = JsonManager::MAPNOTES;
     notesDoc.AddMember(rapidjson::Value().SetString(member.c_str(), allocator), array, allocator);
     JsonManager::writeFile(midiJsonFile, notesDoc);
+}
+
+std::vector<double> explode(const std::string& s, const char delim)
+{
+    std::vector<double> result;
+    std::istringstream  iss(s);
+
+    for (std::string token; std::getline(iss, token, delim);)
+    {
+        result.push_back(std::stod(std::move(token)));
+    }
+    return result;
+}
+
+std::map<int, Eigen::VectorXd> Controller::getMapForces(std::string jsonFile) {
+    rapidjson::Document doc = JsonManager::readFile(jsonFile);
+
+    for (auto& val : doc[JsonManager::MAPNOTES.c_str()].GetObject()) {
+        std::vector<double> forces = explode(val.value.GetString(), '\n');
+        Eigen::VectorXd     f      = Eigen::VectorXd::Map(forces.data(), forces.size());
+        this->notes[std::stoi(val.name.GetString())] = f;
+    }
+
+    return notes;
 }
 
 

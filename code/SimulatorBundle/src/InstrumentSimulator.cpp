@@ -122,7 +122,8 @@ void InstrumentSimulator::calculateImpulsForces(Eigen::VectorXd forcesF, double 
         std::complex<double> diff         = precalModel.possitiveW(i) - precalModel.negativeW(i);
         std::complex<double> poweredEuler =
             std::pow(instrument->euler, precalModel.possitiveW(i).real()) *
-            (cos(precalModel.possitiveW(i).imag() * time) + (sin(precalModel.possitiveW(i).imag() * time) * 1.i));
+            (cos(precalModel.possitiveW(i).imag() * time) +
+             (sin(precalModel.possitiveW(i).imag() * time) * 1.i));
         precalModel.gainOfModeC(i) =
             precalModel.gainOfModeC(i) + (forcesG(i) / (precalModel.massM(i / 3) * diff * poweredEuler));
     }

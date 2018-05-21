@@ -15,7 +15,7 @@ private:
         return outs;
     }
 public:
-    static void writeWav(const std::string& pathFile, const std::list<double>& sound, double scale) {
+    static void writeWav(const std::string& pathFile, const std::list<double>& sound) {
         std::ofstream file(pathFile, std::ios::binary);
         // Write the file headers
         file << "RIFF----WAVEfmt ";
@@ -23,14 +23,19 @@ public:
         write_word(file,      1, 2); // PCM - integer samples
         write_word(file,      2, 2); //  channels
         write_word(file,  44000, 4); // samples per second (Hz)
-        write_word(file, 176400, 4); // (Sample Rate * BitsPerSample * Channels)
-                                     // / 8
+        write_word(file, 176400, 4); // (SampleRate * BitsXSample * Channels)/ 8
         write_word(file,      4, 2); // data block (2[channels] integer sample)
         write_word(file,     16, 2); // number of bits per sample (n*8)
 
         // Write the data chunk header
         size_t data_chunk_pos = file.tellp();
         file << "data----"; // (chunk size to be filled in later)
+        double max = 0;
+
+        for (double s : sound) {
+            if (abs(s) > max) max = abs(s);
+        }
+        double scale = 32760.0 / max;
 
         // Write the audio samples
         for (double s : sound) {

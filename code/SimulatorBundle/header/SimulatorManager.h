@@ -14,9 +14,6 @@ public:
     SimulatorManager();
     void precallSimulator(Instrument& instrument);
     std::list<double> calculateFrame(Eigen::VectorXd forcesF, double timeF, double timeV);
-private:
-
-private:
 };
 
 #endif // ifndef SIMULATORMANAGER_HH
