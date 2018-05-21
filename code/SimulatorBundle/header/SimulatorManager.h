@@ -8,10 +8,11 @@
 
 class SimulatorManager : protected InstrumentSimulator {
 public:
+    static const double SampleRate;
+
     SimulatorManager();
     void precallSimulator(Instrument& instrument);
     void calculateFrame(Eigen::VectorXd forcesF, double timeF, double timeV);
-
 private:
 
 private:

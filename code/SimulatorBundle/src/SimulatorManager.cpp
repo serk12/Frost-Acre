@@ -1,5 +1,7 @@
 #include "../header/SimulatorManager.h"
 
+const double SimulatorManager::SampleRate =  1.0 / 44100.0;
+
 SimulatorManager::SimulatorManager() : InstrumentSimulator() {}
 
 void SimulatorManager::precallSimulator(Instrument& instrument) {
@@ -9,5 +11,8 @@ void SimulatorManager::precallSimulator(Instrument& instrument) {
 
 void SimulatorManager::calculateFrame(Eigen::VectorXd forcesF, double timeF, double timeV) {
     this->calculateImpulsForces(forcesF, timeF);
-    this->calculateVibrations(timeV);
+
+    for (double t = 0; t < timeV; t +=  SimulatorManager::SampleRate) {
+        this->calculateVibrations(t);
+    }
 }

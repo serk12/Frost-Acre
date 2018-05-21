@@ -13,8 +13,10 @@ std::vector<Pluck> MidiManager::parseMidiFile(std::string midiPath, std::string 
         for (int event = 0; event < midiFile[track].size(); ++event) {
             if (midiFile[track][event].isNoteOn()) {
                 pluck.timeStart = midiFile[track][event].seconds;
-                pluck.timeDur   = midiFile[track][event].getDurationInSeconds();
-                pluck.timeForce = 0.1;
+                // ToDo no es la mejor solucion coger el siguiente evento pero
+                // funciona
+                pluck.timeDur   = midiFile[track][event + 1].seconds - midiFile[track][event].seconds;
+                pluck.timeForce = 0.001;
                 pluck.note      = midiFile[track][event].getKeyNumber();
                 pluck.force     = notes[std::to_string(pluck.note)];
                 v.push_back(pluck);
