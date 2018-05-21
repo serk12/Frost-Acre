@@ -40,9 +40,9 @@ void InstrumentSimulator::calculateSpring() {
             int id = model3d.edge(i, j);
 
             if (id != 0) {
-                double Cx = abs(model3d.vertex(0, j) - model3d.vertex(0, i));
-                double Cy = abs(model3d.vertex(1, j) - model3d.vertex(1, i));
-                double Cz = abs(model3d.vertex(2, j) - model3d.vertex(2, i));
+                double Cx = fabs(model3d.vertex(0, j) - model3d.vertex(0, i));
+                double Cy = fabs(model3d.vertex(1, j) - model3d.vertex(1, i));
+                double Cz = fabs(model3d.vertex(2, j) - model3d.vertex(2, i));
                 double L  = std::sqrt(Cx * Cx + Cy * Cy + Cz * Cz);
                 Cx /= L; Cy /= L; Cz /= L; // Cx = Cy = Cz = 1;
                 double youngThick = instrument->material[id].youngsModulusY *
@@ -132,8 +132,7 @@ void InstrumentSimulator::calculateImpulsForces(Eigen::VectorXd forcesF, double 
 
 void InstrumentSimulator::calculateVibrations(double time) {
     PrecalModel& precalModel = instrument->precalModel;
-
-    precalModel.modesOfVibrationZ = Eigen::VectorXcd(precalModel.gainOfModeC);
+    precalModel.modesOfVibrationZ = Eigen::VectorXcd(precalModel.gainOfModeC.size());
 
     for (int i = 0; i < precalModel.modesOfVibrationZ.size(); ++i) {
         std::complex<double> Ci          = precalModel.gainOfModeC(i);
@@ -152,11 +151,11 @@ void InstrumentSimulator::calculateVibrations(double time) {
 void InstrumentSimulator::cleanMatrix(Eigen::VectorXcd& mat, double precision) {
     for (int j = 0; j < mat.cols(); ++j) {
         for (int i = 0; i < mat.rows(); ++i) {
-            if (abs(mat(i, j).real()) < precision) {
+            if (fabs(mat(i, j).real()) < precision) {
                 mat(i, j).real(0);
             }
 
-            if (abs(mat(i, j).imag()) < precision) {
+            if (fabs(mat(i, j).imag()) < precision) {
                 mat(i, j).imag(0);
             }
         }

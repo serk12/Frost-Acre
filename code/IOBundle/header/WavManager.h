@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <fstream>
+#include <math.h>
 #include <list>
 
 class WavManager {
@@ -33,9 +34,9 @@ public:
         double max = 0;
 
         for (double s : sound) {
-            if (abs(s) > max) max = abs(s);
+            if (fabs(s) > max and !std::isinf(s) and !std::isnan(s)) max = fabs(s);
         }
-        double scale = 32760.0 / max;
+        double scale = 2147483647.0 / max;
 
         // Write the audio samples
         for (double s : sound) {

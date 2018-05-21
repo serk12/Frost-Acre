@@ -15,7 +15,14 @@ std::list<double> SimulatorManager::calculateFrame(Eigen::VectorXd forcesF, doub
 
     for (double t = 0; t < timeV; t +=  SimulatorManager::SampleRate) {
         this->calculateVibrations(t);
-        note.push_back(instrument->precalModel.modesOfVibrationZ.real().sum());
+        double sum = 0;
+
+        for (int i = 0; i < instrument->precalModel.modesOfVibrationZ.size(); ++i) {
+            double num = instrument->precalModel.modesOfVibrationZ(i).real();
+
+            if (!std::isnan(num) and !std::isinf(num)) sum += num;
+        }
+        note.push_back(sum);
     }
 
     return note;

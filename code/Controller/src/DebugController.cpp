@@ -40,7 +40,7 @@ void DebugController::print(const Instrument& instrument) {
 }
 
 void DebugController::print(const Pluck& pluck) {
-    std::cout << "force:     " << pluck.force     << std::endl;
+    std::cout << "note:      " << pluck.note      << std::endl;
     std::cout << "timeForce: " << pluck.timeForce << std::endl;
     std::cout << "timeDur:   " << pluck.timeDur   << std::endl;
     std::cout << "timeStart: " << pluck.timeStart << std::endl << std::endl;
