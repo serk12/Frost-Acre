@@ -25,7 +25,10 @@ void DebugController::print(const Material& material) {
 }
 
 void DebugController::print(const std::vector<Material>& material) {
+    int i = 0;
+
     for (auto mat : material) {
+        std::cout << "MATERIAL: " << i++ << std::endl;
         DebugController::print(mat);
     }
 }
@@ -33,6 +36,7 @@ void DebugController::print(const std::vector<Material>& material) {
 void DebugController::print(const Instrument& instrument) {
     DebugController::print(instrument.model3d);
     DebugController::print(instrument.precalModel);
+    DebugController::print(instrument.material);
 }
 
 void DebugController::print(const Pluck& pluck) {
