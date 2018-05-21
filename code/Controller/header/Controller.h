@@ -2,14 +2,16 @@
 #define CONTROLLER_HH
 
 #include <vector>
+#include <list>
 #include <sstream>
 
 #include "../../IOBundle/header/ObjManager.h"
+#include "../../IOBundle/header/WavManager.h"
 #include "../../IOBundle/header/JsonManager.h"
 #include "../../IOBundle/header/MidiManager.h"
 
-#include "../../SimulatorBundle/header/SimulatorManager.h"
 #include "../../SimulatorBundle/header/Instrument.h"
+#include "../../SimulatorBundle/header/SimulatorManager.h"
 
 #include "DebugController.h"
 
@@ -19,7 +21,8 @@ class Controller {
 public:
     Controller();
     Controller(std::string objFile, std::string jsonFile,
-               std::string midiFile, std::string midiJsonFile);
+               std::string midiFile, std::string midiJsonFile,
+               std::string wavFile);
 
     Controller(std::string midiFile, std::string midiJsonFile);
 
@@ -34,6 +37,7 @@ private:
     std::string jsonFile;
     std::string midiFile;
     std::string midiJsonFile;
+    std::string wavFile;
 };
 
 #endif // ifndef CONTROLLER_HH

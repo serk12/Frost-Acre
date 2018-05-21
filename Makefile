@@ -26,7 +26,7 @@ run: $(BUILD_DIR)/$(TARGET)
 	$(BUILD_DIR)/$(TARGET)
 
 test: $(BUILD_DIR)/$(TARGET)
-	$(BUILD_DIR)/$(TARGET) "./test/obj/simpleForm/simpleForm.obj" "./test/json/wood.json" "./test/midis/allNotes.mid" "./test/jsonMidi/14def.json"
+	$(BUILD_DIR)/$(TARGET) "./test/obj/simpleForm/simpleForm.obj" "./test/json/wood.json" "./test/midis/allNotes.mid" "./test/jsonMidi/14def.json" "./test/wav/sound.wav"
 
 midi: $(BUILD_DIR)/$(TARGET)
 	$(BUILD_DIR)/$(TARGET) "./test/midis/allNotes.mid" "./test/jsonMidi/14def.json"

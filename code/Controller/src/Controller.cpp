@@ -3,11 +3,13 @@
 Controller::Controller() {}
 
 Controller::Controller(std::string objFile, std::string jsonFile,
-                       std::string midiFile, std::string midiJsonFile) {
+                       std::string midiFile, std::string midiJsonFile,
+                       std::string wavFile) {
     this->objFile      = objFile;
     this->jsonFile     = jsonFile;
     this->midiFile     = midiFile;
     this->midiJsonFile = midiJsonFile;
+    this->wavFile      = wavFile;
 }
 
 Controller::Controller(std::string midiFile, std::string midiJsonFile) {
@@ -32,16 +34,18 @@ void Controller::run() {
     DebugController::print("END PRECAlC");
 
     std::vector<Pluck> plucks = MidiManager::parseMidiFile(midiFile, midiJsonFile);
+    std::list<double>  sound;
 
     for (auto& pluck : plucks) {
         DebugController::print("INIT FRAME");
-        simMan->calculateFrame(pluck.force, pluck.timeForce, pluck.timeDur);
+        sound.splice(sound.end(), simMan->calculateFrame(pluck.force, pluck.timeForce, pluck.timeDur));
         DebugController::print("END FRAME");
     }
 
     DebugController::print("END SIMULATION");
     DebugController::print(*instrument);
 
+    WavManager::writeWav(wavFile, sound, 100);
     delete instrument;
     delete simMan;
 }
@@ -101,10 +105,6 @@ void Controller::writeJsonMidi(bool def) {
     notesDoc.AddMember(rapidjson::Value().SetString(member.c_str(), allocator), array, allocator);
     JsonManager::writeFile(midiJsonFile, notesDoc);
 }
-
-
-
-
 
 
 //

@@ -20,13 +20,13 @@ protected:
     void calculateImpulsForces(Eigen::VectorXd forcesF, double time);
 
     void calculateVibrations(double time);
+    Instrument *instrument;
 
 private:
     void cleanMatrix(Eigen::VectorXcd& mat, double precision = 0.000000000001);
     void calculateMass();
     void calculateSpring();
     void makeDiagonalSpring(int x, int y, int negative, double Cx, double Cy, double Cz);
-    Instrument *instrument;
 };
 
 #endif // ifndef STRINGSIMULATOR_HH
