@@ -12,10 +12,8 @@
 
 class MidiManager {
 public:
-    static std::vector<Pluck> parseMidiFile(std::string midiPath, std::string jsonFile);
+    static std::vector<Pluck> parseMidiFile(std::string midiPath);
     static std::map<std::string, Eigen::VectorXd> buildMapForces(std::string midiPath);
-private:
-    static std::map<std::string, Eigen::VectorXd> getMapForces(std::string jsonFIle);
 };
 
 #endif // ifndef MIDIMANAGER_HH

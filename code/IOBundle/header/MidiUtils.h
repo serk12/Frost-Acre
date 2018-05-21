@@ -4,11 +4,10 @@
 #include <Eigen/Dense>
 
 struct Pluck {
-    Eigen::VectorXd force;
-    float           timeForce;
-    float           timeDur;
-    float           timeStart;
-    int             note;
+    float timeForce;
+    float timeDur;
+    float timeStart;
+    int   note;
 };
 
 #endif // ifndef MIDIUTILS_HH

@@ -38,6 +38,8 @@ private:
     std::string midiFile;
     std::string midiJsonFile;
     std::string wavFile;
+    std::map<int, Eigen::VectorXd> notes;
+    std::map<int, Eigen::VectorXd> getMapForces(std::string jsonFIle);
 };
 
 #endif // ifndef CONTROLLER_HH
