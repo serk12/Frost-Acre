@@ -46,7 +46,11 @@ void Controller::run() {
     DebugController::print("END SIMULATION");
     DebugController::print(*instrument);
 
+<<<<<<< HEAD
     WavManager::writeWav(wavFile, sound);
+=======
+    WavManager::writeWav(wavFile, sound, 100000000);
+>>>>>>> 217d16eb6b699e79c9a63f775a90fc796b0f09c7
     delete instrument;
     delete simMan;
 }
