@@ -4,7 +4,7 @@
 #include <iostream>
 #include <fstream>
 #include <math.h>
-#include <list>
+#include <vector>
 
 class WavManager {
 private:
@@ -16,17 +16,17 @@ private:
         return outs;
     }
 public:
-    static void writeWav(const std::string& pathFile, const std::list<double>& sound) {
+    static void writeWav(const std::string& pathFile, const std::vector<double>& sound, int sampleRate) {
         std::ofstream file(pathFile, std::ios::binary);
         // Write the file headers
         file << "RIFF----WAVEfmt ";
-        write_word(file,     16, 4); // no extension data
-        write_word(file,      1, 2); // PCM - integer samples
-        write_word(file,      2, 2); //  channels
-        write_word(file,  44000, 4); // samples per second (Hz)
-        write_word(file, 176400, 4); // (SampleRate * BitsXSample * Channels)/ 8
-        write_word(file,      4, 2); // data block (2[channels] integer sample)
-        write_word(file,     16, 2); // number of bits per sample (n*8)
+        write_word(file, 16, 4);             // no extension data
+        write_word(file, 1, 2);              // PCM - integer samples
+        write_word(file, 2, 2);              // channels
+        write_word(file, sampleRate, 4);     // samples per second (Hz)
+        write_word(file, sampleRate * 4, 4); // SampleRate*BitsRate * Channels/8
+        write_word(file, 4, 2);              // data block 2[channels]int sample
+        write_word(file, 16, 2);             // number of bits per sample (n*8)
 
         // Write the data chunk header
         size_t data_chunk_pos = file.tellp();
@@ -36,7 +36,7 @@ public:
         for (double s : sound) {
             if (fabs(s) > max and !std::isinf(s) and !std::isnan(s)) max = fabs(s);
         }
-        double scale = 2147483647.0 / max;
+        double scale = 2147483647.0 * 0.9 / max;
 
         // Write the audio samples
         for (double s : sound) {

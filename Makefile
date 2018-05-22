@@ -15,7 +15,7 @@ BASE = $(foreach f, $(SRCS), $(notdir $(basename $(f))))
 OBJECTS = $(foreach f, $(BASE), $(BUILD_DIR)/$(f).o)
 
 # PHONY converts all "file conversor" to simple commands
-.PHONY: all clean test run midi
+.PHONY: all clean test testMem run midi
 
 all: $(BUILD_DIR)/$(TARGET)
 
@@ -26,7 +26,10 @@ run: $(BUILD_DIR)/$(TARGET)
 	$(BUILD_DIR)/$(TARGET)
 
 test: $(BUILD_DIR)/$(TARGET)
-	$(BUILD_DIR)/$(TARGET) "./test/obj/simpleForm/simpleForm.obj" "./test/json/wood.json" "./test/midis/allNotes.mid" "./test/jsonMidi/14def.json" "./test/wav/sound.wav"
+	$(BUILD_DIR)/$(TARGET) "./test/obj/simpleForm/simpleForm.obj" "./test/json/wood.json" "./test/midis/moonlight_sonata.mid" "./test/jsonMidi/14def.json" "./test/wav/sound.wav"
+
+testMem: $(BUILD_DIR)/$(TARGET)
+	valgrind --leak-check=yes $(BUILD_DIR)/$(TARGET) "./test/obj/simpleForm/simpleForm.obj" "./test/json/wood.json" "./test/midis/moonlight_sonata.mid" "./test/jsonMidi/14def.json" "./test/wav/sound.wav"
 
 midi: $(BUILD_DIR)/$(TARGET)
 	$(BUILD_DIR)/$(TARGET) "./test/midis/allNotes.mid" "./test/jsonMidi/14def.json"

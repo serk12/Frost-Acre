@@ -35,18 +35,29 @@ void Controller::run() {
 
     std::vector<Pluck> plucks = MidiManager::parseMidiFile(midiFile);
     this->getMapForces(midiJsonFile);
-    std::list<double> sound;
 
+    int max = 0;
+    for (auto& pluck : plucks) {
+        int durationSong = pluck.timeDur + pluck.timeStart;
+        if (durationSong > max) max = durationSong;
+    }
+    std::vector<double> sound(float(max) * SimulatorManager::SampleRate, 0);
+    int j = 0;
     for (auto& pluck : plucks) {
         DebugController::print("INIT FRAME");
-        sound.splice(sound.end(), simMan->calculateFrame(this->notes[pluck.note], pluck.timeForce, pluck.timeDur));
+        std::vector<double> notes;
+        simMan->calculateFrame(this->notes[pluck.note], pluck.timeForce, pluck.timeDur, notes);
+        for (unsigned int i = 0; i < notes.size(); ++i) {
+            sound[j + i] += notes[i];
+        }
+        j += notes.size();
         DebugController::print("END FRAME");
     }
 
     DebugController::print("END SIMULATION");
     DebugController::print(*instrument);
 
-    WavManager::writeWav(wavFile, sound);
+    WavManager::writeWav(wavFile, sound, (int)(SimulatorManager::SampleRate));
     delete instrument;
     delete simMan;
 }
@@ -55,7 +66,6 @@ void Controller::readJson() {
     rapidjson::Document doc = JsonManager::readFile(jsonFile);
     Material material(0);
     this->material.push_back(material);
-
     for (auto& val : doc[JsonManager::MATERIAL.c_str()].GetArray()) {
         Material material;
         material.thicknessT           = val[JsonManager::THICKNESST.c_str()].GetDouble();
@@ -78,7 +88,6 @@ void Controller::writeJsonMidi(bool def) {
 
     int size = 4 * 3; // #vectors  * #dimensions (3)
     Eigen::VectorXd f(size);
-
     if (def) {
         f.fill(100);
     }
@@ -90,7 +99,6 @@ void Controller::writeJsonMidi(bool def) {
     for (auto& note : notes) {
         if (!def) {
             double point;
-
             for (int i = 0; i < size; ++i) {
                 std::cin >> point;
                 f(i) = point;
@@ -110,7 +118,6 @@ std::vector<double> explode(const std::string& s, const char delim)
 {
     std::vector<double> result;
     std::istringstream  iss(s);
-
     for (std::string token; std::getline(iss, token, delim);)
     {
         result.push_back(std::stod(std::move(token)));
@@ -120,7 +127,6 @@ std::vector<double> explode(const std::string& s, const char delim)
 
 std::map<int, Eigen::VectorXd> Controller::getMapForces(std::string jsonFile) {
     rapidjson::Document doc = JsonManager::readFile(jsonFile);
-
     for (auto& val : doc[JsonManager::MAPNOTES.c_str()].GetObject()) {
         std::vector<double> forces = explode(val.value.GetString(), '\n');
         Eigen::VectorXd     f      = Eigen::VectorXd::Map(forces.data(), forces.size());

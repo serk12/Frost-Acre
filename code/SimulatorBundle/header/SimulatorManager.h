@@ -5,7 +5,7 @@
 
 #include "../../Controller/header/DebugController.h"
 #include "InstrumentSimulator.h"
-#include <list>
+#include <vector>
 
 class SimulatorManager : protected InstrumentSimulator {
 public:
@@ -13,7 +13,7 @@ public:
 
     SimulatorManager();
     void precallSimulator(Instrument& instrument);
-    std::list<double> calculateFrame(Eigen::VectorXd forcesF, double timeF, double timeV);
+    void calculateFrame(Eigen::VectorXd forcesF, double timeF, double timeV, std::vector<double>& notes);
 };
 
 #endif // ifndef SIMULATORMANAGER_HH
