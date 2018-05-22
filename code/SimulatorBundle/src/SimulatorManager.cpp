@@ -24,4 +24,8 @@ void SimulatorManager::calculateFrame(Eigen::VectorXd forcesF, double timeF, dou
         }
         notes[j++] = sum;
     }
+<<<<<<< HEAD
+=======
+    std::cout << j << " " << notes.size() << std::endl;
+>>>>>>> 674a76285404283281174596964b3c97aea857e3
 }
