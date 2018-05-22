@@ -6,6 +6,7 @@
 #include "../../Controller/header/DebugController.h"
 #include "InstrumentSimulator.h"
 #include <vector>
+#include <math.h>
 
 class SimulatorManager : protected InstrumentSimulator {
 public:

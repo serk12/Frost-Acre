@@ -2,7 +2,7 @@
 #define INSTRUMENT_HH
 
 #include <string>
-#include <cmath>
+#include <math.h>
 #include <vector>
 
 #include "EigenUtils.h"

@@ -26,11 +26,11 @@ void Controller::run() {
     this->readJson();
     DebugController::print("END PARSE");
 
-    SimulatorManager *simMan = new SimulatorManager();
-    Instrument *instrument   = new Instrument(material, model);
+    SimulatorManager simMan = SimulatorManager();
+    Instrument instrument   = Instrument(material, model);
 
     DebugController::print("INIT PRECAlC");
-    simMan->precallSimulator(*instrument);
+    simMan.precallSimulator(instrument);
     DebugController::print("END PRECAlC");
 
     std::vector<Pluck> plucks = MidiManager::parseMidiFile(midiFile);
@@ -45,8 +45,9 @@ void Controller::run() {
     int j = 0;
     for (auto& pluck : plucks) {
         DebugController::print("INIT FRAME");
+        // DebugController::print(pluck);
         std::vector<double> notes;
-        simMan->calculateFrame(this->notes[pluck.note], pluck.timeForce, pluck.timeDur, notes);
+        simMan.calculateFrame(this->notes[pluck.note], pluck.timeForce, pluck.timeDur, notes);
         for (unsigned int i = 0; i < notes.size(); ++i) {
             sound[j + i] += notes[i];
         }
@@ -54,12 +55,10 @@ void Controller::run() {
         DebugController::print("END FRAME");
     }
 
-    DebugController::print("END SIMULATION");
-    DebugController::print(*instrument);
-
+    DebugController::print("WRITING WAV");
     WavManager::writeWav(wavFile, sound, (int)(SimulatorManager::SampleRate));
-    delete instrument;
-    delete simMan;
+    DebugController::print("END SIMULATION");
+    DebugController::print(instrument);
 }
 
 void Controller::readJson() {

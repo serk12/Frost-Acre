@@ -145,6 +145,9 @@ void InstrumentSimulator::calculateVibrations(double time) {
             (cos(precalModel.negativeW(i).imag() * time)  + (sin(precalModel.negativeW(i).imag()  * time) * 1.i));
 
         precalModel.modesOfVibrationZ(i) = (Ci * eulerPowPos) + (CiConj * eulerPowNeg);
+        // std::cout << time << " \t" << (precalModel.negativeW(i).imag() *
+        // time) << " \t"  << cos(precalModel.negativeW(i).imag() * time) << "
+        // \t" << precalModel.modesOfVibrationZ(i) << " \t" << std::endl;
     }
 }
 

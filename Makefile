@@ -26,10 +26,10 @@ run: $(BUILD_DIR)/$(TARGET)
 	$(BUILD_DIR)/$(TARGET)
 
 test: $(BUILD_DIR)/$(TARGET)
-	$(BUILD_DIR)/$(TARGET) "./test/obj/simpleForm/simpleForm.obj" "./test/json/wood.json" "./test/midis/moonlight_sonata.mid" "./test/jsonMidi/14def.json" "./test/wav/sound.wav"
+	$(BUILD_DIR)/$(TARGET) "./test/obj/simpleForm/simpleForm.obj" "./test/json/wood.json" "./test/midis/2sec.mid" "./test/jsonMidi/14def.json" "./test/wav/sound.wav"
 
 testMem: $(BUILD_DIR)/$(TARGET)
-	valgrind --leak-check=yes $(BUILD_DIR)/$(TARGET) "./test/obj/simpleForm/simpleForm.obj" "./test/json/wood.json" "./test/midis/moonlight_sonata.mid" "./test/jsonMidi/14def.json" "./test/wav/sound.wav"
+	valgrind -v --leak-check=full --show-leak-kinds=all $(BUILD_DIR)/$(TARGET) "./test/obj/simpleForm/simpleForm.obj" "./test/json/wood.json" "./test/midis/2sec.mid" "./test/jsonMidi/14def.json" "./test/wav/sound.wav"
 
 midi: $(BUILD_DIR)/$(TARGET)
 	$(BUILD_DIR)/$(TARGET) "./test/midis/allNotes.mid" "./test/jsonMidi/14def.json"
