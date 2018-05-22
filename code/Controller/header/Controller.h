@@ -2,7 +2,6 @@
 #define CONTROLLER_HH
 
 #include <vector>
-#include <list>
 #include <sstream>
 
 #include "../../IOBundle/header/ObjManager.h"

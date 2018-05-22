@@ -1,6 +1,6 @@
 #include "../header/SimulatorManager.h"
 
-const double SimulatorManager::SampleRate =  1.0 / 44000.0;
+const double SimulatorManager::SampleRate = 44100.0;
 
 SimulatorManager::SimulatorManager() : InstrumentSimulator() {}
 
@@ -9,21 +9,20 @@ void SimulatorManager::precallSimulator(Instrument& instrument) {
     this->calculatePrecal();
 }
 
-std::list<double> SimulatorManager::calculateFrame(Eigen::VectorXd forcesF, double timeF, double timeV) {
+void SimulatorManager::calculateFrame(Eigen::VectorXd forcesF, double timeF, double timeV, std::vector<double>& notes) {
     this->calculateImpulsForces(forcesF, timeF);
-    std::list<double> note;
+    notes = std::vector<double>(timeV * SimulatorManager::SampleRate + 1, 0); int j = 0;
 
-    for (double t = 0; t < timeV; t +=  SimulatorManager::SampleRate) {
+    for (double t = 0; t < timeV; t += 1.0 / SimulatorManager::SampleRate) {
         this->calculateVibrations(t);
-        double sum = 0;
 
+        double sum = 0;
         for (int i = 0; i < instrument->precalModel.modesOfVibrationZ.size(); ++i) {
             double num = instrument->precalModel.modesOfVibrationZ(i).real();
 
             if (!std::isnan(num) and !std::isinf(num)) sum += num;
         }
-        note.push_back(sum);
+        notes[j++] = sum;
     }
-
-    return note;
+    std::cout << j << " " << notes.size() << std::endl;
 }
