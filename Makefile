@@ -17,7 +17,7 @@ OBJECTS = $(foreach f, $(BASE), $(BUILD_DIR)/$(f).o)
 # PHONY converts all "file conversor" to simple commands
 .PHONY: all clean test testMem run midi
 
-all: $(BUILD_DIR)/$(TARGET)
+all: midi test
 
 clean:
 	rm build/*

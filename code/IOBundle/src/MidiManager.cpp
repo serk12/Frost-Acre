@@ -2,20 +2,26 @@
 
 std::vector<Pluck> MidiManager::parseMidiFile(std::string midiPath) {
     smf::MidiFile midiFile;
-    midiFile.read(midiPath);  midiFile.joinTracks(); midiFile.doTimeAnalysis();
+    midiFile.read(midiPath); midiFile.sortTracks(); midiFile.doTimeAnalysis();
     std::vector<Pluck> v;
 
     for (int track = 0; track < midiFile.getTrackCount(); ++track) {
         Pluck pluck;
-
         for (int event = 0; event < midiFile[track].size(); ++event) {
-            if (midiFile[track][event].isNoteOn()) {
-                pluck.timeStart = midiFile[track][event].seconds;
-                // ToDo no es la mejor solucion el "+1" pero funciona
-                pluck.timeDur   = midiFile[track][event + 1].seconds - midiFile[track][event].seconds;
+            smf::MidiEvent midiEvent = midiFile.getEvent(track, event);
+            if (midiEvent.isNoteOn()) {
+                pluck.timeStart = midiEvent.seconds;
+                pluck.timeDur   = -1;
                 pluck.timeForce = 0.001;
-                pluck.note      = midiFile[track][event].getKeyNumber();
+                pluck.note      = midiEvent.getKeyNumber();
                 v.push_back(pluck);
+            }
+            if (midiEvent.isNoteOff()) {
+                for (unsigned int i = 0; i < v.size(); ++i) {
+                    if (v[i].note == midiEvent.getKeyNumber() and v[i].timeDur == -1) {
+                        v[i].timeDur = midiEvent.seconds - v[i].timeStart;
+                    }
+                }
             }
         }
     }
@@ -24,7 +30,7 @@ std::vector<Pluck> MidiManager::parseMidiFile(std::string midiPath) {
 
 std::map<std::string, Eigen::VectorXd> MidiManager::buildMapForces(std::string midiPath) {
     smf::MidiFile midiFile;
-    midiFile.read(midiPath); midiFile.joinTracks(); midiFile.doTimeAnalysis();
+    midiFile.read(midiPath); midiFile.sortTracks(); midiFile.doTimeAnalysis();
     std::map<std::string, Eigen::VectorXd> notes;
 
     for (int track = 0; track < midiFile.getTrackCount(); ++track) {

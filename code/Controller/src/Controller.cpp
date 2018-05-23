@@ -36,22 +36,22 @@ void Controller::run() {
     std::vector<Pluck> plucks = MidiManager::parseMidiFile(midiFile);
     this->getMapForces(midiJsonFile);
 
-    int max = 0;
+    float max = 0;
     for (auto& pluck : plucks) {
-        int durationSong = pluck.timeDur + pluck.timeStart;
-        if (durationSong > max) max = durationSong;
+        int endNote = pluck.timeDur + pluck.timeStart;
+        if (endNote > max) max = endNote;
     }
-    std::vector<double> sound(float(max) * SimulatorManager::SampleRate, 0);
-    int j = 0;
+    std::vector<double> sound(ceil(max * SimulatorManager::SampleRate), 0);
+
     for (auto& pluck : plucks) {
         DebugController::print("INIT FRAME");
-        // DebugController::print(pluck);
+        DebugController::print(pluck);
         std::vector<double> notes;
         simMan.calculateFrame(this->notes[pluck.note], pluck.timeForce, pluck.timeDur, notes);
+        int j = ceil(pluck.timeStart * SimulatorManager::SampleRate);
         for (unsigned int i = 0; i < notes.size(); ++i) {
             sound[j + i] += notes[i];
         }
-        j += notes.size();
         DebugController::print("END FRAME");
     }
 
@@ -88,7 +88,7 @@ void Controller::writeJsonMidi(bool def) {
     int size = 4 * 3; // #vectors  * #dimensions (3)
     Eigen::VectorXd f(size);
     if (def) {
-        f.fill(100);
+        f.fill(1);
     }
     else {
         std::cin >> size;

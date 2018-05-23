@@ -11,18 +11,17 @@ void SimulatorManager::precallSimulator(Instrument& instrument) {
 
 void SimulatorManager::calculateFrame(Eigen::VectorXd forcesF, double timeF, double timeV, std::vector<double>& notes) {
     this->calculateImpulsForces(forcesF, timeF);
-    int size = timeV * SimulatorManager::SampleRate;
-    notes = std::vector<double>(size, 0); int j = 0;
-    if (notes.size() > 1) {
-        for (double t = 0; t < timeV; t += 1.0 / SimulatorManager::SampleRate) {
-            this->calculateVibrations(t);
+    unsigned int size = ceil(timeV * SimulatorManager::SampleRate);
+    notes = std::vector<double>(size, 0); double t = 0;
+    for (unsigned int j = 0; j < size; ++j) {
+        t += 1.0 / SimulatorManager::SampleRate;
+        this->calculateVibrations(t);
 
-            double sum = 0;
-            for (int i = 0; i < instrument->precalModel.modesOfVibrationZ.size(); ++i) {
-                double num = instrument->precalModel.modesOfVibrationZ(i).real();
-                if (!std::isnan(num) and !std::isinf(num)) sum += num;
-            }
-            notes[j++] = sum;
+        double sum = 0;
+        for (int i = 0; i < instrument->precalModel.modesOfVibrationZ.size(); ++i) {
+            double num = instrument->precalModel.modesOfVibrationZ(i).real();
+            if (!std::isnan(num) and !std::isinf(num)) sum += num;
         }
+        notes[j] = sum;
     }
 }
