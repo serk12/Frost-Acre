@@ -2769,7 +2769,8 @@ int MidiFile::extractMidiData(std::istream& input, std::vector<uchar>& array,
             if (!runningQ) {
                 byte = readByte(input); // meta type
 
-                if (!status()) return m_rwstatus; array.push_back(byte);
+                if (!status()) return m_rwstatus;
+                array.push_back(byte);
             }
             ulong length = 0;
             uchar byte1  = 0;
@@ -2778,22 +2779,26 @@ int MidiFile::extractMidiData(std::istream& input, std::vector<uchar>& array,
             uchar byte4  = 0;
             byte1 = readByte(input);
 
-            if (!status()) return m_rwstatus; array.push_back(byte1);
+            if (!status()) return m_rwstatus;
+            array.push_back(byte1);
 
             if (byte1 >= 0x80) {
                 byte2 = readByte(input);
 
-                if (!status()) return m_rwstatus; array.push_back(byte2);
+                if (!status()) return m_rwstatus;
+                array.push_back(byte2);
 
                 if (byte2 > 0x80) {
                     byte3 = readByte(input);
 
-                    if (!status()) return m_rwstatus; array.push_back(byte3);
+                    if (!status()) return m_rwstatus;
+                    array.push_back(byte3);
 
                     if (byte3 >= 0x80) {
                         byte4 = readByte(input);
 
-                        if (!status()) return m_rwstatus; array.push_back(byte4);
+                        if (!status()) return m_rwstatus;
+                        array.push_back(byte4);
 
                         if (byte4 >= 0x80) {
                             std::cerr << "Error: cannot handle large VLVs" << std::endl;
@@ -2820,7 +2825,8 @@ int MidiFile::extractMidiData(std::istream& input, std::vector<uchar>& array,
             for (int j = 0; j < (int)length; j++) {
                 byte = readByte(input); // meta type
 
-                if (!status()) return m_rwstatus; array.push_back(byte);
+                if (!status()) return m_rwstatus;
+                array.push_back(byte);
             }
             break;
         }
@@ -2844,7 +2850,8 @@ int MidiFile::extractMidiData(std::istream& input, std::vector<uchar>& array,
             for (int i = 0; i < length; i++) {
                 byte = readByte(input);
 
-                if (!status()) return m_rwstatus; array.push_back(byte);
+                if (!status()) return m_rwstatus;
+                array.push_back(byte);
             }
             break;
         }

@@ -1575,7 +1575,9 @@ void MidiMessage::setMetaContent(const std::string& content) {
 
         if (byte3) push_back(byte3);
 
-        if (byte2) push_back(byte2); push_back(byte1);
+        if (byte2) push_back(byte2);
+
+        push_back(byte1);
     }
     std::copy(content.begin(), content.end(), std::back_inserter(*this));
 }
