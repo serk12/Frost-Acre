@@ -20,8 +20,12 @@ void SimulatorManager::calculateFrame(Eigen::VectorXd forcesF, double timeF, dou
         double sum = 0;
         for (int i = 0; i < instrument->precalModel.modesOfVibrationZ.size(); ++i) {
             double num = instrument->precalModel.modesOfVibrationZ(i).real();
-            if (!std::isnan(num) and !std::isinf(num)) sum += num;
+            if (!std::isnan(num) and !std::isinf(num)) {
+                sum += num;
+                // std::cout << num << " ";
+            }
         }
+        // std::cout << std::endl << sum << std::endl;
         notes[j] = sum;
     }
 }

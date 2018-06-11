@@ -9,4 +9,4 @@ int main(int argc, char *argv[]) {
         Controller controller(argv[1], argv[2]);
         controller.writeJsonMidi();
     }
-}
+} 

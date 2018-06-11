@@ -7,7 +7,7 @@ RESULTS_DEFAULT = results.txt
 BUILD_DIR = build
 # Compiler. On non-gnu systems you may want to change this
 CC = g++
-EXTRAFLAGS = -std=gnu++14 -Wall -Wextra
+EXTRAFLAGS = -std=gnu++14 -Wall -Wextra -fopenmp
 
 # All source files. Header files are detected automatically
 SRCS = $(shell find ./code/ ./lib/midifile -name \*.cpp)
@@ -26,7 +26,7 @@ run: $(BUILD_DIR)/$(TARGET)
 	$(BUILD_DIR)/$(TARGET)
 
 test: $(BUILD_DIR)/$(TARGET)
-	$(BUILD_DIR)/$(TARGET) "./data/obj/simpleForm/simpleForm.obj" "./data/json/wood.json" "./data/midis/2sec.mid" "./data/jsonMidi/14def.json" "./data/wav/sound.wav"
+	$(BUILD_DIR)/$(TARGET) "./data/obj/simpleForm/simpleForm.obj" "./data/json/wood.json" "./data/midis/2sec.mid" "./data/jsonMidi/14def.json" "./data/wav/sound.wav" 
 
 testMem: $(BUILD_DIR)/$(TARGET)
 	valgrind -v --leak-check=full --show-leak-kinds=all $(BUILD_DIR)/$(TARGET) "./data/obj/simpleForm/simpleForm.obj" "./data/json/wood.json" "./data/midis/2sec.mid" "./data/jsonMidi/14def.json" "./data/wav/sound.wav"

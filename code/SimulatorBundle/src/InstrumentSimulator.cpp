@@ -117,7 +117,6 @@ void InstrumentSimulator::calcuateDoformationModeling() {
 void InstrumentSimulator::calculateImpulsForces(Eigen::VectorXd forcesF, double time) {
     PrecalModel& precalModel = instrument->precalModel;
     Eigen::MatrixXd forcesG  = precalModel.solver.eigenvectors().inverse().real() * forcesF;
-
     for (int i = 0; i < precalModel.gainOfModeC.size(); ++i) {
         std::complex<double> diff         = precalModel.possitiveW(i) - precalModel.negativeW(i);
         std::complex<double> poweredEuler =
