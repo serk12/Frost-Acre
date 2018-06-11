@@ -53,7 +53,7 @@ void Controller::run() {
             sound[j + i] += notes[i];
             // std::cout << sound[j + i] << std::endl;
         }
-        DebugController::print("END FRAME"); break;
+        DebugController::print("END FRAME");
     }
 
     DebugController::print("WRITING WAV");
@@ -90,9 +90,7 @@ void Controller::writeJsonMidi(bool def) {
     Eigen::VectorXd f(size);
     if (def) {
         f.fill(0);
-        f(0) = 1;
-        f(1) = 1;
-        f(2) = 1;
+        f(4) = 1;
         // for (double i = 0 * 3; i < size; ++i) {
         //     f(i) = (1.0 / sqrt(2 * 3.1415)) * pow(std::exp(1.0), -((i / (96.0 * 3.0 - size * 3.0)) * (i / (96.0 * 3.0 - size * 3.0)) / 2.0));
         // }

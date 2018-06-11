@@ -3,13 +3,14 @@
 
 #include <iostream>
 #include <fstream>
+#include <limits>
 #include <math.h>
 #include <vector>
 
 class WavManager {
 private:
-    template<typename Word> static
-    std::ostream& write_word(std::ostream& outs, Word value, unsigned size = sizeof(Word)) {
+    template<typename T> static
+    std::ostream& write_word(std::ostream& outs, T value, unsigned size = sizeof(T)) {
         for (; size; --size, value >>= 8) {
             outs.put(static_cast<char>(value & 0xFF));
         }
@@ -31,17 +32,20 @@ public:
         // Write the data chunk header
         size_t data_chunk_pos = file.tellp();
         file << "data----"; // (chunk size to be filled in later)
-        double max = 0;
+        double max = -std::numeric_limits<double>::infinity();
+        double min = std::numeric_limits<double>::infinity();
 
         for (double s : sound) {
-            if (fabs(s) > max and !std::isinf(s) and !std::isnan(s)) max = fabs(s);
-        }
-        double scale = 2147483647.0 * 0.9 / max;
+            if (s > max and !std::isinf(s) and !std::isnan(s)) max = s;
+            if (s < min and !std::isinf(s) and !std::isnan(s)) min = s;
 
+        }
+        double scale  = pow(2, 14);
         // Write the audio samples
         for (double s : sound) {
-            write_word(file, (int)(s * scale), 2);
-            write_word(file, (int)(s * scale), 2);
+            double normalized = (s)/(max - min);
+            write_word(file, (int)(normalized*scale), 2);
+            write_word(file, (int)(normalized*scale), 2);
         }
 
         // (We'll need the final file size to fix the chunk sizes above)
