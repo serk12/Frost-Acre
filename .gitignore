@@ -32,3 +32,7 @@ build/**
 *.exe
 *.out
 *.app
+
+# data files
+*.wav
+*.mtl
