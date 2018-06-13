@@ -26,7 +26,7 @@ run: $(BUILD_DIR)/$(TARGET)
 	$(BUILD_DIR)/$(TARGET)
 
 test: $(BUILD_DIR)/$(TARGET)
-	$(BUILD_DIR)/$(TARGET) "./data/obj/simpleForm/simpleForm.obj" "./data/json/wood.json" "./data/midis/2sec.mid" "./data/jsonMidi/14def.json" "./data/wav/sound.wav" 
+	$(BUILD_DIR)/$(TARGET) "./data/obj/simpleForm/simpleForm.obj" "./data/json/wood.json" "./data/midis/2notes.mid" "./data/jsonMidi/14def.json" "./data/wav/sound2.wav" 
 
 testMem: $(BUILD_DIR)/$(TARGET)
 	valgrind -v --leak-check=full --show-leak-kinds=all $(BUILD_DIR)/$(TARGET) "./data/obj/simpleForm/simpleForm.obj" "./data/json/wood.json" "./data/midis/2sec.mid" "./data/jsonMidi/14def.json" "./data/wav/sound.wav"
