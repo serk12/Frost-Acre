@@ -1,3 +1,13 @@
+# exe vars
+
+OBJ3D = "./data/obj/simpleForm.obj"
+JSON = "./data/json/wood.json"
+MIDI =  "./data/midis/2notes.mid"
+JSONNOTE = "./data/jsonMidi/14def.json"
+WAVOUT =  "./data/wav/sound2.wav"
+
+
+
 # Libraries on which TARGET depends
 LIBS = lib/eigen/
 # Name of the executable
@@ -26,13 +36,13 @@ run: $(BUILD_DIR)/$(TARGET)
 	$(BUILD_DIR)/$(TARGET)
 
 test: $(BUILD_DIR)/$(TARGET)
-	$(BUILD_DIR)/$(TARGET) "./data/obj/simpleForm/simpleForm.obj" "./data/json/wood.json" "./data/midis/2notes.mid" "./data/jsonMidi/14def.json" "./data/wav/sound2.wav" 
+	$(BUILD_DIR)/$(TARGET) $(OBJ3D) $(JSON) $(MIDI) $(JSONNOTE) $(WAVOUT)
 
 testMem: $(BUILD_DIR)/$(TARGET)
-	valgrind -v --leak-check=full --show-leak-kinds=all $(BUILD_DIR)/$(TARGET) "./data/obj/simpleForm/simpleForm.obj" "./data/json/wood.json" "./data/midis/2sec.mid" "./data/jsonMidi/14def.json" "./data/wav/sound.wav"
+	valgrind -v --leak-check=full --show-leak-kinds=all $(BUILD_DIR)/$(TARGET) $(OBJ3D) $(JSON) $(MIDI) $(JSONNOTE) $(WAVOUT)
 
 midi: $(BUILD_DIR)/$(TARGET)
-	$(BUILD_DIR)/$(TARGET) "./data/midis/allNotes.mid" "./data/jsonMidi/14def.json"
+	$(BUILD_DIR)/$(TARGET) $(MIDI) $(JSONNOTE)
 
 # SECONDEXPANSION works like first strike ($) and second strike ($$) on magic
 .SECONDEXPANSION:

@@ -36,3 +36,4 @@ build/**
 # data files
 *.wav
 *.mtl
+./data/jsonMidi/*.json
