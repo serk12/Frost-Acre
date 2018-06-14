@@ -17,6 +17,10 @@ Instrument::Instrument(std::vector<Material>& material, Model3D& model3d)
     }
 }
 
+Instrument::Instrument(Instrument& inst) : Instrument(inst.material, inst.model3d){
+    this->material = inst.material;
+}
+
 void Instrument::setModel3D(Model3D& model3d) {
     this->model3d = model3d;
 }

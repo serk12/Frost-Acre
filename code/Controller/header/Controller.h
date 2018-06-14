@@ -1,6 +1,7 @@
 #ifndef CONTROLLER_HH
 #define CONTROLLER_HH
 
+#include <omp.h>
 #include <vector>
 #include <sstream>
 

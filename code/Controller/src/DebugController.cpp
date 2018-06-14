@@ -12,8 +12,7 @@ void DebugController::print(const PrecalModel& precalModel) {
     std::cout << "springK: "           << std::endl << precalModel.springK           << std::endl;
     std::cout << "possitiveW: "        << std::endl << precalModel.possitiveW        << std::endl;
     std::cout << "negativeW: "         << std::endl << precalModel.negativeW         << std::endl;
-    std::cout << "gainOfModeC: "       << std::endl << precalModel.gainOfModeC       << std::endl;
-    std::cout << "modesOfVibrationZ: " << std::endl << precalModel.modesOfVibrationZ << std::endl << std::endl;
+    std::cout << "gainOfModeC: "       << std::endl << precalModel.gainOfModeC       << std::endl << std::endl;
 }
 
 void DebugController::print(const Material& material) {

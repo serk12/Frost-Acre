@@ -2,7 +2,7 @@
 
 OBJ3D = "./data/obj/simpleForm.obj"
 JSON = "./data/json/wood.json"
-MIDI =  "./data/midis/2notes.mid"
+MIDI =  "./data/midis/2sec.mid"
 JSONNOTE = "./data/jsonMidi/14def.json"
 WAVOUT =  "./data/wav/sound2.wav"
 

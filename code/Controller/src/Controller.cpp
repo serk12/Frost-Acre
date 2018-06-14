@@ -27,7 +27,7 @@ void Controller::run() {
     DebugController::print("END PARSE");
 
     SimulatorManager simMan = SimulatorManager();
-    Instrument instrument   = Instrument(material, model);
+    Instrument instrument(material, model);
 
     DebugController::print("INIT PRECALC");
     simMan.precallSimulator(instrument);
@@ -38,20 +38,28 @@ void Controller::run() {
 
     float max = 0;
     for (auto& pluck : plucks) {
-        int endNote = pluck.timeDur + pluck.timeStart;
+        float endNote = pluck.timeDur + pluck.timeStart;
         if (endNote > max) max = endNote;
     }
     std::vector<double> sound(ceil(max * SimulatorManager::SampleRate), 0);
 
-    for (auto& pluck : plucks) {
+    for (unsigned int i = 0; i < plucks.size(); ++i) {
+        auto& pluck = plucks[i];
         DebugController::print("INIT FRAME");
         DebugController::print(pluck);
         std::vector<double> notes;
+        // omp_set_num_threads(1);
         simMan.calculateFrame(this->notes[pluck.note], pluck.timeForce, pluck.timeDur, notes);
-        int j = ceil(pluck.timeStart * SimulatorManager::SampleRate);
-        for (unsigned int i = 0; i < notes.size(); ++i) {
-            sound[j + i] += notes[i];
-            // std::cout << sound[j + i] << std::endl;
+        const int j = ceil(pluck.timeStart * SimulatorManager::SampleRate);
+
+        #pragma omp parallel shared(sound, notes)
+        {
+            #pragma omp for
+            for (unsigned int i = 0; i < notes.size(); ++i) {
+                int x = j + i;
+                #pragma omp atomic
+                sound[x] += notes[i];
+            }
         }
         DebugController::print("END FRAME");
     }
@@ -91,6 +99,8 @@ void Controller::writeJsonMidi(bool def) {
     if (def) {
         f.fill(0);
         f(0) = 1;
+        f(1) = 1;
+        f(2) = 1;
         // for (double i = 0 * 3; i < size; ++i) {
         //     f(i) = (1.0 / sqrt(2 * 3.1415)) * pow(std::exp(1.0), -((i / (96.0 * 3.0 - size * 3.0)) * (i / (96.0 * 3.0 - size * 3.0)) / 2.0));
         // }

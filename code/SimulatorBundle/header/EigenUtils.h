@@ -18,8 +18,7 @@ struct PrecalModel {
     Eigen::VectorXcd possitiveW;        // calcuateDoformationModeling
     Eigen::VectorXcd negativeW;
 
-    Eigen::VectorXcd modesOfVibrationZ; // calculateImpulsForces
-    Eigen::VectorXcd gainOfModeC;
+    Eigen::VectorXcd gainOfModeC;  // calculateImpulsForces
 
     Eigen::EigenSolver<Eigen::MatrixXd> solver;
 };
