@@ -15,7 +15,7 @@ struct PrecalModel {
     Eigen::VectorXd massM;              // calculateMassSpringSystem
     Eigen::MatrixXd springK;
 
-    Eigen::VectorXcd possitiveW;        // calcuateDoformationModeling
+    Eigen::VectorXcd possitiveW;        // calcuateDeformationModeling
     Eigen::VectorXcd negativeW;
 
     Eigen::VectorXcd gainOfModeC;  // calculateImpulsForces

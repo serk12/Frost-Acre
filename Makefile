@@ -1,8 +1,8 @@
 # exe vars
 
-OBJ3D = "./data/obj/simpleForm.obj"
+OBJ3D = "./data/obj/E4_30.obj"
 JSON = "./data/json/wood.json"
-MIDI =  "./data/midis/2sec.mid"
+MIDI =  "./data/midis/2notes.mid"
 JSONNOTE = "./data/jsonMidi/14def.json"
 WAVOUT =  "./data/wav/sound2.wav"
 

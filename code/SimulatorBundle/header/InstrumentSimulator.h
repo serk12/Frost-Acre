@@ -15,7 +15,7 @@ public:
 protected:
     void calculatePrecal();
     void calculateMassSpringSystem();
-    void calcuateDoformationModeling();
+    void calcuateDeformationModeling();
 
     void calculateImpulsForces(Eigen::VectorXd forcesF, double time);
 
@@ -23,7 +23,7 @@ protected:
     Instrument *instrument;
 
 private:
-    void cleanMatrix(Eigen::VectorXcd& mat, double precision = 0.000000000001);
+    void cleanMatrix(Eigen::VectorXcd& mat, const double precision = 0.000000000001);
     void calculateMass();
     void calculateSpring();
     void makeDiagonalSpring(int x, int y, int negative, double Cx, double Cy, double Cz);
