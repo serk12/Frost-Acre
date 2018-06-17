@@ -24,7 +24,7 @@ public:
                std::string midiFile, std::string midiJsonFile,
                std::string wavFile);
 
-    Controller(std::string midiFile, std::string midiJsonFile);
+    Controller(std::string objFile, std::string midiFile, std::string midiJsonFile);
 
     void run();
     void writeJsonMidi(bool def = true);

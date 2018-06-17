@@ -12,7 +12,8 @@ Controller::Controller(std::string objFile, std::string jsonFile,
     this->wavFile      = wavFile;
 }
 
-Controller::Controller(std::string midiFile, std::string midiJsonFile) {
+Controller::Controller(std::string objFile, std::string midiFile, std::string midiJsonFile) {
+    this->objFile      = objFile;
     this->midiFile     = midiFile;
     this->midiJsonFile = midiJsonFile;
 }
@@ -26,6 +27,7 @@ void Controller::run() {
     this->readJson();
     DebugController::print("END PARSE");
 
+    // omp_set_num_threads(1);
     SimulatorManager simMan = SimulatorManager();
     Instrument instrument(material, model);
 
@@ -48,7 +50,7 @@ void Controller::run() {
         DebugController::print("INIT FRAME");
         DebugController::print(pluck);
         std::vector<double> notes;
-        // omp_set_num_threads(1);
+
         simMan.calculateFrame(this->notes[pluck.note], pluck.timeForce, pluck.timeDur, notes);
         const int j = ceil(pluck.timeStart * SimulatorManager::SampleRate);
 
@@ -94,7 +96,8 @@ void Controller::writeJsonMidi(bool def) {
     rapidjson::Document::AllocatorType& allocator = notesDoc.GetAllocator();
     rapidjson::Value array(rapidjson::kObjectType);
 
-    int size = 4 * 3; // #vectors  * #dimensions (3)
+    Model3D model = ObjManager::readObj(objFile);
+    int size = model.vertex.size();
     Eigen::VectorXd f(size);
     if (def) {
         f.fill(0);

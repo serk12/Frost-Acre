@@ -98,9 +98,7 @@ void InstrumentSimulator::calculateMassSpringSystem() {
 void InstrumentSimulator::calcuateDeformationModeling() {
     PrecalModel& precalModel = instrument->precalModel;
 
-    Eigen::initParallel();
-    omp_set_num_threads(1);
-    Eigen::setNbThreads(1);
+    Eigen::initParallel(); //Dont work....
     precalModel.solver = Eigen::EigenSolver<Eigen::MatrixXd>(precalModel.springK, true);
     const Eigen::MatrixXcd& eigenvaluesD = precalModel.solver.eigenvalues();
 
@@ -129,7 +127,8 @@ void InstrumentSimulator::calcuateDeformationModeling() {
 
 void InstrumentSimulator::calculateImpulsForces(Eigen::VectorXd forcesF, double time) {
     PrecalModel& precalModel = instrument->precalModel;
-    Eigen::MatrixXd forcesG  = precalModel.solver.eigenvectors().inverse().real() * forcesF;
+    const Eigen::MatrixXd forcesG  = precalModel.solver.eigenvectors().inverse().real() * forcesF;
+
     #pragma omp parallel shared(precalModel)
     {
         #pragma omp for

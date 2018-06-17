@@ -2,9 +2,9 @@
 
 OBJ3D = "./data/obj/E4_30.obj"
 JSON = "./data/json/wood.json"
-MIDI =  "./data/midis/2notes.mid"
+MIDI =  "./data/midis/2sec.mid"
 JSONNOTE = "./data/jsonMidi/14def.json"
-WAVOUT =  "./data/wav/sound2.wav"
+WAVOUT =  "./data/wav/sound.wav"
 
 
 
@@ -42,7 +42,7 @@ testMem: $(BUILD_DIR)/$(TARGET)
 	valgrind -v --leak-check=full --show-leak-kinds=all $(BUILD_DIR)/$(TARGET) $(OBJ3D) $(JSON) $(MIDI) $(JSONNOTE) $(WAVOUT)
 
 midi: $(BUILD_DIR)/$(TARGET)
-	$(BUILD_DIR)/$(TARGET) $(MIDI) $(JSONNOTE)
+	$(BUILD_DIR)/$(TARGET) $(OBJ3D) $(MIDI) $(JSONNOTE)
 
 # SECONDEXPANSION works like first strike ($) and second strike ($$) on magic
 .SECONDEXPANSION:
