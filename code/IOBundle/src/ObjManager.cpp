@@ -15,29 +15,30 @@ std::vector<std::string> ObjManager::splitString(const std::string& s, const cha
     return result;
 }
 
-Model3D ObjManager::readObj(std::string filepath) {
-    std::ifstream infile(filepath);
-    std::string   line;
-    std::queue<std::vector<std::string> > edgesQueue;
-    std::queue<std::vector<std::string> > vertexQueue;
-
+void ObjManager::getVectorsAndEdgesFromObj(std::ifstream& infile,
+                                           EdgeQueue& edgesQueue,
+                                           VertexQueue& vertexQueue) {
+    std::string line;
     while (std::getline(infile, line)) {
+        // v -1.000000 -1.000000 -1.000000
         if (line[0] == 'v' and line[1] == ' ') {
             std::vector<std::string> vertex = ObjManager::splitString(line, ' ');
             vertexQueue.push(vertex);
         }
-        else if (line[0] == 'f') {
+        else if (line[0] == 'f') { // f 1/1/1 2/2/1 3/3/1  v/t/vn
             std::vector<std::string> faces = ObjManager::splitString(line, ' ');
-            std::vector<std::string> face(3);
+            std::vector<std::pair<std::string, std::string> > faceAndText(3);
 
             for (int i = 1; i < 4; ++i) {
                 std::vector<std::string> triangle = ObjManager::splitString(faces[i], '/');
-                face[i - 1] = triangle[0];
+                faceAndText[i - 1] = std::make_pair(triangle[0], triangle[1]);
             }
-            edgesQueue.push(face);
+            edgesQueue.push(faceAndText);
         }
     }
+}
 
+Model3D ObjManager::createMoldel(EdgeQueue& edgesQueue, VertexQueue& vertexQueue) {
     Model3D model3d;
     model3d.vertex = Eigen::MatrixXd(3, vertexQueue.size());
     model3d.edge   = Eigen::MatrixXi::Zero(vertexQueue.size(), vertexQueue.size());
@@ -54,22 +55,41 @@ Model3D ObjManager::readObj(std::string filepath) {
     i = 0;
 
     while (!edgesQueue.empty()) {
-        int el1 = std::stod(edgesQueue.front()[0]) - 1;
-        int el2 = std::stod(edgesQueue.front()[1]) - 1;
-        int el3 = std::stod(edgesQueue.front()[2]) - 1;
+        int el1 = std::stod(edgesQueue.front()[0].first) - 1;
+        int el2 = std::stod(edgesQueue.front()[1].first) - 1;
+        int el3 = std::stod(edgesQueue.front()[2].first) - 1;
 
-        model3d.edge(el1, el3) = 1;
-        model3d.edge(el3, el1) = 1;
+        int te1 = std::stod(edgesQueue.front()[0].second);
+        int te2 = std::stod(edgesQueue.front()[1].second);
+        int te3 = std::stod(edgesQueue.front()[2].second);
 
-        model3d.edge(el1, el2) = 1;
-        model3d.edge(el2, el1) = 1;
+        model3d.edge(el1, el3) = te1;
+        model3d.edge(el3, el1) = te3;
 
-        model3d.edge(el2, el3) = 1;
-        model3d.edge(el3, el2) = 1;
+        model3d.edge(el1, el2) = te1;
+        model3d.edge(el2, el1) = te2;
+
+        model3d.edge(el2, el3) = te2;
+        model3d.edge(el3, el2) = te3;
+
+
+        model3d.edge(el1, el1) = te1;
+        model3d.edge(el2, el2) = te2;
+        model3d.edge(el3, el3) = te3;
 
         edgesQueue.pop();
         ++i;
     }
 
     return model3d;
+}
+
+Model3D ObjManager::readObj(std::string filepath) {
+    std::ifstream infile(filepath);
+
+    EdgeQueue   edgesQueue;
+    VertexQueue vertexQueue;
+
+    ObjManager::getVectorsAndEdgesFromObj(infile, edgesQueue, vertexQueue);
+    return ObjManager::createMoldel(edgesQueue, vertexQueue);
 }

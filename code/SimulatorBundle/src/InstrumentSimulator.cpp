@@ -97,20 +97,23 @@ void InstrumentSimulator::calculateMassSpringSystem() {
 
 void InstrumentSimulator::calcuateDeformationModeling() {
     PrecalModel& precalModel = instrument->precalModel;
+    Model3D    & model3d     = instrument->model3d;
 
-    Eigen::initParallel(); //Dont work....
+    Eigen::initParallel(); // Dont work....
     precalModel.solver = Eigen::EigenSolver<Eigen::MatrixXd>(precalModel.springK, true);
     const Eigen::MatrixXcd& eigenvaluesD = precalModel.solver.eigenvalues();
 
     precalModel.possitiveW = Eigen::VectorXcd(eigenvaluesD.size());
     precalModel.negativeW  = Eigen::VectorXcd(eigenvaluesD.size());
-    const double fluidDampingV        =  instrument->material[1].fluidDampingV;
-    const double viscoelasticDampingN =  instrument->material[1].viscoelasticDampingN;
 
     #pragma omp parallel shared(precalModel)
     {
         #pragma omp for
         for (int i = 0; i < eigenvaluesD.size(); ++i) {
+            int id                      = model3d.edge(i / 3, i / 3);
+            double fluidDampingV        = instrument->material[id].fluidDampingV;
+            double viscoelasticDampingN = instrument->material[id].viscoelasticDampingN;
+
             double aux                = fluidDampingV * eigenvaluesD(i).real() + viscoelasticDampingN;
             std::complex<double> root = std::sqrt(std::complex<double>(aux * aux - 4. * eigenvaluesD(i).real(), 0));
 
@@ -126,8 +129,8 @@ void InstrumentSimulator::calcuateDeformationModeling() {
 }
 
 void InstrumentSimulator::calculateImpulsForces(Eigen::VectorXd forcesF, double time) {
-    PrecalModel& precalModel = instrument->precalModel;
-    const Eigen::MatrixXd forcesG  = precalModel.solver.eigenvectors().inverse().real() * forcesF;
+    PrecalModel& precalModel      = instrument->precalModel;
+    const Eigen::MatrixXd forcesG = precalModel.solver.eigenvectors().inverse().real() * forcesF;
 
     #pragma omp parallel shared(precalModel)
     {
@@ -137,7 +140,7 @@ void InstrumentSimulator::calculateImpulsForces(Eigen::VectorXd forcesF, double 
             std::complex<double> poweredEuler =
                 std::pow(instrument->euler, precalModel.possitiveW(i).real()) *
                 (cos(precalModel.possitiveW(i).imag() * time) +
-                (sin(precalModel.possitiveW(i).imag() * time) * 1.i));
+                 (sin(precalModel.possitiveW(i).imag() * time) * 1.i));
             precalModel.gainOfModeC(i) =
                 precalModel.gainOfModeC(i) + (forcesG(i) / (precalModel.massM(i / 3) * diff * poweredEuler));
         }
@@ -160,10 +163,10 @@ double InstrumentSimulator::calculateVibrations(double time) {
             (cos(precalModel.negativeW(i).imag() * time)  + (sin(precalModel.negativeW(i).imag()  * time) * 1.i));
 
         double num = ((Ci     * precalModel.possitiveW(i) * eulerPowPos) +
-                     (CiConj * precalModel.negativeW(i)  * eulerPowNeg)).real();
+                      (CiConj * precalModel.negativeW(i)  * eulerPowNeg)).real();
         if (!std::isnan(num) and !std::isinf(num)) {
             freq += num;
-       }
+        }
     }
     return freq;
 }
