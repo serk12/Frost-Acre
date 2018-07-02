@@ -31,6 +31,7 @@ void ObjManager::getVectorsAndEdgesFromObj(std::ifstream& infile,
 
             for (int i = 1; i < 4; ++i) {
                 std::vector<std::string> triangle = ObjManager::splitString(faces[i], '/');
+                if (triangle[1] == "") triangle[1] = "1";
                 faceAndText[i - 1] = std::make_pair(triangle[0], triangle[1]);
             }
             edgesQueue.push(faceAndText);
