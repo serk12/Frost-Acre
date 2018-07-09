@@ -1,6 +1,6 @@
 # exe vars
 
-OBJ3D = "./data/obj/2obj.obj"
+OBJ3D = "./data/obj/cube.obj"
 JSON = "./data/json/wood.json"
 MIDI =  "./data/midis/2sec.mid"
 JSONNOTE = "./data/jsonMidi/14def.json"

@@ -33,6 +33,9 @@ void Controller::run() {
 
     DebugController::print("INIT PRECALC");
     simMan.precallSimulator(instrument);
+    simMan.setGamma(0.123);
+    simMan.setRadiusPickup(0.123);
+    simMan.setPickupPossition(0.123, 0.123, 0.123);
     DebugController::print("END PRECALC");
 
     std::vector<Pluck> plucks = MidiManager::parseMidiFile(midiFile);

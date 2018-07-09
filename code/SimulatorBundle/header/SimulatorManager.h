@@ -5,16 +5,18 @@
 
 #include "../../Controller/header/DebugController.h"
 #include "InstrumentSimulator.h"
+#include "PickupSimulator.h"
+
 #include <vector>
 #include <math.h>
 
-class SimulatorManager : protected InstrumentSimulator {
+class SimulatorManager : public InstrumentSimulator, public PickupSimulator {
 public:
     static const double SampleRate;
 
     SimulatorManager();
     void precallSimulator(Instrument& instrument);
-    void calculateFrame(Eigen::VectorXd forcesF, double timeF, double timeV, std::vector<double>& notes);
+    void calculateFrame(Eigen::VectorXd forcesF, double timeF, double timeV, std::vector<double>& waves);
 };
 
 #endif // ifndef SIMULATORMANAGER_HH

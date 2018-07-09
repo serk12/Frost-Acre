@@ -148,10 +148,10 @@ void InstrumentSimulator::calculateImpulsForces(Eigen::VectorXd forcesF, double 
     cleanMatrix(precalModel.gainOfModeC);
 }
 
-double InstrumentSimulator::calculateVibrations(double time) {
-    PrecalModel& precalModel = instrument->precalModel;
+void InstrumentSimulator::calculateVibrations(double time, Eigen::VectorXd& modesOfVibrationZ) {
+    const PrecalModel& precalModel = instrument->precalModel;
+    modesOfVibrationZ = Eigen::VectorXd(precalModel.gainOfModeC.size());
 
-    double freq = 0;
     for (int i = 0; i < precalModel.gainOfModeC.size(); ++i) {
         std::complex<double> Ci          = precalModel.gainOfModeC(i);
         std::complex<double> CiConj      = std::conj(precalModel.gainOfModeC(i));
@@ -162,13 +162,9 @@ double InstrumentSimulator::calculateVibrations(double time) {
             std::pow(instrument->euler, precalModel.negativeW(i).real()) *
             (cos(precalModel.negativeW(i).imag() * time)  + (sin(precalModel.negativeW(i).imag()  * time) * 1.i));
 
-        double num = ((Ci     * precalModel.possitiveW(i) * eulerPowPos) +
-                      (CiConj * precalModel.negativeW(i)  * eulerPowNeg)).real();
-        if (!std::isnan(num) and !std::isinf(num)) {
-            freq += num;
-        }
+        modesOfVibrationZ[i] = ((Ci     * precalModel.possitiveW(i) * eulerPowPos) +
+                                (CiConj * precalModel.negativeW(i)  * eulerPowNeg)).real();
     }
-    return freq;
 }
 
 void InstrumentSimulator::cleanMatrix(Eigen::VectorXcd& mat, const double precision) {

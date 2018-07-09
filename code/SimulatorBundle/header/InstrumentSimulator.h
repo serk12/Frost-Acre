@@ -19,7 +19,7 @@ protected:
 
     void calculateImpulsForces(Eigen::VectorXd forcesF, double time);
 
-    double calculateVibrations(double time);
+    void calculateVibrations(double time, Eigen::VectorXd& modesOfVibrationZ);
     Instrument *instrument;
 
 private:

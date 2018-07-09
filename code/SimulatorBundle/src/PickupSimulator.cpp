@@ -9,7 +9,7 @@ double PickupSimulator::magneticFieldModul(double phi, double rho) {
     return (gamma * rho) / (x * x + y * y + z * z);
 }
 
-double PickupSimulator::calculate(double xWire, double yWire, double zWire) {
+double PickupSimulator::calculatePickup(double xWire, double yWire, double zWire) {
     this->xWire = xWire; this->yWire = yWire; this->zWire = zWire;
     double result = 0;
     for (double phi = 0; phi <= 2 * M_PI; phi += 2 * M_PI / PickupSimulator::n) {
