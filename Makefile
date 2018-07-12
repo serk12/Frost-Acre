@@ -39,6 +39,7 @@ test: $(BUILD_DIR)/$(TARGET)
 	$(BUILD_DIR)/$(TARGET) $(OBJ3D) $(JSON) $(MIDI) $(JSONNOTE) $(WAVOUT)
 
 testMem: $(BUILD_DIR)/$(TARGET)
+	valgrind -v --leak-check=full --show-leak-kinds=all $(BUILD_DIR)/$(TARGET) $(OBJ3D) $(MIDI) $(JSONNOTE)
 	valgrind -v --leak-check=full --show-leak-kinds=all $(BUILD_DIR)/$(TARGET) $(OBJ3D) $(JSON) $(MIDI) $(JSONNOTE) $(WAVOUT)
 
 midi: $(BUILD_DIR)/$(TARGET)

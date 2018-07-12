@@ -3,43 +3,22 @@
 
 #include <omp.h>
 #include <vector>
-#include <sstream>
 
-#include "../../IOBundle/header/ObjManager.h"
-#include "../../IOBundle/header/WavManager.h"
-#include "../../IOBundle/header/JsonManager.h"
-#include "../../IOBundle/header/MidiManager.h"
+#include "ControllerIO.h"
+#include "DebugController.h"
 
 #include "../../SimulatorBundle/header/Instrument.h"
 #include "../../SimulatorBundle/header/SimulatorManager.h"
 
-#include "DebugController.h"
-
-#include "../../../lib/rapidjson/document.h"
-
-class Controller {
+class Controller : public ControllerIO {
 public:
     Controller();
+    Controller(std::string objFile, std::string midiFile,
+               std::string midiJsonFile);
     Controller(std::string objFile, std::string jsonFile,
                std::string midiFile, std::string midiJsonFile,
                std::string wavFile);
-
-    Controller(std::string objFile, std::string midiFile, std::string midiJsonFile);
-
     void run();
-    void writeJsonMidi(bool def = true);
-private:
-    void readJson();
-    void readJsonMidi();
-
-    std::vector<Material> material;
-    std::string objFile;
-    std::string jsonFile;
-    std::string midiFile;
-    std::string midiJsonFile;
-    std::string wavFile;
-    std::map<int, Eigen::VectorXd> notes;
-    std::map<int, Eigen::VectorXd> getMapForces(std::string jsonFIle);
 };
 
 #endif // ifndef CONTROLLER_HH

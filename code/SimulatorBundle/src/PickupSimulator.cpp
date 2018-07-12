@@ -6,7 +6,7 @@ double PickupSimulator::magneticFieldModul(double phi, double rho) {
     double x = xWire - (xPickup - rho * std::cos(phi));
     double y = yWire - (yPickup - rho * std::sin(phi));
     double z = zWire - zPickup;
-    return (gamma * rho) / (x * x + y * y + z * z);
+    return (magneticChargeDensity * rho) / (x * x + y * y + z * z);
 }
 
 double PickupSimulator::calculatePickup(double xWire, double yWire, double zWire) {
@@ -25,8 +25,8 @@ double PickupSimulator::calculatePickup(double xWire, double yWire, double zWire
 }
 
 
-void PickupSimulator::setGamma(double gamma) {
-    this->gamma = gamma;
+void PickupSimulator::setMagneticChargeDensity(double magneticChargeDensity) {
+    this->magneticChargeDensity = magneticChargeDensity;
 }
 void PickupSimulator::setRadiusPickup(double radiusPickup) {
     this->radiusPickup = radiusPickup;

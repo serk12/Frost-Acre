@@ -7,6 +7,9 @@ const std::string JsonManager::DENSITYD             = "densityD";
 const std::string JsonManager::FLUIDDAMPINGV        = "fluidDampingV";
 const std::string JsonManager::VISCOELASTICDAMPINGN = "viscoelasticDampingN";
 const std::string JsonManager::MAPNOTES             = "map";
+const std::string MAGNETICCHARGEDENSITY             = "MagneticChargeDensity";
+const std::string RADIUSPICKUP                      = "radiusPickup";
+const std::string PICKUPPOSSITION                   = "pickupPossition";
 
 rapidjson::Document JsonManager::readFile(std::string path) {
     FILE *file = fopen(path.c_str(), "rb");

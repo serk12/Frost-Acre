@@ -23,6 +23,10 @@ public:
     static const std::string VISCOELASTICDAMPINGN;
     static const std::string MAPNOTES;
 
+    static const std::string MAGNETICCHARGEDENSITY;
+    static const std::string RADIUSPICKUP;
+    static const std::string PICKUPPOSSITION;
+
     static rapidjson::Document readFile(std::string path);
     static void writeFile(std::string path, rapidjson::Document& document);
 };
