@@ -62,9 +62,8 @@ void ControllerIO::writeJsonMidi(bool def) {
     JsonManager::writeFile(midiJsonFile, notesDoc);
 }
 
-std::vector<Material> ControllerIO::readJson() {
-    rapidjson::Document   doc = JsonManager::readFile(jsonFile);
-    std::vector<Material> materials;
+void ControllerIO::readJson(Pickup& pickup, std::vector<Material>& materials) {
+    rapidjson::Document doc = JsonManager::readFile(jsonFile);
 
     Material material(0);
     materials.push_back(material);
@@ -78,7 +77,15 @@ std::vector<Material> ControllerIO::readJson() {
 
         materials.push_back(material);
     }
-    return materials;
+    // for (auto& val : doc[JsonManager::PICKUP.c_str()].GetObject()) {
+    //     std::cout << val.name.GetDouble
+    // }
+
+    pickup.radiusPickup          = doc[JsonManager::PICKUP.c_str()][JsonManager::RADIUSPICKUP.c_str()].GetDouble();
+    pickup.pickupPossitionX      = doc[JsonManager::PICKUP.c_str()][JsonManager::PICKUPPOSSITION.c_str()][0].GetDouble();
+    pickup.pickupPossitionY      = doc[JsonManager::PICKUP.c_str()][JsonManager::PICKUPPOSSITION.c_str()][1].GetDouble();
+    pickup.pickupPossitionZ      = doc[JsonManager::PICKUP.c_str()][JsonManager::PICKUPPOSSITION.c_str()][2].GetDouble();
+    pickup.magneticChargeDensity = doc[JsonManager::PICKUP.c_str()][JsonManager::MAGNETICCHARGEDENSITY.c_str()].GetDouble();
 }
 
 std::vector<double> explode(const std::string& s, const char delim)

@@ -15,27 +15,26 @@ void Controller::run() {
 
     DebugController::print("INIT RUN");
     DebugController::print("INIT PARSE");
-    Model3D model                  = this->readObj();
-    std::vector<Material> material = this->readJson();
+    Pickup pickup;
+    std::vector<Material> material;
+    this->readJson(pickup, material);
+    Model3D model = this->readObj();
     Instrument instrument(material, model);
     DebugController::print("END PARSE");
-
 
     DebugController::print("INIT PRECALC");
     SimulatorManager simMan = SimulatorManager();
     simMan.precallSimulator(instrument);
-    simMan.setMagneticChargeDensity(0.123);
-    simMan.setRadiusPickup(0.123);
-    simMan.setPickupPossition(0.123, 0.123, 0.123);
+    simMan.setRadiusPickup(pickup.radiusPickup);
+    simMan.setMagneticChargeDensity(pickup.magneticChargeDensity);
+    simMan.setPickupPossition(pickup.pickupPossitionX, pickup.pickupPossitionY, pickup.pickupPossitionZ);
     DebugController::print("END PRECALC");
 
+    DebugController::print("INIT FRAMES");
     std::vector<Pluck> plucks            = this->parseMidiFile();
     std::map<int, Eigen::VectorXd> notes = this->getMapForces();
-
-
-    DebugController::print("INIT FRAME");
-    sound = runSimulator(plucks, notes, simMan);
-    DebugController::print("END FRAME");
+    std::vector<double> sound            = runSimulator(plucks, notes, simMan);
+    DebugController::print("END FRAMES");
 
     DebugController::print("WRITING WAV");
     this->writeWav(sound, (int)(SimulatorManager::SampleRate));
@@ -52,13 +51,13 @@ std::vector<double> Controller::runSimulator(const std::vector<Pluck>& plucks,
         float endNote = pluck.timeDur + pluck.timeStart;
         if (endNote > max) max = endNote;
     }
-    sound(ceil(max * SimulatorManager::SampleRate), 0);
+    std::vector<double> sound(ceil(max * SimulatorManager::SampleRate), 0);
 
     for (unsigned int i = 0; i < plucks.size(); ++i) {
         auto& pluck = plucks[i];
         std::vector<double> waves;
 
-        simMan.calculateFrame(notes[pluck.note], pluck.timeForce, pluck.timeDur, waves);
+        simMan.calculateFrame(notes.at(pluck.note), pluck.timeForce, pluck.timeDur, waves);
         const int j = ceil(pluck.timeStart * SimulatorManager::SampleRate);
 
         #pragma omp parallel shared(sound, waves)

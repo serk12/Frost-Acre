@@ -23,6 +23,14 @@ struct Material {
         viscoelasticDampingN(k) {}
 };
 
+struct Pickup {
+    double magneticChargeDensity;
+    double radiusPickup;
+    double pickupPossitionX;
+    double pickupPossitionY;
+    double pickupPossitionZ;
+};
+
 class Instrument {
 public:
     Instrument();

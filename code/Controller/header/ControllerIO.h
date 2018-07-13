@@ -10,6 +10,8 @@
 
 #include "../../../lib/rapidjson/document.h"
 
+#include "DebugController.h"
+
 class ControllerIO {
 public:
     ControllerIO();
@@ -20,7 +22,7 @@ public:
                  std::string wavFile);
 
     Model3D readObj();
-    std::vector<Material> readJson();
+    void readJson(Pickup& pickup, std::vector<Material>& materials);
     std::vector<Pluck> parseMidiFile();
     std::map<int, Eigen::VectorXd> getMapForces();
 

@@ -19,6 +19,9 @@ public:
                std::string midiFile, std::string midiJsonFile,
                std::string wavFile);
     void run();
+    std::vector<double> runSimulator(const std::vector<Pluck>& plucks,
+                                     const std::map<int, Eigen::VectorXd>& notes,
+                                     SimulatorManager& simMan);
 };
 
 #endif // ifndef CONTROLLER_HH

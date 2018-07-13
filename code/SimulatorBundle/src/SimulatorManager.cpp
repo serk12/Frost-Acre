@@ -9,7 +9,7 @@ void SimulatorManager::precallSimulator(Instrument& instrument) {
     this->calculatePrecal();
 }
 
-void SimulatorManager::calculateFrame(Eigen::VectorXd forcesF, double timeF, double timeV, std::vector<double>& waves) {
+void SimulatorManager::calculateFrame(const Eigen::VectorXd& forcesF, double timeF, double timeV, std::vector<double>& waves) {
     this->calculateImpulsForces(forcesF, timeF);
     unsigned int size = ceil(timeV * SimulatorManager::SampleRate);
     waves = std::vector<double>(size, 0); double t = 0;

@@ -1,15 +1,16 @@
 #include "../header/JsonManager.h"
 
-const std::string JsonManager::MATERIAL             = "Material";
-const std::string JsonManager::YOUNGSMODULUSY       = "youngsModulusY";
-const std::string JsonManager::THICKNESST           = "thicknessT";
-const std::string JsonManager::DENSITYD             = "densityD";
-const std::string JsonManager::FLUIDDAMPINGV        = "fluidDampingV";
-const std::string JsonManager::VISCOELASTICDAMPINGN = "viscoelasticDampingN";
-const std::string JsonManager::MAPNOTES             = "map";
-const std::string MAGNETICCHARGEDENSITY             = "MagneticChargeDensity";
-const std::string RADIUSPICKUP                      = "radiusPickup";
-const std::string PICKUPPOSSITION                   = "pickupPossition";
+const std::string JsonManager::MATERIAL              = "Material";
+const std::string JsonManager::YOUNGSMODULUSY        = "youngsModulusY";
+const std::string JsonManager::THICKNESST            = "thicknessT";
+const std::string JsonManager::DENSITYD              = "densityD";
+const std::string JsonManager::FLUIDDAMPINGV         = "fluidDampingV";
+const std::string JsonManager::VISCOELASTICDAMPINGN  = "viscoelasticDampingN";
+const std::string JsonManager::MAPNOTES              = "map";
+const std::string JsonManager::MAGNETICCHARGEDENSITY = "MagneticChargeDensity";
+const std::string JsonManager::RADIUSPICKUP          = "radiusPickup";
+const std::string JsonManager::PICKUPPOSSITION       = "pickupPossition";
+const std::string JsonManager::PICKUP                = "Pickup";
 
 rapidjson::Document JsonManager::readFile(std::string path) {
     FILE *file = fopen(path.c_str(), "rb");

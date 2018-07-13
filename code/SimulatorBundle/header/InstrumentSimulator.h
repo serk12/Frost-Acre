@@ -17,8 +17,7 @@ protected:
     void calculateMassSpringSystem();
     void calcuateDeformationModeling();
 
-    void calculateImpulsForces(Eigen::VectorXd forcesF, double time);
-
+    void calculateImpulsForces(const Eigen::VectorXd& forcesF, double time);
     void calculateVibrations(double time, Eigen::VectorXd& modesOfVibrationZ);
     Instrument *instrument;
 

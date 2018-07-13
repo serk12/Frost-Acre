@@ -1,9 +1,16 @@
-{"Material":[
+{
+    "Material":[
     {
         "thicknessT":0.3,
         "youngsModulusY":3990000000,
         "densityD":2700,
         "fluidDampingV":0.000001,
         "viscoelasticDampingN":10
+    }],
+    "Pickup": {
+        "magneticChargeDensity" : 0.123,
+        "radiusPickup" : 0.123,
+        "pickupPossition" : [0.123, 0.123, 0.123]
     }
-]}
+
+}

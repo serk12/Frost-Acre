@@ -26,6 +26,7 @@ public:
     static const std::string MAGNETICCHARGEDENSITY;
     static const std::string RADIUSPICKUP;
     static const std::string PICKUPPOSSITION;
+    static const std::string PICKUP;
 
     static rapidjson::Document readFile(std::string path);
     static void writeFile(std::string path, rapidjson::Document& document);
