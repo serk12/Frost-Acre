@@ -17,7 +17,8 @@ void Controller::run() {
     DebugController::print("INIT PARSE");
     Pickup pickup;
     std::vector<Material> material;
-    this->readJson(pickup, material);
+    Resonance resonance;
+    this->readJson(pickup, material, resonance);
     Model3D model = this->readObj();
     Instrument instrument(material, model);
     DebugController::print("END PARSE");
@@ -25,9 +26,14 @@ void Controller::run() {
     DebugController::print("INIT PRECALC");
     SimulatorManager simMan = SimulatorManager();
     simMan.precallSimulator(instrument);
+
     simMan.setRadiusPickup(pickup.radiusPickup);
     simMan.setMagneticChargeDensity(pickup.magneticChargeDensity);
     simMan.setPickupPossition(pickup.pickupPossitionX, pickup.pickupPossitionY, pickup.pickupPossitionZ);
+
+    simMan.setScalarForceLost(resonance.scalarForceLost);
+    simMan.setConstantForceLost(resonance.constantForceLost);
+
     DebugController::print("END PRECALC");
 
     DebugController::print("INIT FRAMES");

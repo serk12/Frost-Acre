@@ -17,7 +17,7 @@ Instrument::Instrument(std::vector<Material>& material, Model3D& model3d)
     }
 }
 
-Instrument::Instrument(Instrument& inst) : Instrument(inst.material, inst.model3d){
+Instrument::Instrument(Instrument& inst) : Instrument(inst.material, inst.model3d) {
     this->material = inst.material;
 }
 
@@ -35,4 +35,8 @@ void Instrument::setPrecalModel(PrecalModel& precalModel) {
 
 void Instrument::getPrecalModel(PrecalModel& precalModel) {
     precalModel = this->precalModel;
+}
+
+bool Instrument::isNumerical(double num) {
+    return not std::isnan(num) and not std::isinf(num);
 }

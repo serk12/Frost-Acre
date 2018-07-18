@@ -28,6 +28,10 @@ public:
     static const std::string PICKUPPOSSITION;
     static const std::string PICKUP;
 
+    static const std::string RESONANCE;
+    static const std::string SCALARFORCELOST;
+    static const std::string CONSTANTFORCELOST;
+
     static rapidjson::Document readFile(std::string path);
     static void writeFile(std::string path, rapidjson::Document& document);
 };

@@ -38,14 +38,13 @@ public:
         for (double s : sound) {
             if (s > max and !std::isinf(s) and !std::isnan(s)) max = s;
             if (s < min and !std::isinf(s) and !std::isnan(s)) min = s;
-
         }
-        double scale  = pow(2, 14);
+        double scale = pow(2, 14);
         // Write the audio samples
         for (double s : sound) {
-            double normalized = (s)/(max - min);
-            write_word(file, (int)(normalized*scale), 2);
-            write_word(file, (int)(normalized*scale), 2);
+            double normalized = (s) / (max - min);
+            write_word(file, (int)(normalized * scale), 2);
+            write_word(file, (int)(normalized * scale), 2);
         }
 
         // (We'll need the final file size to fix the chunk sizes above)

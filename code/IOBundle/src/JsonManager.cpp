@@ -11,6 +11,9 @@ const std::string JsonManager::MAGNETICCHARGEDENSITY = "MagneticChargeDensity";
 const std::string JsonManager::RADIUSPICKUP          = "radiusPickup";
 const std::string JsonManager::PICKUPPOSSITION       = "pickupPossition";
 const std::string JsonManager::PICKUP                = "Pickup";
+const std::string JsonManager::RESONANCE             = "Resonance";
+const std::string JsonManager::SCALARFORCELOST       = "scalarForceLost";
+const std::string JsonManager::CONSTANTFORCELOST     = "constantForceLost";
 
 rapidjson::Document JsonManager::readFile(std::string path) {
     FILE *file = fopen(path.c_str(), "rb");

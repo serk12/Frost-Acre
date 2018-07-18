@@ -12,13 +12,13 @@ struct Model3D {
 };
 
 struct PrecalModel {
-    Eigen::VectorXd massM;              // calculateMassSpringSystem
+    Eigen::VectorXd massM;        // calculateMassSpringSystem
     Eigen::MatrixXd springK;
 
-    Eigen::VectorXcd possitiveW;        // calcuateDeformationModeling
+    Eigen::VectorXcd possitiveW;  // calcuateDeformationModeling
     Eigen::VectorXcd negativeW;
 
-    Eigen::VectorXcd gainOfModeC;  // calculateImpulsForces
+    Eigen::VectorXcd gainOfModeC; // calculateImpulsForces
 
     Eigen::EigenSolver<Eigen::MatrixXd> solver;
 };

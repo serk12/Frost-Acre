@@ -24,13 +24,14 @@ double PickupSimulator::calculatePickup(double xWire, double yWire, double zWire
     return result;
 }
 
-
 void PickupSimulator::setMagneticChargeDensity(double magneticChargeDensity) {
     this->magneticChargeDensity = magneticChargeDensity;
 }
+
 void PickupSimulator::setRadiusPickup(double radiusPickup) {
     this->radiusPickup = radiusPickup;
 }
+
 void PickupSimulator::setPickupPossition(double xPickup, double yPickup, double zPickup) {
     this->xPickup = xPickup;
     this->yPickup = yPickup;

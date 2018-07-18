@@ -22,7 +22,7 @@ public:
                  std::string wavFile);
 
     Model3D readObj();
-    void readJson(Pickup& pickup, std::vector<Material>& materials);
+    void readJson(Pickup& pickup, std::vector<Material>& materials, Resonance& resonance);
     std::vector<Pluck> parseMidiFile();
     std::map<int, Eigen::VectorXd> getMapForces();
 

@@ -18,7 +18,7 @@ protected:
     double calculatePickup(double xWire, double yWire, double zWire);
 
 private:
-    double magneticFieldModul(double phi, double rho);
+    inline double magneticFieldModul(double phi, double rho);
 };
 
 #endif // ifndef PICKUPSIMULATOR_HH

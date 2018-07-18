@@ -31,6 +31,11 @@ struct Pickup {
     double pickupPossitionZ;
 };
 
+struct Resonance {
+    double scalarForceLost;
+    double constantForceLost;
+};
+
 class Instrument {
 public:
     Instrument();
@@ -44,11 +49,15 @@ public:
     void setPrecalModel(PrecalModel& precalModel);
     void getPrecalModel(PrecalModel& precalModel);
 
+    static bool isNumerical(double num);
+
     double euler;
 
     Model3D model3d;
     PrecalModel precalModel;
     std::vector<Material> material;
+
+    Eigen::VectorXd resonanceRatio;
 private:
 };
 
