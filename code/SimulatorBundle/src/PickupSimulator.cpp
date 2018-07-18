@@ -12,11 +12,11 @@ double PickupSimulator::magneticFieldModul(double phi, double rho) {
 double PickupSimulator::calculatePickup(double xWire, double yWire, double zWire) {
     this->xWire = xWire; this->yWire = yWire; this->zWire = zWire;
     double result = 0;
-    for (double phi = 0; phi <= 2 * M_PI; phi += 2 * M_PI / PickupSimulator::n) {
-        for (double rho = 0; rho <= radiusPickup; rho +=  radiusPickup / PickupSimulator::n) {
+    for (double phi = 0, i = 0; i < PickupSimulator::n; phi += 2 * M_PI / PickupSimulator::n, ++i) {
+        for (double rho = 0, j = 0; j < PickupSimulator::n; rho +=  radiusPickup / PickupSimulator::n, ++j) {
             double field = magneticFieldModul(phi, rho);
-            if ((phi != 0) || ((phi +      2 * M_PI / PickupSimulator::n) >     2 * M_PI)) field *= 2;
-            if ((rho != 0) || ((rho +  radiusPickup / PickupSimulator::n) > radiusPickup)) field *= 2;
+            if ((j != 0) || (j != PickupSimulator::n - 1)) field *= 2;
+            if ((i != 0) || (i != PickupSimulator::n - 1)) field *= 2;
             field  *= ((2 * M_PI / PickupSimulator::n) * (radiusPickup / PickupSimulator::n)) / 4;
             result += field;
         }
