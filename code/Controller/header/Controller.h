@@ -13,12 +13,12 @@
 class Controller : public ControllerIO {
 public:
     Controller();
-    Controller(std::string objFile, std::string midiFile,
-               std::string midiJsonFile);
-    Controller(std::string objFile, std::string jsonFile,
+    Controller(std::string objFile, std::string infoFile, std::string writeFile);
+    Controller(std::string prerenderFile, std::string jsonFile,
                std::string midiFile, std::string midiJsonFile,
                std::string wavFile);
     void run();
+    void calcPrerender();
 
 private:
     inline std::vector<double> runSimulator(const std::vector<Pluck>& plucks,

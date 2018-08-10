@@ -21,6 +21,8 @@ struct PrecalModel {
     Eigen::VectorXcd gainOfModeC; // calculateImpulsForces
 
     Eigen::EigenSolver<Eigen::MatrixXd> solver;
+    Eigen::MatrixXcd                    eigenvalues;
+    Eigen::MatrixXcd                    eigenvectors;
 };
 
 #endif // ifndef EIGENUTILS_HH

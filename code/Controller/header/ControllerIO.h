@@ -15,9 +15,9 @@
 class ControllerIO {
 public:
     ControllerIO();
-    ControllerIO(std::string objFile, std::string midiFile,
-                 std::string midiJsonFile);
-    ControllerIO(std::string objFile, std::string jsonFile,
+    ControllerIO(std::string objFile, std::string infoFile,
+                 std::string writeFile);
+    ControllerIO(std::string prerenderFile, std::string jsonFile,
                  std::string midiFile, std::string midiJsonFile,
                  std::string wavFile);
 
@@ -26,6 +26,8 @@ public:
     std::vector<Pluck> parseMidiFile();
     std::map<int, Eigen::VectorXd> getMapForces();
 
+    void writePrerender(Instrument& instrument);
+    Instrument readPrerender();
     void writeJsonMidi(bool def = true);
     void writeWav(std::vector<double> sound, int sampleRate);
 
@@ -34,6 +36,7 @@ private:
     std::string jsonFile;
     std::string midiFile;
     std::string midiJsonFile;
+    std::string prerenderFile;
     std::string wavFile;
 };
 

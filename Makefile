@@ -1,5 +1,5 @@
 # exe vars
-
+PRERENDERDOC = "./data/prerender/pre.json"
 OBJ3D = "./data/obj/2obj.obj"
 JSON = "./data/json/wood.json"
 MIDI =  "./data/midis/2sec.mid"
@@ -25,9 +25,9 @@ BASE = $(foreach f, $(SRCS), $(notdir $(basename $(f))))
 OBJECTS = $(foreach f, $(BASE), $(BUILD_DIR)/$(f).o)
 
 # PHONY converts all "file conversor" to simple commands
-.PHONY: all clean test testMem run midi
+.PHONY: all clean test testMem run midi prerender
 
-all: midi test
+all: midi prerender test
 
 clean:
 	rm build/*
@@ -36,7 +36,7 @@ run: $(BUILD_DIR)/$(TARGET)
 	$(BUILD_DIR)/$(TARGET)
 
 test: $(BUILD_DIR)/$(TARGET)
-	$(BUILD_DIR)/$(TARGET) $(OBJ3D) $(JSON) $(MIDI) $(JSONNOTE) $(WAVOUT)
+	$(BUILD_DIR)/$(TARGET) $(PRERENDERDOC) $(JSON) $(MIDI) $(JSONNOTE) $(WAVOUT)
 
 testMem: $(BUILD_DIR)/$(TARGET)
 	valgrind -v --leak-check=full --show-leak-kinds=all $(BUILD_DIR)/$(TARGET) $(OBJ3D) $(MIDI) $(JSONNOTE)
@@ -45,6 +45,8 @@ testMem: $(BUILD_DIR)/$(TARGET)
 midi: $(BUILD_DIR)/$(TARGET)
 	$(BUILD_DIR)/$(TARGET) $(OBJ3D) $(MIDI) $(JSONNOTE)
 
+prerender: $(BUILD_DIR)/$(TARGET)
+	$(BUILD_DIR)/$(TARGET) $(OBJ3D) $(JSON) $(PRERENDERDOC)
 # SECONDEXPANSION works like first strike ($) and second strike ($$) on magic
 .SECONDEXPANSION:
 %.o: $$(shell find ./code/ ./lib/midifile -name  $$(notdir $$(basename $$@)).cpp)

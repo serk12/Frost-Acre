@@ -37,3 +37,4 @@ build/**
 *.wav
 *.mtl
 data/jsonMidi/*.json
+data/prerender/*.json

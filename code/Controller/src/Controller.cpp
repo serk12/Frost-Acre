@@ -2,13 +2,29 @@
 
 Controller::Controller() {}
 
-Controller::Controller(std::string objFile, std::string jsonFile,
+Controller::Controller(std::string prerenderFile, std::string jsonFile,
                        std::string midiFile, std::string midiJsonFile,
                        std::string wavFile)
-    : ControllerIO(objFile, jsonFile, midiFile, midiJsonFile, wavFile) {}
+    : ControllerIO(prerenderFile, jsonFile, midiFile, midiJsonFile, wavFile) {}
 
-Controller::Controller(std::string objFile, std::string midiFile, std::string midiJsonFile)
-    : ControllerIO(objFile, midiFile, midiJsonFile) {}
+Controller::Controller(std::string objFile, std::string infoFile, std::string writeFile)
+    : ControllerIO(objFile, infoFile, writeFile) {}
+
+void Controller::calcPrerender() {
+    Pickup pickup;
+    std::vector<Material> material;
+    Resonance resonance;
+    this->readJson(pickup, material, resonance);
+    Model3D model = this->readObj();
+    Instrument instrument(material, model);
+
+    DebugController::print("INIT PRECALC");
+    SimulatorManager simMan = SimulatorManager();
+    simMan.precallSimulator(instrument);
+    DebugController::print("END PRECALC");
+
+    this->writePrerender(instrument);
+}
 
 void Controller::run() {
     DebugController::startClock();
@@ -19,13 +35,11 @@ void Controller::run() {
     std::vector<Material> material;
     Resonance resonance;
     this->readJson(pickup, material, resonance);
-    Model3D model = this->readObj();
-    Instrument instrument(material, model);
-    DebugController::print("END PARSE");
 
-    DebugController::print("INIT PRECALC");
+    Instrument instrument; instrument = this->readPrerender();
+
     SimulatorManager simMan = SimulatorManager();
-    simMan.precallSimulator(instrument);
+    simMan.setPrerender(instrument);
 
     simMan.setRadiusPickup(pickup.radiusPickup);
     simMan.setMagneticChargeDensity(pickup.magneticChargeDensity);
@@ -33,8 +47,7 @@ void Controller::run() {
 
     simMan.setScalarForceLost(resonance.scalarForceLost);
     simMan.setConstantForceLost(resonance.constantForceLost);
-
-    DebugController::print("END PRECALC");
+    DebugController::print("END PARSE");
 
     DebugController::print("INIT FRAMES");
     std::vector<Pluck> plucks            = this->parseMidiFile();

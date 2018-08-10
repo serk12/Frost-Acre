@@ -41,7 +41,7 @@ public:
     Instrument();
     Instrument(Model3D& model3d);
     Instrument(std::vector<Material>& material, Model3D& model3d);
-    Instrument(Instrument& model3d);
+    Instrument(Instrument& inst);
 
     void setModel3D(Model3D& model3d);
     void getModel3D(Model3D& model3d);

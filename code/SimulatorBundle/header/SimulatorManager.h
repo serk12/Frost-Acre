@@ -17,6 +17,7 @@ public:
     static const double SampleRate;
 
     SimulatorManager();
+    void setPrerender(Instrument& instrument);
     void precallSimulator(Instrument& instrument);
     void calculateFrame(const Eigen::VectorXd& forcesF, double timeF, double timeV, std::vector<double>& waves);
 

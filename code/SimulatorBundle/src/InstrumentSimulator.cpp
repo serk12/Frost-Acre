@@ -30,8 +30,8 @@ void InstrumentSimulator::makeDiagonalSpring(int x, int y, int negative, double 
 }
 
 void InstrumentSimulator::calculateSpring() {
-    Model3D& model3d         = instrument->model3d;
     PrecalModel& precalModel = instrument->precalModel;
+    Model3D    & model3d     = instrument->model3d;
     precalModel.springK = Eigen::MatrixXd::Zero(model3d.edge.rows() * 3,
                                                 model3d.edge.cols() * 3);
     #pragma omp parallel shared(precalModel)
@@ -100,22 +100,23 @@ void InstrumentSimulator::calcuateDeformationModeling() {
     Model3D    & model3d     = instrument->model3d;
 
     Eigen::initParallel(); // Dont work....
-    precalModel.solver = Eigen::EigenSolver<Eigen::MatrixXd>(precalModel.springK, true);
-    const Eigen::MatrixXcd& eigenvaluesD = precalModel.solver.eigenvalues();
+    precalModel.solver       = Eigen::EigenSolver<Eigen::MatrixXd>(precalModel.springK, true);
+    precalModel.eigenvalues  = precalModel.solver.eigenvalues();
+    precalModel.eigenvectors = precalModel.solver.eigenvectors();
 
-    precalModel.possitiveW = Eigen::VectorXcd(eigenvaluesD.size());
-    precalModel.negativeW  = Eigen::VectorXcd(eigenvaluesD.size());
+    precalModel.possitiveW = Eigen::VectorXcd(precalModel.eigenvalues.size());
+    precalModel.negativeW  = Eigen::VectorXcd(precalModel.eigenvalues.size());
 
     #pragma omp parallel shared(precalModel)
     {
         #pragma omp for
-        for (int i = 0; i < eigenvaluesD.size(); ++i) {
+        for (int i = 0; i < precalModel.eigenvalues.size(); ++i) {
             int id                      = model3d.edge(i / 3, i / 3);
             double fluidDampingV        = instrument->material[id].fluidDampingV;
             double viscoelasticDampingN = instrument->material[id].viscoelasticDampingN;
 
-            double aux                = fluidDampingV * eigenvaluesD(i).real() + viscoelasticDampingN;
-            std::complex<double> root = std::sqrt(std::complex<double>(aux * aux - 4. * eigenvaluesD(i).real(), 0));
+            double aux                = fluidDampingV * precalModel.eigenvalues(i).real() + viscoelasticDampingN;
+            std::complex<double> root = std::sqrt(std::complex<double>(aux * aux - 4. * precalModel.eigenvalues(i).real(), 0));
 
             precalModel.possitiveW(i) = (-aux + root) / 2.;
             precalModel.negativeW(i)  = (-aux - root) / 2.;
@@ -125,12 +126,12 @@ void InstrumentSimulator::calcuateDeformationModeling() {
     cleanMatrix(precalModel.possitiveW);
     cleanMatrix(precalModel.negativeW);
 
-    precalModel.gainOfModeC = Eigen::VectorXcd::Zero(eigenvaluesD.size());
+    precalModel.gainOfModeC = Eigen::VectorXcd::Zero(precalModel.eigenvalues.size());
 }
 
 void InstrumentSimulator::calculateImpulsForces(const Eigen::VectorXd& forcesF, double time) {
     PrecalModel& precalModel      = instrument->precalModel;
-    const Eigen::MatrixXd forcesG = precalModel.solver.eigenvectors().inverse().real() * forcesF;
+    const Eigen::MatrixXd forcesG = precalModel.eigenvectors.inverse().real() * forcesF;
 
     #pragma omp parallel shared(precalModel)
     {

@@ -25,7 +25,7 @@ void DebugController::print(const Material& material) {
 
 void DebugController::print(const std::vector<Material>& material) {
     int i = 0;
-
+    std::cout << "size: " << material.size() << std::endl;
     for (auto mat : material) {
         std::cout << "MATERIAL: " << i++ << std::endl;
         DebugController::print(mat);

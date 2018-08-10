@@ -14,6 +14,19 @@ const std::string JsonManager::PICKUP                = "Pickup";
 const std::string JsonManager::RESONANCE             = "Resonance";
 const std::string JsonManager::SCALARFORCELOST       = "scalarForceLost";
 const std::string JsonManager::CONSTANTFORCELOST     = "constantForceLost";
+const std::string JsonManager::INSTRUMENT            = "instrument";
+const std::string JsonManager::RESONANCERATIO        = "resonanceRatio";
+const std::string JsonManager::PRECALMODEL           = "precalModel";
+const std::string JsonManager::MASSM                 = "massM";
+const std::string JsonManager::SPRINGK               = "springK";
+const std::string JsonManager::POSSITIVEW            = "possitiveW";
+const std::string JsonManager::NEGATIVEW             = "negativeW";
+const std::string JsonManager::GAINOFMODEC           = "gainofmodeC";
+const std::string JsonManager::VERTEX                = "vertex";
+const std::string JsonManager::EDGE                  = "edge";
+const std::string JsonManager::MODEL3D               = "model3d";
+const std::string JsonManager::EIGENVALUES           = "eigenvalues";
+const std::string JsonManager::EIGENVECTORS          = "eigenvectors";
 
 rapidjson::Document JsonManager::readFile(std::string path) {
     FILE *file = fopen(path.c_str(), "rb");

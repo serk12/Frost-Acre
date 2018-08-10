@@ -4,6 +4,11 @@ const double SimulatorManager::SampleRate = 44100.0;
 
 SimulatorManager::SimulatorManager() : InstrumentSimulator() {}
 
+void SimulatorManager::setPrerender(Instrument& instrument) {
+    this->setInstrument(instrument);
+    resonanceForce = Eigen::VectorXd::Zero(instrument.precalModel.possitiveW.size());
+}
+
 void SimulatorManager::precallSimulator(Instrument& instrument) {
     this->setInstrument(instrument);
     this->calculatePrecal();
