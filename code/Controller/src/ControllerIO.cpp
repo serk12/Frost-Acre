@@ -27,11 +27,9 @@ void explode(const std::string& s, const char delim, const char delim2, std::vec
 }
 
 ControllerIO::ControllerIO() {}
-ControllerIO::ControllerIO(std::string prerenderFile, std::string jsonFile,
-                           std::string midiFile, std::string midiJsonFile,
-                           std::string wavFile) {
+ControllerIO::ControllerIO(std::string prerenderFile, std::string midiFile,
+                           std::string midiJsonFile, std::string wavFile) {
     this->prerenderFile = prerenderFile;
-    this->jsonFile      = jsonFile;
     this->midiFile      = midiFile;
     this->midiJsonFile  = midiJsonFile;
     this->wavFile       = wavFile;
@@ -39,7 +37,7 @@ ControllerIO::ControllerIO(std::string prerenderFile, std::string jsonFile,
 
 ControllerIO::ControllerIO(std::string objFile, std::string infoFile, std::string writeFile) {
     this->objFile = objFile;
-    if (infoFile[infoFile.size() - 1] == 'd') {
+    if (infoFile[infoFile.size() - 1] == 'd') { // infoFIle is *.mid
         this->midiFile     = midiFile;
         this->midiJsonFile = midiJsonFile;
     }
@@ -59,116 +57,106 @@ void ControllerIO::writePrerender(Instrument& instrument) {
 
     // build resonanceRatio json
     ss << instrument.resonanceRatio;
-    std::string member = JsonManager::RESONANCERATIO;
-    instrumentJson.AddMember(rapidjson::Value().SetString(member.c_str(), allocator),
+    instrumentJson.AddMember(rapidjson::Value().SetString(JsonManager::RESONANCERATIO.c_str(), allocator),
                              rapidjson::Value().SetString(ss.str().c_str(), allocator), allocator);
     ss.str(std::string());
     // build precalModel json
     rapidjson::Value precalModelJson(rapidjson::kObjectType);
     ss << instrument.precalModel.massM;
-    member = JsonManager::MASSM;
-    precalModelJson.AddMember(rapidjson::Value().SetString(member.c_str(), allocator),
+    precalModelJson.AddMember(rapidjson::Value().SetString(JsonManager::MASSM.c_str(), allocator),
                               rapidjson::Value().SetString(ss.str().c_str(), allocator), allocator);
     ss.str(std::string());
     ss << instrument.precalModel.springK;
-    member = JsonManager::SPRINGK;
-    precalModelJson.AddMember(rapidjson::Value().SetString(member.c_str(), allocator),
+    precalModelJson.AddMember(rapidjson::Value().SetString(JsonManager::SPRINGK.c_str(), allocator),
                               rapidjson::Value().SetString(ss.str().c_str(), allocator), allocator);
     ss.str(std::string());
     ss << instrument.precalModel.possitiveW;
-    member = JsonManager::POSSITIVEW;
-    precalModelJson.AddMember(rapidjson::Value().SetString(member.c_str(), allocator),
+    precalModelJson.AddMember(rapidjson::Value().SetString(JsonManager::POSSITIVEW.c_str(), allocator),
                               rapidjson::Value().SetString(ss.str().c_str(), allocator), allocator);
     ss.str(std::string());
     ss << instrument.precalModel.negativeW;
-    member = JsonManager::NEGATIVEW;
-    precalModelJson.AddMember(rapidjson::Value().SetString(member.c_str(), allocator),
+    precalModelJson.AddMember(rapidjson::Value().SetString(JsonManager::NEGATIVEW.c_str(), allocator),
                               rapidjson::Value().SetString(ss.str().c_str(), allocator), allocator);
     ss.str(std::string());
     ss << instrument.precalModel.gainOfModeC;
-    member = JsonManager::GAINOFMODEC;
-    precalModelJson.AddMember(rapidjson::Value().SetString(member.c_str(), allocator),
+    precalModelJson.AddMember(rapidjson::Value().SetString(JsonManager::GAINOFMODEC.c_str(), allocator),
                               rapidjson::Value().SetString(ss.str().c_str(), allocator), allocator);
     ss.str(std::string());
     ss << instrument.precalModel.eigenvalues;
-    member = JsonManager::EIGENVALUES;
-    precalModelJson.AddMember(rapidjson::Value().SetString(member.c_str(), allocator),
+    precalModelJson.AddMember(rapidjson::Value().SetString(JsonManager::EIGENVALUES.c_str(), allocator),
                               rapidjson::Value().SetString(ss.str().c_str(), allocator), allocator);
     ss.str(std::string());
     ss << instrument.precalModel.eigenvectors;
-    member = JsonManager::EIGENVECTORS;
-    precalModelJson.AddMember(rapidjson::Value().SetString(member.c_str(), allocator),
+    precalModelJson.AddMember(rapidjson::Value().SetString(JsonManager::EIGENVECTORS.c_str(), allocator),
                               rapidjson::Value().SetString(ss.str().c_str(), allocator), allocator);
 
-    member = JsonManager::PRECALMODEL;
-    instrumentJson.AddMember(rapidjson::Value().SetString(member.c_str(), allocator), precalModelJson, allocator);
+    instrumentJson.AddMember(rapidjson::Value().SetString(JsonManager::PRECALMODEL.c_str(), allocator), precalModelJson, allocator);
 
     // build model3d json
     rapidjson::Value model3dJson(rapidjson::kObjectType);
+
     ss.str(std::string());
     ss << instrument.model3d.vertex;
-    member = JsonManager::VERTEX;
-    model3dJson.AddMember(rapidjson::Value().SetString(member.c_str(), allocator),
+    model3dJson.AddMember(rapidjson::Value().SetString(JsonManager::VERTEX.c_str(), allocator),
                           rapidjson::Value().SetString(ss.str().c_str(), allocator), allocator);
     ss.str(std::string());
     ss << instrument.model3d.edge;
-    member = JsonManager::EDGE;
-    model3dJson.AddMember(rapidjson::Value().SetString(member.c_str(), allocator),
+    model3dJson.AddMember(rapidjson::Value().SetString(JsonManager::EDGE.c_str(), allocator),
                           rapidjson::Value().SetString(ss.str().c_str(), allocator), allocator);
-    ss.str(std::string());
 
-    member = JsonManager::MODEL3D;
-    instrumentJson.AddMember(rapidjson::Value().SetString(member.c_str(), allocator), model3dJson, allocator);
+    instrumentJson.AddMember(rapidjson::Value().SetString(JsonManager::MODEL3D.c_str(), allocator), model3dJson, allocator);
+
+    // assemble all instrument
+    prerenderDoc.AddMember(rapidjson::Value().SetString(JsonManager::INSTRUMENT.c_str(), allocator), instrumentJson, allocator);
 
     // build materials
     rapidjson::Value materialsJson(rapidjson::kArrayType);
     for (unsigned int i = 0; i < instrument.material.size(); ++i) {
         rapidjson::Value materialJson(rapidjson::kObjectType);
-
-        member = JsonManager::YOUNGSMODULUSY;
-        ss.str(std::string());
-        ss << instrument.material[i].youngsModulusY;
-        materialJson.AddMember(rapidjson::Value().SetString(member.c_str(), allocator),
-                               rapidjson::Value().SetString(ss.str().c_str(), allocator), allocator);
-
-        member = JsonManager::THICKNESST;
-        ss.str(std::string());
-        ss << instrument.material[i].thicknessT;
-        materialJson.AddMember(rapidjson::Value().SetString(member.c_str(), allocator),
-                               rapidjson::Value().SetString(ss.str().c_str(), allocator), allocator);
-
-        member = JsonManager::DENSITYD;
-        ss.str(std::string());
-        ss << instrument.material[i].densityD;
-        materialJson.AddMember(rapidjson::Value().SetString(member.c_str(), allocator),
-                               rapidjson::Value().SetString(ss.str().c_str(), allocator), allocator);
-
-        member = JsonManager::FLUIDDAMPINGV;
-        ss.str(std::string());
-        ss << instrument.material[i].fluidDampingV;
-        materialJson.AddMember(rapidjson::Value().SetString(member.c_str(), allocator),
-                               rapidjson::Value().SetString(ss.str().c_str(), allocator), allocator);
-
-        member = JsonManager::VISCOELASTICDAMPINGN;
-        ss.str(std::string());
-        ss << instrument.material[i].viscoelasticDampingN;
-        materialJson.AddMember(rapidjson::Value().SetString(member.c_str(), allocator),
-                               rapidjson::Value().SetString(ss.str().c_str(), allocator), allocator);
-
+        materialJson.AddMember(rapidjson::Value().SetString(JsonManager::YOUNGSMODULUSY.c_str(), allocator),
+                               rapidjson::Value().SetDouble(instrument.material[i].youngsModulusY), allocator);
+        materialJson.AddMember(rapidjson::Value().SetString(JsonManager::THICKNESST.c_str(), allocator),
+                               rapidjson::Value().SetDouble(instrument.material[i].thicknessT), allocator);
+        materialJson.AddMember(rapidjson::Value().SetString(JsonManager::DENSITYD.c_str(), allocator),
+                               rapidjson::Value().SetDouble(instrument.material[i].densityD), allocator);
+        materialJson.AddMember(rapidjson::Value().SetString(JsonManager::FLUIDDAMPINGV.c_str(), allocator),
+                               rapidjson::Value().SetDouble(instrument.material[i].fluidDampingV), allocator);
+        materialJson.AddMember(rapidjson::Value().SetString(JsonManager::VISCOELASTICDAMPINGN.c_str(), allocator),
+                               rapidjson::Value().SetDouble(instrument.material[i].viscoelasticDampingN), allocator);
         materialsJson.PushBack(materialJson, allocator);
     }
+    prerenderDoc.AddMember(rapidjson::Value().SetString(JsonManager::MATERIAL.c_str(), allocator), materialsJson, allocator);
 
-    member = JsonManager::MATERIAL;
-    instrumentJson.AddMember(rapidjson::Value().SetString(member.c_str(), allocator), materialsJson, allocator);
+    // build pickup
+    rapidjson::Value pickupJson(rapidjson::kObjectType);
 
-    // assemble all
-    member = JsonManager::INSTRUMENT;
-    prerenderDoc.AddMember(rapidjson::Value().SetString(member.c_str(), allocator), instrumentJson, allocator);
+    rapidjson::Value pickupPosJson(rapidjson::kArrayType);
+    pickupPosJson.PushBack(rapidjson::Value().SetDouble(instrument.pickup.pickupPossitionX), allocator);
+    pickupPosJson.PushBack(rapidjson::Value().SetDouble(instrument.pickup.pickupPossitionY), allocator);
+    pickupPosJson.PushBack(rapidjson::Value().SetDouble(instrument.pickup.pickupPossitionZ), allocator);
+    pickupJson.AddMember(rapidjson::Value().SetString(JsonManager::PICKUPPOSSITION.c_str(), allocator), pickupPosJson, allocator);
+
+    pickupJson.AddMember(rapidjson::Value().SetString(JsonManager::MAGNETICCHARGEDENSITY.c_str(), allocator),
+                         rapidjson::Value().SetDouble(instrument.pickup.magneticChargeDensity), allocator);
+    pickupJson.AddMember(rapidjson::Value().SetString(JsonManager::RADIUSPICKUP.c_str(), allocator),
+                         rapidjson::Value().SetDouble(instrument.pickup.radiusPickup), allocator);
+
+    prerenderDoc.AddMember(rapidjson::Value().SetString(JsonManager::PICKUP.c_str(), allocator), pickupJson, allocator);
+
+    rapidjson::Value resonanceJson(rapidjson::kObjectType);
+
+    // build resonance
+    resonanceJson.AddMember(rapidjson::Value().SetString(JsonManager::SCALARFORCELOST.c_str(), allocator),
+                            rapidjson::Value().SetDouble(instrument.resonance.scalarForceLost), allocator);
+    resonanceJson.AddMember(rapidjson::Value().SetString(JsonManager::CONSTANTFORCELOST.c_str(), allocator),
+                            rapidjson::Value().SetDouble(instrument.resonance.constantForceLost), allocator);
+
+    prerenderDoc.AddMember(rapidjson::Value().SetString(JsonManager::RESONANCE.c_str(), allocator), resonanceJson, allocator);
 
     JsonManager::writeFile(prerenderFile, prerenderDoc);
 }
 
-void ControllerIO::writeJsonMidi(bool def) {
+void ControllerIO::writeJsonMidi() {
     std::map<std::string, Eigen::VectorXd> notes = MidiManager::buildMapForces(midiFile);
 
     rapidjson::Document notesDoc;
@@ -179,37 +167,19 @@ void ControllerIO::writeJsonMidi(bool def) {
     Model3D model = ObjManager::readObj(objFile);
     int     size  = model.vertex.size();
     Eigen::VectorXd f(size);
-    if (def) {
-        f.fill(0);
-        f(0) = 1;
-        f(1) = 1;
-        f(2) = 1;
-        // for (double i = 0 * 3; i < size; ++i) {
-        //     f(i) = (1.0 / sqrt(2 * 3.1415)) * pow(std::exp(1.0), -((i / (96.0
-        // * 3.0 - size * 3.0)) * (i / (96.0 * 3.0 - size * 3.0)) / 2.0));
-        // }
-    }
-    else {
-        std::cin >> size;
-        Eigen::VectorXd f(size);
-    }
+    f.fill(0);
+    f(0) = 1;
+    f(1) = 1;
+    f(2) = 1;
 
     for (auto& note : notes) {
-        if (!def) {
-            double point;
-            for (int i = 0; i < size; ++i) {
-                std::cin >> point;
-                f(i) = point;
-            }
-        }
         std::stringstream ss;
         ss << f;
         map.AddMember(rapidjson::Value().SetString(note.first.c_str(), allocator),
                       rapidjson::Value().SetString(ss.str().c_str(),   allocator), allocator);
         ss.str(std::string());
     }
-    std::string member = JsonManager::MAPNOTES;
-    notesDoc.AddMember(rapidjson::Value().SetString(member.c_str(), allocator), map, allocator);
+    notesDoc.AddMember(rapidjson::Value().SetString(JsonManager::MAPNOTES.c_str(), allocator), map, allocator);
     JsonManager::writeFile(midiJsonFile, notesDoc);
 }
 
@@ -263,25 +233,14 @@ Instrument ControllerIO::readPrerender() {
     auxD.clear();
     explode(doc[JsonManager::INSTRUMENT.c_str()][JsonManager::RESONANCERATIO.c_str()].GetString(), '\n', auxD);
     instrument.resonanceRatio = Eigen::VectorXd::Map(auxD.data(), auxD.size());
-    // read materlial
 
-    for (auto& val : doc[JsonManager::INSTRUMENT.c_str()][JsonManager::MATERIAL.c_str()].GetArray())
-    {
-        Material material;
-        material.thicknessT           = std::stod(val[JsonManager::THICKNESST.c_str()].GetString());
-        material.youngsModulusY       = std::stod(val[JsonManager::YOUNGSMODULUSY.c_str()].GetString());
-        material.densityD             = std::stod(val[JsonManager::DENSITYD.c_str()].GetString());
-        material.fluidDampingV        = std::stod(val[JsonManager::FLUIDDAMPINGV.c_str()].GetString());
-        material.viscoelasticDampingN = std::stod(val[JsonManager::VISCOELASTICDAMPINGN.c_str()].GetString());
+    // read jsonFile
+    this->readJson(instrument.pickup, instrument.material, instrument.resonance, doc);
 
-        instrument.material.push_back(material);
-    }
     return instrument;
 }
 
-void ControllerIO::readJson(Pickup& pickup, std::vector<Material>& materials, Resonance& resonance) {
-    rapidjson::Document doc = JsonManager::readFile(jsonFile);
-
+void ControllerIO::readJson(Pickup& pickup, std::vector<Material>& materials, Resonance& resonance, rapidjson::Document& doc) {
     Material material(0);
     materials.push_back(material);
     for (auto& val : doc[JsonManager::MATERIAL.c_str()].GetArray()) {
@@ -305,9 +264,12 @@ void ControllerIO::readJson(Pickup& pickup, std::vector<Material>& materials, Re
     resonance.constantForceLost = doc[JsonManager::RESONANCE.c_str()][JsonManager::CONSTANTFORCELOST.c_str()].GetDouble();
 }
 
+void ControllerIO::readJson(Pickup& pickup, std::vector<Material>& materials, Resonance& resonance) {
+    rapidjson::Document doc = JsonManager::readFile(jsonFile);
+    ControllerIO::readJson(pickup, materials, resonance, doc);
+}
 
-
-std::map<int, Eigen::VectorXd> ControllerIO::getMapForces() {
+std::map<int, Eigen::VectorXd> ControllerIO::readJsonMidi() {
     std::map<int, Eigen::VectorXd> notes;
     rapidjson::Document doc = JsonManager::readFile(midiJsonFile);
     for (auto& val : doc[JsonManager::MAPNOTES.c_str()].GetObject()) {
@@ -324,8 +286,8 @@ Model3D ControllerIO::readObj() {
     return ObjManager::readObj(objFile);
 }
 
-std::vector<Pluck> ControllerIO::parseMidiFile() {
-    return MidiManager::parseMidiFile(midiFile);
+std::vector<Pluck> ControllerIO::readMidiFile() {
+    return MidiManager::readMidiFile(midiFile);
 }
 
 void ControllerIO::writeWav(std::vector<double> sound, int sampleRate) {

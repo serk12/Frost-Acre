@@ -7,6 +7,13 @@ SimulatorManager::SimulatorManager() : InstrumentSimulator() {}
 void SimulatorManager::setPrerender(Instrument& instrument) {
     this->setInstrument(instrument);
     resonanceForce = Eigen::VectorXd::Zero(instrument.precalModel.possitiveW.size());
+
+    this->setRadiusPickup(instrument.pickup.radiusPickup);
+    this->setMagneticChargeDensity(instrument.pickup.magneticChargeDensity);
+    this->setPickupPossition(instrument.pickup.pickupPossitionX, instrument.pickup.pickupPossitionY, instrument.pickup.pickupPossitionZ);
+
+    this->setScalarForceLost(instrument.resonance.scalarForceLost);
+    this->setConstantForceLost(instrument.resonance.constantForceLost);
 }
 
 void SimulatorManager::precallSimulator(Instrument& instrument) {
@@ -37,7 +44,12 @@ void SimulatorManager::calculateFrame(const Eigen::VectorXd& forcesF, double tim
                     double y = this->instrument->model3d.vertex(1, i / 3) + modesOfVibrationZ[i + 1];
                     double z = this->instrument->model3d.vertex(2, i / 3) + modesOfVibrationZ[i + 2];
                     waves[j] += this->calculatePickup(x, y, z);
+                    // waves[j] += modesOfVibrationZ[i] +  modesOfVibrationZ[i +
+                    // 1] +  modesOfVibrationZ[i + 2];
                 }
+                // if (Instrument::isNumerical(modesOfVibrationZ[i])){
+                //     waves[j] += modesOfVibrationZ[i];
+                // }
             }
         }
     }

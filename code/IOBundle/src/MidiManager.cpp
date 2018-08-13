@@ -1,6 +1,6 @@
 #include "../header/MidiManager.h"
 
-std::vector<Pluck> MidiManager::parseMidiFile(std::string midiPath) {
+std::vector<Pluck> MidiManager::readMidiFile(std::string midiPath) {
     smf::MidiFile midiFile;
     midiFile.read(midiPath); midiFile.sortTracks(); midiFile.doTimeAnalysis();
     std::vector<Pluck> v;

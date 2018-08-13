@@ -2,10 +2,10 @@
 
 Controller::Controller() {}
 
-Controller::Controller(std::string prerenderFile, std::string jsonFile,
+Controller::Controller(std::string prerenderFile,
                        std::string midiFile, std::string midiJsonFile,
                        std::string wavFile)
-    : ControllerIO(prerenderFile, jsonFile, midiFile, midiJsonFile, wavFile) {}
+    : ControllerIO(prerenderFile, midiFile, midiJsonFile, wavFile) {}
 
 Controller::Controller(std::string objFile, std::string infoFile, std::string writeFile)
     : ControllerIO(objFile, infoFile, writeFile) {}
@@ -16,7 +16,7 @@ void Controller::calcPrerender() {
     Resonance resonance;
     this->readJson(pickup, material, resonance);
     Model3D model = this->readObj();
-    Instrument instrument(material, model);
+    Instrument instrument(material, model, resonance, pickup);
 
     DebugController::print("INIT PRECALC");
     SimulatorManager simMan = SimulatorManager();
@@ -30,33 +30,23 @@ void Controller::run() {
     DebugController::startClock();
 
     DebugController::print("INIT RUN");
+
     DebugController::print("INIT PARSE");
-    Pickup pickup;
-    std::vector<Material> material;
-    Resonance resonance;
-    this->readJson(pickup, material, resonance);
-
     Instrument instrument; instrument = this->readPrerender();
-
-    SimulatorManager simMan = SimulatorManager();
+    SimulatorManager simMan           = SimulatorManager();
     simMan.setPrerender(instrument);
-
-    simMan.setRadiusPickup(pickup.radiusPickup);
-    simMan.setMagneticChargeDensity(pickup.magneticChargeDensity);
-    simMan.setPickupPossition(pickup.pickupPossitionX, pickup.pickupPossitionY, pickup.pickupPossitionZ);
-
-    simMan.setScalarForceLost(resonance.scalarForceLost);
-    simMan.setConstantForceLost(resonance.constantForceLost);
     DebugController::print("END PARSE");
 
     DebugController::print("INIT FRAMES");
-    std::vector<Pluck> plucks            = this->parseMidiFile();
-    std::map<int, Eigen::VectorXd> notes = this->getMapForces();
+    std::vector<Pluck> plucks            = this->readMidiFile();
+    std::map<int, Eigen::VectorXd> notes = this->readJsonMidi();
     std::vector<double> sound            = runSimulator(plucks, notes, simMan);
     DebugController::print("END FRAMES");
 
-    DebugController::print("WRITING WAV");
+    DebugController::print("INIT WRITING WAV");
     this->writeWav(sound, (int)(SimulatorManager::SampleRate));
+    DebugController::print("INIT WRITING WAV");
+
     DebugController::print("END SIMULATION");
     DebugController::print(instrument);
 }

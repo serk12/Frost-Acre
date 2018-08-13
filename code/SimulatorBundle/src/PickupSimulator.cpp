@@ -1,6 +1,6 @@
 #include "../header/PickupSimulator.h"
 
-const double PickupSimulator::n = 10;
+const double PickupSimulator::n = 20;
 
 double PickupSimulator::magneticFieldModul(double phi, double rho) {
     double x = xWire - (xPickup - rho * std::cos(phi));

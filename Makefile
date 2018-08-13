@@ -35,9 +35,6 @@ clean:
 run: $(BUILD_DIR)/$(TARGET)
 	$(BUILD_DIR)/$(TARGET)
 
-test: $(BUILD_DIR)/$(TARGET)
-	$(BUILD_DIR)/$(TARGET) $(PRERENDERDOC) $(JSON) $(MIDI) $(JSONNOTE) $(WAVOUT)
-
 testMem: $(BUILD_DIR)/$(TARGET)
 	valgrind -v --leak-check=full --show-leak-kinds=all $(BUILD_DIR)/$(TARGET) $(OBJ3D) $(MIDI) $(JSONNOTE)
 	valgrind -v --leak-check=full --show-leak-kinds=all $(BUILD_DIR)/$(TARGET) $(OBJ3D) $(JSON) $(MIDI) $(JSONNOTE) $(WAVOUT)
@@ -47,6 +44,10 @@ midi: $(BUILD_DIR)/$(TARGET)
 
 prerender: $(BUILD_DIR)/$(TARGET)
 	$(BUILD_DIR)/$(TARGET) $(OBJ3D) $(JSON) $(PRERENDERDOC)
+
+test: $(BUILD_DIR)/$(TARGET)
+	$(BUILD_DIR)/$(TARGET) $(PRERENDERDOC) $(MIDI) $(JSONNOTE) $(WAVOUT)
+
 # SECONDEXPANSION works like first strike ($) and second strike ($$) on magic
 .SECONDEXPANSION:
 %.o: $$(shell find ./code/ ./lib/midifile -name  $$(notdir $$(basename $$@)).cpp)

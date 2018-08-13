@@ -17,21 +17,25 @@ public:
     ControllerIO();
     ControllerIO(std::string objFile, std::string infoFile,
                  std::string writeFile);
-    ControllerIO(std::string prerenderFile, std::string jsonFile,
-                 std::string midiFile, std::string midiJsonFile,
-                 std::string wavFile);
+    ControllerIO(std::string prerenderFile, std::string midiFile,
+                 std::string midiJsonFile, std::string wavFile);
 
     Model3D readObj();
+
     void readJson(Pickup& pickup, std::vector<Material>& materials, Resonance& resonance);
-    std::vector<Pluck> parseMidiFile();
-    std::map<int, Eigen::VectorXd> getMapForces();
+
+    std::vector<Pluck> readMidiFile();
+
+    void writeJsonMidi();
+    std::map<int, Eigen::VectorXd> readJsonMidi();
 
     void writePrerender(Instrument& instrument);
     Instrument readPrerender();
-    void writeJsonMidi(bool def = true);
+
     void writeWav(std::vector<double> sound, int sampleRate);
 
 private:
+    void readJson(Pickup& pickup, std::vector<Material>& materials, Resonance& resonance, rapidjson::Document& doc);
     std::string objFile;
     std::string jsonFile;
     std::string midiFile;

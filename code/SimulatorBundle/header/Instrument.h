@@ -40,14 +40,8 @@ class Instrument {
 public:
     Instrument();
     Instrument(Model3D& model3d);
-    Instrument(std::vector<Material>& material, Model3D& model3d);
+    Instrument(std::vector<Material>& material, Model3D& model3d, Resonance& resonance, Pickup& pickup);
     Instrument(Instrument& inst);
-
-    void setModel3D(Model3D& model3d);
-    void getModel3D(Model3D& model3d);
-
-    void setPrecalModel(PrecalModel& precalModel);
-    void getPrecalModel(PrecalModel& precalModel);
 
     static bool isNumerical(double num);
 
@@ -58,6 +52,10 @@ public:
     std::vector<Material> material;
 
     Eigen::VectorXd resonanceRatio;
+
+    Pickup pickup;
+    Resonance resonance;
+
 private:
 };
 

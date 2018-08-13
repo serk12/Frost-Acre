@@ -14,9 +14,8 @@ class Controller : public ControllerIO {
 public:
     Controller();
     Controller(std::string objFile, std::string infoFile, std::string writeFile);
-    Controller(std::string prerenderFile, std::string jsonFile,
-               std::string midiFile, std::string midiJsonFile,
-               std::string wavFile);
+    Controller(std::string prerenderFile, std::string midiFile,
+               std::string midiJsonFile, std::string wavFile);
     void run();
     void calcPrerender();
 

@@ -10,6 +10,10 @@
     "Pickup": {
         "MagneticChargeDensity" : 0.123,
         "radiusPickup" : 0.123,
-        "pickupPossition" : [0.123, 0.123, 0.123]  
+        "pickupPossition" : [0, 0, 0]
+    },
+    "Resonance": {
+        "scalarForceLost": 0.2,
+        "constantForceLost": 0.2
     }
 }

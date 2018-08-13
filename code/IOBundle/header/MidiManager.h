@@ -12,7 +12,7 @@
 
 class MidiManager {
 public:
-    static std::vector<Pluck> parseMidiFile(std::string midiPath);
+    static std::vector<Pluck> readMidiFile(std::string midiPath);
     static std::map<std::string, Eigen::VectorXd> buildMapForces(std::string midiPath);
 };
 
