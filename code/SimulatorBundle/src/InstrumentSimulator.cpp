@@ -152,19 +152,22 @@ void InstrumentSimulator::calculateImpulsForces(const Eigen::VectorXd& forcesF, 
 void InstrumentSimulator::calculateVibrations(double time, Eigen::VectorXd& modesOfVibrationZ) {
     const PrecalModel& precalModel = instrument->precalModel;
     modesOfVibrationZ = Eigen::VectorXd(precalModel.gainOfModeC.size());
+    #pragma omp parallel shared(precalModel)
+    {
+        #pragma omp for
+        for (int i = 0; i < precalModel.gainOfModeC.size(); ++i) {
+            std::complex<double> Ci          = precalModel.gainOfModeC(i);
+            std::complex<double> CiConj      = std::conj(precalModel.gainOfModeC(i));
+            std::complex<double> eulerPowPos =
+                std::pow(instrument->euler, precalModel.possitiveW(i).real()) *
+                (cos(precalModel.possitiveW(i).imag() * time) + (sin(precalModel.possitiveW(i).imag() * time) * 1.i));
+            std::complex<double> eulerPowNeg =
+                std::pow(instrument->euler, precalModel.negativeW(i).real()) *
+                (cos(precalModel.negativeW(i).imag() * time)  + (sin(precalModel.negativeW(i).imag()  * time) * 1.i));
 
-    for (int i = 0; i < precalModel.gainOfModeC.size(); ++i) {
-        std::complex<double> Ci          = precalModel.gainOfModeC(i);
-        std::complex<double> CiConj      = std::conj(precalModel.gainOfModeC(i));
-        std::complex<double> eulerPowPos =
-            std::pow(instrument->euler, precalModel.possitiveW(i).real()) *
-            (cos(precalModel.possitiveW(i).imag() * time) + (sin(precalModel.possitiveW(i).imag() * time) * 1.i));
-        std::complex<double> eulerPowNeg =
-            std::pow(instrument->euler, precalModel.negativeW(i).real()) *
-            (cos(precalModel.negativeW(i).imag() * time)  + (sin(precalModel.negativeW(i).imag()  * time) * 1.i));
-
-        modesOfVibrationZ[i] = ((Ci     * precalModel.possitiveW(i) * eulerPowPos) +
-                                (CiConj * precalModel.negativeW(i)  * eulerPowNeg)).real();
+            modesOfVibrationZ[i] = ((Ci     * precalModel.possitiveW(i) * eulerPowPos) +
+                                    (CiConj * precalModel.negativeW(i)  * eulerPowNeg)).real();
+        }
     }
 }
 

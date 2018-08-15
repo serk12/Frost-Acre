@@ -7,7 +7,7 @@
 
 class PickupSimulator {
 public:
-    static const double n;
+    static const int n;
     double xWire, yWire, zWire, xPickup, yPickup, zPickup, magneticChargeDensity, radiusPickup;
 
     void setMagneticChargeDensity(double magneticChargeDensity);

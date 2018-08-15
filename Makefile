@@ -2,7 +2,7 @@
 PRERENDERDOC = "./data/prerender/pre.json"
 OBJ3D = "./data/obj/2obj.obj"
 JSON = "./data/json/wood.json"
-MIDI =  "./data/midis/2sec.mid"
+MIDI =  "./data/midis/cuartoDeSegundo.mid"
 JSONNOTE = "./data/jsonMidi/14def.json"
 WAVOUT =  "./data/wav/sound.wav"
 

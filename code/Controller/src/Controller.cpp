@@ -37,6 +37,11 @@ void Controller::run() {
     simMan.setPrerender(instrument);
     DebugController::print("END PARSE");
 
+    // double mag = 0; std::string ok;
+    // while (std::cin >> ok) {
+    // simMan.setMagneticChargeDensity(mag);
+    // std::cout << "mag: " << mag << std::endl;
+
     DebugController::print("INIT FRAMES");
     std::vector<Pluck> plucks            = this->readMidiFile();
     std::map<int, Eigen::VectorXd> notes = this->readJsonMidi();
@@ -49,6 +54,8 @@ void Controller::run() {
 
     DebugController::print("END SIMULATION");
     DebugController::print(instrument);
+    // mag += 1;
+    // }
 }
 
 
