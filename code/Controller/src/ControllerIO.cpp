@@ -38,8 +38,8 @@ ControllerIO::ControllerIO(std::string prerenderFile, std::string midiFile,
 ControllerIO::ControllerIO(std::string objFile, std::string infoFile, std::string writeFile) {
     this->objFile = objFile;
     if (infoFile[infoFile.size() - 1] == 'd') { // infoFIle is *.mid
-        this->midiFile     = midiFile;
-        this->midiJsonFile = midiJsonFile;
+        this->midiFile     = infoFile;
+        this->midiJsonFile = writeFile;
     }
     else {
         this->jsonFile      = infoFile;
@@ -159,11 +159,6 @@ void ControllerIO::writePrerender(Instrument& instrument) {
 void ControllerIO::writeJsonMidi() {
     std::map<std::string, Eigen::VectorXd> notes = MidiManager::buildMapForces(midiFile);
 
-    rapidjson::Document notesDoc;
-    notesDoc.SetObject();
-    rapidjson::Document::AllocatorType& allocator = notesDoc.GetAllocator();
-    rapidjson::Value map(rapidjson::kObjectType);
-
     Model3D model = ObjManager::readObj(objFile);
     int     size  = model.vertex.size();
     Eigen::VectorXd f(size);
@@ -171,6 +166,11 @@ void ControllerIO::writeJsonMidi() {
     f(0) = 1;
     f(1) = 1;
     f(2) = 1;
+
+    rapidjson::Document notesDoc;
+    notesDoc.SetObject();
+    rapidjson::Document::AllocatorType& allocator = notesDoc.GetAllocator();
+    rapidjson::Value map(rapidjson::kObjectType);
 
     for (auto& note : notes) {
         std::stringstream ss;

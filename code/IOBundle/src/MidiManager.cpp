@@ -31,8 +31,8 @@ std::vector<Pluck> MidiManager::readMidiFile(std::string midiPath) {
 std::map<std::string, Eigen::VectorXd> MidiManager::buildMapForces(std::string midiPath) {
     smf::MidiFile midiFile;
     midiFile.read(midiPath); midiFile.sortTracks(); midiFile.doTimeAnalysis();
-    std::map<std::string, Eigen::VectorXd> notes;
 
+    std::map<std::string, Eigen::VectorXd> notes;
     for (int track = 0; track < midiFile.getTrackCount(); ++track) {
         for (int event = 0; event < midiFile[track].size(); ++event) {
             if (midiFile[track][event].isNoteOn()) {
