@@ -1,0 +1,5 @@
+// materiales of guitar.json
+// 1: wood
+// 2: plastic
+// 3: metal
+// 4: aluminum

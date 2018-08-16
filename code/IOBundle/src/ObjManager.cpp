@@ -19,6 +19,8 @@ void ObjManager::getVectorsAndEdgesFromObj(std::ifstream& infile,
                                            EdgeQueue& edgesQueue,
                                            VertexQueue& vertexQueue) {
     std::string line;
+
+    int material = 0;
     while (std::getline(infile, line)) {
         // v -1.000000 -1.000000 -1.000000
         if (line[0] == 'v' and line[1] == ' ') {
@@ -26,15 +28,18 @@ void ObjManager::getVectorsAndEdgesFromObj(std::ifstream& infile,
             vertexQueue.push(vertex);
         }
         else if (line[0] == 'f') { // f 1/1/1 2/2/1 3/3/1  v/t/vn
+            if (material == 0) material = 1;
             std::vector<std::string> faces = ObjManager::splitString(line, ' ');
             std::vector<std::pair<std::string, std::string> > faceAndText(3);
 
             for (int i = 1; i < 4; ++i) {
                 std::vector<std::string> triangle = ObjManager::splitString(faces[i], '/');
-                if (triangle[1] == "") triangle[1] = "1";
-                faceAndText[i - 1] = std::make_pair(triangle[0], triangle[1]);
+                faceAndText[i - 1] = std::make_pair(triangle[0], std::to_string(material));
             }
             edgesQueue.push(faceAndText);
+        }
+        else if (line[0] == 'u') {
+            ++material;
         }
     }
 }

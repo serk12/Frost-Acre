@@ -1,0 +1,40 @@
+{
+    "Material":[
+    {
+        "thicknessT":0.4,
+        "youngsModulusY":500000000,
+        "densityD":750,
+        "fluidDampingV":0.000008,
+        "viscoelasticDampingN":50
+    },
+    {
+        "thicknessT":0.5,
+        "youngsModulusY":24900000000,
+        "densityD":2700,
+        "fluidDampingV":0.000001,
+        "viscoelasticDampingN":50
+    },
+    {
+        "thicknessT":0.2,
+        "youngsModulusY":49900000000,
+        "densityD":2700,
+        "fluidDampingV":0.0000001,
+        "viscoelasticDampingN":0
+    },
+    {
+        "thicknessT":0.3,
+        "youngsModulusY":49800000000,
+        "densityD":2700,
+        "fluidDampingV":0.0000001,
+        "viscoelasticDampingN":0
+    }],
+    "Pickup": {
+        "MagneticChargeDensity" : 42,
+        "radiusPickup" : 2,
+        "pickupPossition" : [0, 0, 0]
+    },
+    "Resonance": {
+        "scalarForceLost": 0.2,
+        "constantForceLost": 0.2
+    }
+}

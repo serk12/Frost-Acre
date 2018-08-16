@@ -39,16 +39,16 @@ void SimulatorManager::calculateFrame(const Eigen::VectorXd& forcesF, double tim
             modesOfVibrationZ[i + 1] = Instrument::isNumerical(modesOfVibrationZ[i + 1]) ? modesOfVibrationZ[i + 1] : 0;
             modesOfVibrationZ[i + 2] = Instrument::isNumerical(modesOfVibrationZ[i + 2]) ? modesOfVibrationZ[i + 2] : 0;
 
-            double x = this->instrument->model3d.vertex(0, i / 3) +
-                       modesOfVibrationZ[i];
-            double y = this->instrument->model3d.vertex(1, i / 3) +
-                       modesOfVibrationZ[i + 1];
-            double z = this->instrument->model3d.vertex(2, i / 3) +
-                       modesOfVibrationZ[i + 2];
-            waves[j] += this->calculatePickup(x, y, z);
-            // waves[j] += modesOfVibrationZ[i] +
-            //             modesOfVibrationZ[i + 1] +
-            //             modesOfVibrationZ[i + 2];
+            // double x = this->instrument->model3d.vertex(0, i / 3) +
+            //            modesOfVibrationZ[i];
+            // double y = this->instrument->model3d.vertex(1, i / 3) +
+            //            modesOfVibrationZ[i + 1];
+            // double z = this->instrument->model3d.vertex(2, i / 3) +
+            //            modesOfVibrationZ[i + 2];
+            // waves[j] += this->calculatePickup(x, y, z);
+            waves[j] += modesOfVibrationZ[i] +
+                        modesOfVibrationZ[i + 1] +
+                        modesOfVibrationZ[i + 2];
         }
     }
     resonanceForce = calculateResonanceForce(*instrument, forcesF);

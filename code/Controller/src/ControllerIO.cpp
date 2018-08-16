@@ -111,7 +111,7 @@ void ControllerIO::writePrerender(Instrument& instrument) {
 
     // build materials
     rapidjson::Value materialsJson(rapidjson::kArrayType);
-    for (unsigned int i = 0; i < instrument.material.size(); ++i) {
+    for (unsigned int i = 1; i < instrument.material.size(); ++i) {
         rapidjson::Value materialJson(rapidjson::kObjectType);
         materialJson.AddMember(rapidjson::Value().SetString(JsonManager::YOUNGSMODULUSY.c_str(), allocator),
                                rapidjson::Value().SetDouble(instrument.material[i].youngsModulusY), allocator);
