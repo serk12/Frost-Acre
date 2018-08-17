@@ -10,6 +10,9 @@ Controller::Controller(std::string prerenderFile,
 Controller::Controller(std::string objFile, std::string infoFile, std::string writeFile)
     : ControllerIO(objFile, infoFile, writeFile) {}
 
+Controller::Controller(std::string objFile, std::string midiJsonFile)
+    : ControllerIO(objFile, midiJsonFile) {}
+
 void Controller::calcPrerender() {
     Pickup pickup;
     std::vector<Material> material;

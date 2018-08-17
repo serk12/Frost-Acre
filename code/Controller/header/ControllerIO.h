@@ -14,9 +14,15 @@
 
 class ControllerIO {
 public:
+    static const int textSize;
+    static const int initMidiTex;
+    static const int deltaXMidi;
+    static const int initMidi;
+    static const int endMidi;
+
     ControllerIO();
-    ControllerIO(std::string objFile, std::string infoFile,
-                 std::string writeFile);
+    ControllerIO(std::string objFile, std::string midiJsonFile);
+    ControllerIO(std::string objFile, std::string jsonFile, std::string prerenderFile);
     ControllerIO(std::string prerenderFile, std::string midiFile,
                  std::string midiJsonFile, std::string wavFile);
 

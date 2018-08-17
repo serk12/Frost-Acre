@@ -1,6 +1,8 @@
 #include "../header/SimulatorManager.h"
 
 const double SimulatorManager::SampleRate = 44100.0;
+const bool   SimulatorManager::pickup     = false;
+const bool   SimulatorManager::resonance  = true;
 
 SimulatorManager::SimulatorManager() : InstrumentSimulator() {}
 
@@ -24,7 +26,9 @@ void SimulatorManager::precallSimulator(Instrument& instrument) {
 }
 
 void SimulatorManager::calculateFrame(const Eigen::VectorXd& forcesF, double timeF, double timeV, std::vector<double>& waves) {
-    this->calculateImpulsForces(forcesF + resonanceForce, timeF);
+    if (SimulatorManager::resonance) this->calculateImpulsForces(forcesF + resonanceForce, timeF);
+    else this->calculateImpulsForces(forcesF, timeF);
+
     unsigned int size = ceil(timeV * SimulatorManager::SampleRate);
     waves = std::vector<double>(size, 0); double t = 0;
 
@@ -39,16 +43,20 @@ void SimulatorManager::calculateFrame(const Eigen::VectorXd& forcesF, double tim
             modesOfVibrationZ[i + 1] = Instrument::isNumerical(modesOfVibrationZ[i + 1]) ? modesOfVibrationZ[i + 1] : 0;
             modesOfVibrationZ[i + 2] = Instrument::isNumerical(modesOfVibrationZ[i + 2]) ? modesOfVibrationZ[i + 2] : 0;
 
-            // double x = this->instrument->model3d.vertex(0, i / 3) +
-            //            modesOfVibrationZ[i];
-            // double y = this->instrument->model3d.vertex(1, i / 3) +
-            //            modesOfVibrationZ[i + 1];
-            // double z = this->instrument->model3d.vertex(2, i / 3) +
-            //            modesOfVibrationZ[i + 2];
-            // waves[j] += this->calculatePickup(x, y, z);
-            waves[j] += modesOfVibrationZ[i] +
-                        modesOfVibrationZ[i + 1] +
-                        modesOfVibrationZ[i + 2];
+            if (SimulatorManager::pickup) {
+                double x = this->instrument->model3d.vertex(0, i / 3) +
+                           modesOfVibrationZ[i];
+                double y = this->instrument->model3d.vertex(1, i / 3) +
+                           modesOfVibrationZ[i + 1];
+                double z = this->instrument->model3d.vertex(2, i / 3) +
+                           modesOfVibrationZ[i + 2];
+                waves[j] += this->calculatePickup(x, y, z);
+            }
+            else {
+                waves[j] += modesOfVibrationZ[i] +
+                            modesOfVibrationZ[i + 1] +
+                            modesOfVibrationZ[i + 2];
+            }
         }
     }
     resonanceForce = calculateResonanceForce(*instrument, forcesF);

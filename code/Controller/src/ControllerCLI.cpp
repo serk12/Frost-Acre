@@ -8,13 +8,11 @@ void ControllerCLI::run(int argc, char *argv[]) {
     }
     else if (argc == 4) { // write jsonMidiFile or preRender
         //                    obj3D    midi/json jsonWrite
-        Controller  controller(argv[1], argv[2],  argv[3]);
-        std::string info = std::string(argv[2]);
-        if (info[info.size() - 1] == 'd') { // infoFIle is *.mid
-            controller.writeJsonMidi();
-        }
-        else {
-            controller.calcPrerender();
-        }
+        Controller controller(argv[1], argv[2],  argv[3]);
+        controller.calcPrerender();
+    }
+    else if (argc == 3) {
+        Controller controller(argv[1], argv[2]);
+        controller.writeJsonMidi();
     }
 }

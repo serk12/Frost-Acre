@@ -22,6 +22,8 @@ public:
     void calculateFrame(const Eigen::VectorXd& forcesF, double timeF, double timeV, std::vector<double>& waves);
 
 private:
+    static const bool pickup;
+    static const bool resonance;
     Eigen::VectorXd resonanceForce;
 };
 

@@ -2,7 +2,7 @@
 PRERENDERDOC = "./data/prerender/pre.json"
 OBJ3D = "./data/obj/cube2.obj"
 JSON = "./data/json/guitar.json"
-MIDI =  "./data/midis/cuartoDeSegundo.mid"
+MIDI =  "./data/midis/allNotes.mid"
 JSONNOTE = "./data/jsonMidi/14def.json"
 WAVOUT =  "./data/wav/sound.wav"
 
@@ -40,7 +40,7 @@ testMem: $(BUILD_DIR)/$(TARGET)
 	valgrind -v --leak-check=full --show-leak-kinds=all $(BUILD_DIR)/$(TARGET) $(OBJ3D) $(JSON) $(MIDI) $(JSONNOTE) $(WAVOUT)
 
 midi: $(BUILD_DIR)/$(TARGET)
-	$(BUILD_DIR)/$(TARGET) $(OBJ3D) $(MIDI) $(JSONNOTE)
+	$(BUILD_DIR)/$(TARGET) $(OBJ3D) $(JSONNOTE)
 
 prerender: $(BUILD_DIR)/$(TARGET)
 	$(BUILD_DIR)/$(TARGET) $(OBJ3D) $(JSON) $(PRERENDERDOC)

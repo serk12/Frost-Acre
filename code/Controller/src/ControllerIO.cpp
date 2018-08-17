@@ -1,5 +1,11 @@
 #include "../header/ControllerIO.h"
 
+const int ControllerIO::textSize    = 32;
+const int ControllerIO::deltaXMidi  = 1;
+const int ControllerIO::initMidiTex = 40;  // 40: E2
+const int ControllerIO::initMidi    = 13;  // 19: D0
+const int ControllerIO::endMidi     = 120; // 120: B8?
+
 template<class T>
 void explode(const std::string& s, const char delim, std::vector<T>& result)
 {
@@ -35,16 +41,15 @@ ControllerIO::ControllerIO(std::string prerenderFile, std::string midiFile,
     this->wavFile       = wavFile;
 }
 
-ControllerIO::ControllerIO(std::string objFile, std::string infoFile, std::string writeFile) {
-    this->objFile = objFile;
-    if (infoFile[infoFile.size() - 1] == 'd') { // infoFIle is *.mid
-        this->midiFile     = infoFile;
-        this->midiJsonFile = writeFile;
-    }
-    else {
-        this->jsonFile      = infoFile;
-        this->prerenderFile = writeFile;
-    }
+ControllerIO::ControllerIO(std::string objFile, std::string jsonFile, std::string prerenderFile) {
+    this->objFile       = objFile;
+    this->jsonFile      = jsonFile;
+    this->prerenderFile = prerenderFile;
+}
+
+ControllerIO::ControllerIO(std::string objFile, std::string midiJsonFile) {
+    this->objFile      = objFile;
+    this->midiJsonFile = midiJsonFile;
 }
 
 void ControllerIO::writePrerender(Instrument& instrument) {
@@ -157,28 +162,41 @@ void ControllerIO::writePrerender(Instrument& instrument) {
 }
 
 void ControllerIO::writeJsonMidi() {
-    std::map<std::string, Eigen::VectorXd> notes = MidiManager::buildMapForces(midiFile);
-
-    Model3D model = ObjManager::readObj(objFile);
-    int     size  = model.vertex.size();
-    Eigen::VectorXd f(size);
-    f.fill(0);
-    f(0) = 1;
-    f(1) = 1;
-    f(2) = 1;
+    Model3D model         = ObjManager::readObj(objFile);
+    TextureVector texture = ObjManager::readTexture(objFile);
 
     rapidjson::Document notesDoc;
     notesDoc.SetObject();
     rapidjson::Document::AllocatorType& allocator = notesDoc.GetAllocator();
     rapidjson::Value map(rapidjson::kObjectType);
 
-    for (auto& note : notes) {
+    int size = model.vertex.size();
+    std::map<std::string, Eigen::VectorXd> notes;
+    Eigen::VectorXd f(size);
+    for (int i = ControllerIO::initMidi; i < ControllerIO::endMidi; ++i) {
+        notes[std::to_string(i)] = f;
+    }
+
+    for (unsigned int i = 0; i < texture.size(); ++i) {
+        int note = (floor(texture[i].second * ControllerIO::textSize) * ControllerIO::deltaXMidi) +
+                   floor(texture[i].first * ControllerIO::textSize) +
+                   ControllerIO::initMidiTex;
+
+        if (note < ControllerIO::endMidi) {
+            notes[std::to_string(note)](i * 3)       = 1;
+            notes[std::to_string(note)]((i * 3) + 1) = 1;
+            notes[std::to_string(note)]((i * 3) + 2) = 1;
+        }
+    }
+
+    for (int i = ControllerIO::initMidi; i < ControllerIO::endMidi; ++i) {
         std::stringstream ss;
-        ss << f;
-        map.AddMember(rapidjson::Value().SetString(note.first.c_str(), allocator),
+        ss << notes[std::to_string(i)];
+        map.AddMember(rapidjson::Value().SetString(std::to_string(i).c_str(), allocator),
                       rapidjson::Value().SetString(ss.str().c_str(),   allocator), allocator);
         ss.str(std::string());
     }
+
     notesDoc.AddMember(rapidjson::Value().SetString(JsonManager::MAPNOTES.c_str(), allocator), map, allocator);
     JsonManager::writeFile(midiJsonFile, notesDoc);
 }
