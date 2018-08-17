@@ -76,7 +76,7 @@ std::vector<double> Controller::runSimulator(const std::vector<Pluck>& plucks,
             #pragma omp for
             for (unsigned int i = 0; i < waves.size(); ++i) {
                 int x = j + i;
-                #pragma omp atomic
+            #pragma omp atomic
                 sound[x] += waves[i];
             }
         }

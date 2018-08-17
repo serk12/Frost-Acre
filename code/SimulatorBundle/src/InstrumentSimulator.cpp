@@ -152,8 +152,9 @@ void InstrumentSimulator::calculateImpulsForces(const Eigen::VectorXd& forcesF, 
 
 void InstrumentSimulator::calculateVibrations(double time, Eigen::VectorXd& modesOfVibrationZ) {
     const PrecalModel& precalModel = instrument->precalModel;
-    modesOfVibrationZ = Eigen::VectorXd(precalModel.gainOfModeC.size());
-    #pragma omp parallel shared(precalModel)
+    modesOfVibrationZ = Eigen::VectorXd::Zero(precalModel.gainOfModeC.size());
+
+    #pragma omp parallel shared(modesOfVibrationZ, precalModel)
     {
         #pragma omp for
         for (int i = 0; i < precalModel.gainOfModeC.size(); ++i) {
@@ -165,9 +166,10 @@ void InstrumentSimulator::calculateVibrations(double time, Eigen::VectorXd& mode
             std::complex<double> eulerPowNeg =
                 std::pow(instrument->euler, precalModel.negativeW(i).real()) *
                 (cos(precalModel.negativeW(i).imag() * time)  + (sin(precalModel.negativeW(i).imag()  * time) * 1.i));
+            double vib = ((Ci     * precalModel.possitiveW(i) * eulerPowPos) +
+                          (CiConj * precalModel.negativeW(i)  * eulerPowNeg)).real();
 
-            modesOfVibrationZ[i] = ((Ci     * precalModel.possitiveW(i) * eulerPowPos) +
-                                    (CiConj * precalModel.negativeW(i)  * eulerPowNeg)).real();
+            modesOfVibrationZ[i] = vib;
         }
     }
 }
