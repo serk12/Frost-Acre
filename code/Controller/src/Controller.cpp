@@ -2,9 +2,8 @@
 
 Controller::Controller() {}
 
-Controller::Controller(std::string prerenderFile,
-                       std::string midiFile, std::string midiJsonFile,
-                       std::string wavFile)
+Controller::Controller(std::string prerenderFile, std::string midiFile,
+                       std::string midiJsonFile, std::string wavFile)
     : ControllerIO(prerenderFile, midiFile, midiJsonFile, wavFile) {}
 
 Controller::Controller(std::string objFile, std::string infoFile, std::string writeFile)
@@ -40,11 +39,6 @@ void Controller::run() {
     simMan.setPrerender(instrument);
     DebugController::print("END PARSE");
 
-    // double mag = 0; std::string ok;
-    // while (std::cin >> ok) {
-    // simMan.setMagneticChargeDensity(mag);
-    // std::cout << "mag: " << mag << std::endl;
-
     DebugController::print("INIT FRAMES");
     std::vector<Pluck> plucks            = this->readMidiFile();
     std::map<int, Eigen::VectorXd> notes = this->readJsonMidi();
@@ -57,8 +51,6 @@ void Controller::run() {
 
     DebugController::print("END SIMULATION");
     DebugController::print(instrument);
-    // mag += 1;
-    // }
 }
 
 
@@ -88,6 +80,7 @@ std::vector<double> Controller::runSimulator(const std::vector<Pluck>& plucks,
                 sound[x] += waves[i];
             }
         }
+        waves.clear();
     }
     return sound;
 }
