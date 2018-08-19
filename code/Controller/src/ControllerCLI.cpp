@@ -6,12 +6,13 @@ void ControllerCLI::run(int argc, char *argv[]) {
         Controller controller(argv[1], argv[2], argv[3], argv[4]);
         controller.run();
     }
-    else if (argc == 4) { // write jsonMidiFile or preRender
+    else if (argc == 4) { // write  preRender
         //                    obj3D    midi/json jsonWrite
         Controller controller(argv[1], argv[2],  argv[3]);
         controller.calcPrerender();
     }
-    else if (argc == 3) {
+    else if (argc == 3) { // write jsonMidiFile
+        //                    obj3D    jsonMidiFile
         Controller controller(argv[1], argv[2]);
         controller.writeJsonMidi();
     }

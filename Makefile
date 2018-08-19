@@ -1,8 +1,8 @@
 # exe vars
-PRERENDERDOC = "./data/prerender/pre.json"
-OBJ3D = "./data/obj/cube2.obj"
+PRERENDERDOC = "./data/prerender/preSteinberg_soft.json"
+OBJ3D = "./data/obj/steinberger_soft.obj"
 JSON = "./data/json/guitar.json"
-MIDI =  "./data/midis/allNotes.mid"
+MIDI =  "./data/midis/2sec.mid"
 JSONNOTE = "./data/jsonMidi/14def.json"
 WAVOUT =  "./data/wav/sound.wav"
 

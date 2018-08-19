@@ -29,12 +29,15 @@ double PickupSimulator::calculatePickup(double xWire, double yWire, double zWire
             phi += 2 * M_PI / PickupSimulator::n;
         }
     }
-    double aux = (xWire - xPickup) * (xWire - xPickup) +
-                 (yWire - yPickup) * (yWire - yPickup) +
-                 (zWire - zPickup) * (zWire - zPickup);
+
+    double xp = ((xWire - xPickup) / 2) + xPickup;
+    double yp = ((yWire - yPickup) / 2) + yPickup;
+    double zp = ((zWire - zPickup) / 2) + zPickup;
+
+    double aux = xp * xp + yp * yp + zp * zp;
     return result * ((2 * M_PI / PickupSimulator::n) *
                      (radiusPickup / PickupSimulator::n) / 4) *
-           ((zWire - zPickup) / (std::sqrt(aux * aux * aux)));
+           ((zWire - zp) / (std::sqrt(aux * aux * aux)));
 }
 
 void PickupSimulator::setMagneticChargeDensity(double magneticChargeDensity) {

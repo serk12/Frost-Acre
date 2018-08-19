@@ -29,8 +29,8 @@
         "viscoelasticDampingN":0
     }],
     "Pickup": {
-        "MagneticChargeDensity" : 42,
-        "radiusPickup" : 2,
+        "MagneticChargeDensity" : 5,
+        "radiusPickup" : 0.2,
         "pickupPossition" : [0, 0, 0]
     },
     "Resonance": {

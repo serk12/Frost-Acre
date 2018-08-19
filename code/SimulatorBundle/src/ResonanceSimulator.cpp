@@ -36,7 +36,7 @@ Eigen::VectorXd ResonanceSimulator::calculateResonanceForce(const Instrument& in
 
     Eigen::VectorXd result(force);
     for (int i = 0; i < result.size(); ++i) {
-        int f = result[i] * constanForceLost - scalarForceLost;
+        double f = result[i] * constanForceLost - scalarForceLost;
         result[i] = resonance[i] * ((f > 0.0) ? f : 0.0);
     }
     return result;
