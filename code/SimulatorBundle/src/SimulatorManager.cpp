@@ -26,7 +26,6 @@ void SimulatorManager::precallSimulator(Instrument& instrument) {
 }
 
 void SimulatorManager::calculateFrame(const Eigen::VectorXd& forcesF, double timeF, double timeV, std::vector<double>& waves) {
-    std::cout << forcesF.size() << " " << resonanceForce.cols() << " " << resonanceForce.rows() << " " << resonanceForce.size() << std::endl;
     if (SimulatorManager::resonance) this->calculateImpulsForces(forcesF + resonanceForce, timeF);
     else this->calculateImpulsForces(forcesF, timeF);
 

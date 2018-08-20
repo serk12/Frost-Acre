@@ -130,7 +130,6 @@ void InstrumentSimulator::calcuateDeformationModeling() {
 }
 
 void InstrumentSimulator::calculateImpulsForces(const Eigen::VectorXd& forcesF, double time) {
-    std::cout << "hmmm" << std::endl;
     PrecalModel& precalModel      = instrument->precalModel;
     const Eigen::MatrixXd forcesG = precalModel.eigenvectors.inverse().real() * forcesF;
     precalModel.gainOfModeC = Eigen::VectorXcd::Zero(precalModel.eigenvalues.size());

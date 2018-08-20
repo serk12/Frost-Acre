@@ -50,7 +50,6 @@ void Controller::run() {
     DebugController::print("INIT WRITING WAV");
 
     DebugController::print("END SIMULATION");
-    DebugController::print(instrument);
 }
 
 
