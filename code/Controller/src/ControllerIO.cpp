@@ -170,9 +170,8 @@ void ControllerIO::writeJsonMidi() {
     rapidjson::Document::AllocatorType& allocator = notesDoc.GetAllocator();
     rapidjson::Value map(rapidjson::kObjectType);
 
-    int size = model.vertex.size();
     std::map<std::string, Eigen::VectorXd> notes;
-    Eigen::VectorXd f(size);
+    Eigen::VectorXd f = Eigen::VectorXd::Zero(model.vertex.size());
     for (int i = ControllerIO::initMidi; i < ControllerIO::endMidi; ++i) {
         notes[std::to_string(i)] = f;
     }
