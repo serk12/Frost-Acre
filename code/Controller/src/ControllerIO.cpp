@@ -2,7 +2,7 @@
 
 const int ControllerIO::textSize    = 32;
 const int ControllerIO::deltaXMidi  = 1;
-const int ControllerIO::initMidiTex = 39;  // 40: E2
+const int ControllerIO::initMidiTex = 8;   // 40: E2
 const int ControllerIO::initMidi    = 13;  // 19: D0
 const int ControllerIO::endMidi     = 120; // 120: B8?
 

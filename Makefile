@@ -1,12 +1,12 @@
 # exe vars
-PRERENDERDOC = "./data/prerender/preSteinberg_soft.json"
-OBJ3D = "./data/obj/steinberger_soft.obj"
+MODEL = cup
 JSON = "./data/json/guitar.json"
-MIDI =  "./data/midis/2sec.mid"
-JSONNOTE = "./data/jsonMidi/14def.json"
-WAVOUT =  "./data/wav/sound.wav"
+MIDI =  "./data/midis/cuartoDeSegundo.mid"
 
-
+JSONNOTE = "./data/jsonMidi/$(MODEL).json"
+WAVOUT =  "./data/wav/$(MODEL).wav"
+PRERENDERDOC = "./data/prerender/$(MODEL).json"
+OBJ3D = "./data/obj/$(MODEL).obj"
 
 # Libraries on which TARGET depends
 LIBS = lib/eigen/
@@ -15,6 +15,7 @@ TARGET = frostAcre.exe
 RESULTS_DEFAULT = results.txt
 # Place to store all generated files
 BUILD_DIR = build
+FOLDERS = $(BUILD_DIR) ./data/jsonMidi ./data/prerender ./data/wav
 # Compiler. On non-gnu systems you may want to change this
 CC = g++
 EXTRAFLAGS = -std=gnu++14 -Wall -Wextra -fopenmp
@@ -25,9 +26,9 @@ BASE = $(foreach f, $(SRCS), $(notdir $(basename $(f))))
 OBJECTS = $(foreach f, $(BASE), $(BUILD_DIR)/$(f).o)
 
 # PHONY converts all "file conversor" to simple commands
-.PHONY: all clean test testMem run midi prerender
+.PHONY: all clean simulate simulateMem run midi prerender
 
-all: midi prerender test
+all: $(FOLDERS) midi prerender simulate
 
 clean:
 	rm build/*
@@ -35,9 +36,10 @@ clean:
 run: $(BUILD_DIR)/$(TARGET)
 	$(BUILD_DIR)/$(TARGET)
 
-testMem: $(BUILD_DIR)/$(TARGET)
-	valgrind -v --leak-check=full --show-leak-kinds=all $(BUILD_DIR)/$(TARGET) $(OBJ3D) $(MIDI) $(JSONNOTE)
-	valgrind -v --leak-check=full --show-leak-kinds=all $(BUILD_DIR)/$(TARGET) $(OBJ3D) $(JSON) $(MIDI) $(JSONNOTE) $(WAVOUT)
+simulateMem: $(BUILD_DIR)/$(TARGET)
+	valgrind -v --leak-check=full --show-leak-kinds=all $(BUILD_DIR)/$(TARGET) $(OBJ3D) $(JSONNOTE)
+	valgrind -v --leak-check=full --show-leak-kinds=all $(BUILD_DIR)/$(TARGET) $(OBJ3D) $(JSON) $(JSONNOTE)
+	valgrind -v --leak-check=full --show-leak-kinds=all $(BUILD_DIR)/$(TARGET) $(PRERENDERDOC) $(MIDI) $(JSONNOTE) $(WAVOUT)
 
 midi: $(BUILD_DIR)/$(TARGET)
 	$(BUILD_DIR)/$(TARGET) $(OBJ3D) $(JSONNOTE)
@@ -45,8 +47,11 @@ midi: $(BUILD_DIR)/$(TARGET)
 prerender: $(BUILD_DIR)/$(TARGET)
 	$(BUILD_DIR)/$(TARGET) $(OBJ3D) $(JSON) $(PRERENDERDOC)
 
-test: $(BUILD_DIR)/$(TARGET)
+simulate: $(BUILD_DIR)/$(TARGET)
 	$(BUILD_DIR)/$(TARGET) $(PRERENDERDOC) $(MIDI) $(JSONNOTE) $(WAVOUT)
+
+$(FOLDERS):
+	mkdir $@
 
 # SECONDEXPANSION works like first strike ($) and second strike ($$) on magic
 .SECONDEXPANSION:
