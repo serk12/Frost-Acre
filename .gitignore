@@ -38,3 +38,4 @@ build/**
 *.mtl
 data/jsonMidi/*.json
 data/prerender/*.json
+data/obj/*.blend1

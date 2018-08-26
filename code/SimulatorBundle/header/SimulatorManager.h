@@ -19,7 +19,7 @@ public:
     SimulatorManager();
     void setPrerender(Instrument& instrument);
     void precallSimulator(Instrument& instrument);
-    void calculateFrame(const Eigen::VectorXd& forcesF, double timeF, double timeV, std::vector<double>& waves);
+    void calculateFrame(Eigen::VectorXd forcesF, double timeF, double timeV, std::vector<double>& waves);
 
 private:
     static const bool pickup;

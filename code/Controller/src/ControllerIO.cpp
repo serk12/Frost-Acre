@@ -1,10 +1,7 @@
 #include "../header/ControllerIO.h"
 
-const int ControllerIO::textSize    = 32;
-const int ControllerIO::deltaXMidi  = 1;
-const int ControllerIO::initMidiTex = 8;   // 40: E2
-const int ControllerIO::initMidi    = 13;  // 19: D0
-const int ControllerIO::endMidi     = 120; // 120: B8?
+const int ControllerIO::initMidi = 13;  // 19: D0
+const int ControllerIO::endMidi  = 120; // 120: B8?
 
 template<class T>
 void explode(const std::string& s, const char delim, std::vector<T>& result)
@@ -177,11 +174,9 @@ void ControllerIO::writeJsonMidi() {
     }
 
     for (unsigned int i = 0; i < texture.size(); ++i) {
-        int note = (floor(texture[i].second * ControllerIO::textSize) * ControllerIO::deltaXMidi) +
-                   floor(texture[i].first * ControllerIO::textSize) +
-                   ControllerIO::initMidiTex;
+        int note = floor(texture[i].first * 1000);
 
-        if (note > ControllerIO::initMidiTex and note < ControllerIO::endMidi) {
+        if (note > ControllerIO::initMidi and note < ControllerIO::endMidi) {
             notes[std::to_string(note)](i * 3)       = 1;
             notes[std::to_string(note)]((i * 3) + 1) = 1;
             notes[std::to_string(note)]((i * 3) + 2) = 1;

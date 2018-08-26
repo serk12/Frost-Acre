@@ -25,13 +25,13 @@ void SimulatorManager::precallSimulator(Instrument& instrument) {
     resonanceForce = Eigen::VectorXd::Zero(instrument.precalModel.possitiveW.size());
 }
 
-void SimulatorManager::calculateFrame(const Eigen::VectorXd& forcesF, double timeF, double timeV, std::vector<double>& waves) {
-    if (SimulatorManager::resonance) this->calculateImpulsForces(forcesF + resonanceForce, timeF);
-    else this->calculateImpulsForces(forcesF, timeF);
+void SimulatorManager::calculateFrame(Eigen::VectorXd forcesF, double timeF, double timeV, std::vector<double>& waves) {
+    this->cleanGainOfMode();
 
     unsigned int size = ceil(timeV * SimulatorManager::SampleRate);
     waves = std::vector<double>(size, 0); double t = 0;
-
+    if (SimulatorManager::resonance) forcesF = forcesF + resonanceForce;
+    this->calculateImpulsForces(forcesF, timeF);
     for (unsigned int j = 0; j < size; ++j) {
         t += 1.0 / SimulatorManager::SampleRate;
         Eigen::VectorXd modesOfVibrationZ;

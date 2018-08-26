@@ -14,9 +14,6 @@
 
 class ControllerIO {
 public:
-    static const int textSize;
-    static const int initMidiTex;
-    static const int deltaXMidi;
     static const int initMidi;
     static const int endMidi;
 

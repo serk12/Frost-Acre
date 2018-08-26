@@ -1,5 +1,5 @@
 # exe vars
-MODEL = cup
+MODEL = cube
 JSON = "./data/json/guitar.json"
 MIDI =  "./data/midis/cuartoDeSegundo.mid"
 

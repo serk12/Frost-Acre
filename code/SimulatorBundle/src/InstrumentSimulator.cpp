@@ -129,10 +129,13 @@ void InstrumentSimulator::calcuateDeformationModeling() {
     precalModel.gainOfModeC = Eigen::VectorXcd::Zero(precalModel.eigenvalues.size());
 }
 
+void InstrumentSimulator::cleanGainOfMode() {
+    instrument->precalModel.gainOfModeC = Eigen::VectorXcd::Zero(instrument->precalModel.eigenvalues.size());
+}
+
 void InstrumentSimulator::calculateImpulsForces(const Eigen::VectorXd& forcesF, double time) {
     PrecalModel& precalModel      = instrument->precalModel;
     const Eigen::MatrixXd forcesG = precalModel.eigenvectors.inverse().real() * forcesF;
-    precalModel.gainOfModeC = Eigen::VectorXcd::Zero(precalModel.eigenvalues.size());
 
     #pragma omp parallel shared(precalModel)
     {
