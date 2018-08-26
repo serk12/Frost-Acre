@@ -9,24 +9,25 @@ void InstrumentSimulator::setInstrument(Instrument& instrument) {
 }
 
 void InstrumentSimulator::calculatePrecal() {
-    this->calculateMassSpringSystem();
+    this->calculateSpring();
+    this->calculateMass();
     this->calcuateDeformationModeling();
 }
 
-void InstrumentSimulator::makeDiagonalSpring(int x, int y, int negative, double Cx, double Cy, double Cz) {
+void InstrumentSimulator::makeDiagonalSpring(int x, int y, int val, double Cx, double Cy, double Cz) {
     PrecalModel& precalModel = instrument->precalModel;
 
-    precalModel.springK(x,     y) += negative * Cx * Cx;
-    precalModel.springK(x + 1, y) += negative * Cx * Cy;
-    precalModel.springK(x + 2, y) += negative * Cx * Cz;
+    precalModel.springK(x,     y) += val * Cx * Cx;
+    precalModel.springK(x + 1, y) += val * Cx * Cy;
+    precalModel.springK(x + 2, y) += val * Cx * Cz;
 
-    precalModel.springK(x,     y + 1) += negative * Cy * Cx;
-    precalModel.springK(x + 1, y + 1) += negative * Cy * Cy;
-    precalModel.springK(x + 2, y + 1) += negative * Cy * Cz;
+    precalModel.springK(x,     y + 1) += val * Cy * Cx;
+    precalModel.springK(x + 1, y + 1) += val * Cy * Cy;
+    precalModel.springK(x + 2, y + 1) += val * Cy * Cz;
 
-    precalModel.springK(x,     y + 2) += negative * Cz * Cx;
-    precalModel.springK(x + 1, y + 2) += negative * Cz * Cy;
-    precalModel.springK(x + 2, y + 2) += negative * Cz * Cz;
+    precalModel.springK(x,     y + 2) += val * Cz * Cx;
+    precalModel.springK(x + 1, y + 2) += val * Cz * Cy;
+    precalModel.springK(x + 2, y + 2) += val * Cz * Cz;
 }
 
 void InstrumentSimulator::calculateSpring() {
@@ -87,11 +88,6 @@ void InstrumentSimulator::calculateMass() {
             precalModel.massM(i) = volum;
         }
     }
-}
-
-void InstrumentSimulator::calculateMassSpringSystem() {
-    this->calculateSpring();
-    this->calculateMass();
 }
 
 

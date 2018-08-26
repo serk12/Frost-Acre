@@ -14,7 +14,6 @@ public:
 
 protected:
     void calculatePrecal();
-    void calculateMassSpringSystem();
     void calcuateDeformationModeling();
 
     void cleanGainOfMode();
