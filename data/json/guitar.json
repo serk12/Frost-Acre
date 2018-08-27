@@ -35,6 +35,7 @@
     },
     "Resonance": {
         "scalarForceLost": 0.2,
-        "constantForceLost": 0.2
+        "constantForceLost": 0.2,
+        "linewidthResonance": 1
     }
 }

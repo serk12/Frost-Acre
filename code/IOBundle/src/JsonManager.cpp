@@ -27,6 +27,7 @@ const std::string JsonManager::EDGE                  = "edge";
 const std::string JsonManager::MODEL3D               = "model3d";
 const std::string JsonManager::EIGENVALUES           = "eigenvalues";
 const std::string JsonManager::EIGENVECTORS          = "eigenvectors";
+const std::string JsonManager::LINEWIDTHRESONANCE    = "linewidthResonance";
 
 rapidjson::Document JsonManager::readFile(std::string path) {
     FILE *file = fopen(path.c_str(), "rb");

@@ -152,6 +152,8 @@ void ControllerIO::writePrerender(Instrument& instrument) {
                             rapidjson::Value().SetDouble(instrument.resonance.scalarForceLost), allocator);
     resonanceJson.AddMember(rapidjson::Value().SetString(JsonManager::CONSTANTFORCELOST.c_str(), allocator),
                             rapidjson::Value().SetDouble(instrument.resonance.constantForceLost), allocator);
+    resonanceJson.AddMember(rapidjson::Value().SetString(JsonManager::LINEWIDTHRESONANCE.c_str(), allocator),
+                            rapidjson::Value().SetDouble(instrument.resonance.linewidthResonance), allocator);
 
     prerenderDoc.AddMember(rapidjson::Value().SetString(JsonManager::RESONANCE.c_str(), allocator), resonanceJson, allocator);
 
@@ -272,8 +274,9 @@ void ControllerIO::readJson(Pickup& pickup, std::vector<Material>& materials, Re
     pickup.pickupPossitionZ      = doc[JsonManager::PICKUP.c_str()][JsonManager::PICKUPPOSSITION.c_str()][2].GetDouble();
     pickup.magneticChargeDensity = doc[JsonManager::PICKUP.c_str()][JsonManager::MAGNETICCHARGEDENSITY.c_str()].GetDouble();
 
-    resonance.scalarForceLost   = doc[JsonManager::RESONANCE.c_str()][JsonManager::SCALARFORCELOST.c_str()].GetDouble();
-    resonance.constantForceLost = doc[JsonManager::RESONANCE.c_str()][JsonManager::CONSTANTFORCELOST.c_str()].GetDouble();
+    resonance.scalarForceLost    = doc[JsonManager::RESONANCE.c_str()][JsonManager::SCALARFORCELOST.c_str()].GetDouble();
+    resonance.constantForceLost  = doc[JsonManager::RESONANCE.c_str()][JsonManager::CONSTANTFORCELOST.c_str()].GetDouble();
+    resonance.linewidthResonance = doc[JsonManager::RESONANCE.c_str()][JsonManager::LINEWIDTHRESONANCE.c_str()].GetDouble();
 }
 
 void ControllerIO::readJson(Pickup& pickup, std::vector<Material>& materials, Resonance& resonance) {

@@ -34,6 +34,7 @@ struct Pickup {
 struct Resonance {
     double scalarForceLost;
     double constantForceLost;
+    double linewidthResonance;
 };
 
 class Instrument {

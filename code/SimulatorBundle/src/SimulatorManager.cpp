@@ -1,8 +1,8 @@
 #include "../header/SimulatorManager.h"
 
 const double SimulatorManager::SampleRate = 44100.0;
-const bool   SimulatorManager::pickup     = false;
-const bool   SimulatorManager::resonance  = false;
+const bool   SimulatorManager::pickup     = true;
+const bool   SimulatorManager::resonance  = true;
 
 SimulatorManager::SimulatorManager() : InstrumentSimulator() {}
 
@@ -16,6 +16,7 @@ void SimulatorManager::setPrerender(Instrument& instrument) {
 
     this->setScalarForceLost(instrument.resonance.scalarForceLost);
     this->setConstantForceLost(instrument.resonance.constantForceLost);
+    this->setLinewidthResonance(instrument.resonance.linewidthResonance);
 }
 
 void SimulatorManager::precallSimulator(Instrument& instrument) {
@@ -27,11 +28,11 @@ void SimulatorManager::precallSimulator(Instrument& instrument) {
 
 void SimulatorManager::calculateFrame(Eigen::VectorXd forcesF, double timeF, double timeV, std::vector<double>& waves) {
     this->cleanGainOfMode();
+    this->calculateImpulsForces(forcesF, timeF);
 
     unsigned int size = ceil(timeV * SimulatorManager::SampleRate);
     waves = std::vector<double>(size, 0); double t = 0;
     if (SimulatorManager::resonance) forcesF = forcesF + resonanceForce;
-    this->calculateImpulsForces(forcesF, timeF);
     for (unsigned int j = 0; j < size; ++j) {
         t += 1.0 / SimulatorManager::SampleRate;
         Eigen::VectorXd modesOfVibrationZ;

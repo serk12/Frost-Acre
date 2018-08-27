@@ -32,6 +32,7 @@ public:
     static const std::string RESONANCE;
     static const std::string SCALARFORCELOST;
     static const std::string CONSTANTFORCELOST;
+    static const std::string LINEWIDTHRESONANCE;
 
     static const std::string INSTRUMENT;
     static const std::string RESONANCERATIO;
