@@ -179,9 +179,13 @@ void ControllerIO::writeJsonMidi() {
         int note = floor(texture[i].first * 1000);
 
         if (note > ControllerIO::initMidi and note < ControllerIO::endMidi) {
-            notes[std::to_string(note)](i * 3)       = 1;
-            notes[std::to_string(note)]((i * 3) + 1) = 1;
-            notes[std::to_string(note)]((i * 3) + 2) = 1;
+            double x = ((int)floor(texture[i].second * 100));
+            double y = ((int)floor(texture[i].second * 10000)) % 100;
+            double z = ((int)floor(texture[i].second * 1000000)) % 100;
+
+            notes[std::to_string(note)](i * 3)       = x;
+            notes[std::to_string(note)]((i * 3) + 1) = y;
+            notes[std::to_string(note)]((i * 3) + 2) = z;
         }
     }
 
