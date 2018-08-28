@@ -7,8 +7,8 @@
 
 class PickupSimulator {
 public:
+    PickupSimulator();
     static const int n;
-    double xWire, yWire, zWire, xPickup, yPickup, zPickup, magneticChargeDensity, radiusPickup;
 
     void setMagneticChargeDensity(double magneticChargeDensity);
     void setRadiusPickup(double radiusPickup);
@@ -19,6 +19,7 @@ protected:
 
 private:
     inline double magneticFieldModul(double phi, double rho);
+    double xWire, yWire, zWire, xPickup, yPickup, zPickup, magneticChargeDensity, radiusPickup, previusResult;
 };
 
 #endif // ifndef PICKUPSIMULATOR_HH

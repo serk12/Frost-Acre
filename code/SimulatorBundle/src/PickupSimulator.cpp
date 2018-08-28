@@ -1,6 +1,11 @@
 #include "../header/PickupSimulator.h"
 
-const int PickupSimulator::n = 10;
+const int PickupSimulator::n = 1000;
+
+
+PickupSimulator::PickupSimulator() {
+    previusResult = 0;
+}
 
 double PickupSimulator::magneticFieldModul(double phi, double rho) {
     double x = xWire - (xPickup - rho * cos(phi));
@@ -30,14 +35,17 @@ double PickupSimulator::calculatePickup(double xWire, double yWire, double zWire
         }
     }
 
-    double xp = ((xWire - xPickup) / 2) + xPickup;
-    double yp = ((yWire - yPickup) / 2) + yPickup;
-    double zp = ((zWire - zPickup) / 2) + zPickup;
+    double xp = ((-xWire + xPickup) / 2) - zWire;
+    double yp = ((-yWire + yPickup) / 2) - zWire;
+    double zp = ((-zWire + zPickup) / 2) - zWire;
 
     double aux = xp * xp + yp * yp + zp * zp;
-    return result * ((2 * M_PI / PickupSimulator::n) *
-                     (radiusPickup / PickupSimulator::n) / 4) *
-           ((zWire - zp) / (std::sqrt(aux * aux * aux)));
+    result *= ((2 * M_PI / PickupSimulator::n) *
+               (radiusPickup / PickupSimulator::n) / 4) *
+              ((zWire - zp) / (std::sqrt(aux * aux * aux)));
+    double diff = result;
+    previusResult = result;
+    return diff;
 }
 
 void PickupSimulator::setMagneticChargeDensity(double magneticChargeDensity) {
