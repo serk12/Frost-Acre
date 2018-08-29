@@ -7,7 +7,6 @@
 
 class PickupSimulator {
 public:
-    PickupSimulator();
     static const int n;
 
     void setMagneticChargeDensity(double magneticChargeDensity);

@@ -33,14 +33,18 @@ void SimulatorManager::calculateFrame(Eigen::VectorXd forcesF, double timeF, dou
     unsigned int size = ceil(timeV * SimulatorManager::SampleRate);
     waves = std::vector<double>(size, 0); double t = 0;
     if (SimulatorManager::resonance) forcesF = forcesF + resonanceForce;
+    double previus = 0;
+
     for (unsigned int j = 0; j < size; ++j) {
         t += 1.0 / SimulatorManager::SampleRate;
         Eigen::VectorXd modesOfVibrationZ;
         this->calculateVibrations(t, modesOfVibrationZ);
+
         waves[j] = 0;
+        double result = 0;
 
         for (unsigned int i = 0; i < modesOfVibrationZ.size(); i += 3) {
-            modesOfVibrationZ[i]     = Instrument::isNumerical(modesOfVibrationZ[i]) ? modesOfVibrationZ[i] : 0;
+            modesOfVibrationZ[i]     = Instrument::isNumerical(modesOfVibrationZ[i])     ? modesOfVibrationZ[i]     : 0;
             modesOfVibrationZ[i + 1] = Instrument::isNumerical(modesOfVibrationZ[i + 1]) ? modesOfVibrationZ[i + 1] : 0;
             modesOfVibrationZ[i + 2] = Instrument::isNumerical(modesOfVibrationZ[i + 2]) ? modesOfVibrationZ[i + 2] : 0;
 
@@ -51,7 +55,7 @@ void SimulatorManager::calculateFrame(Eigen::VectorXd forcesF, double timeF, dou
                            modesOfVibrationZ[i + 1];
                 double z = this->instrument->model3d.vertex(2, i / 3) +
                            modesOfVibrationZ[i + 2];
-                waves[j] += this->calculatePickup(x, y, z);
+                result += this->calculatePickup(x, y, z);
             }
             else {
                 waves[j] += modesOfVibrationZ[i] +
@@ -59,6 +63,10 @@ void SimulatorManager::calculateFrame(Eigen::VectorXd forcesF, double timeF, dou
                             modesOfVibrationZ[i + 2];
             }
         }
+
+        waves[j] += previus - result;
+        previus   = result;
     }
+
     resonanceForce = calculateResonanceForce(*instrument, forcesF);
 }
