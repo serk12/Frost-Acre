@@ -17,7 +17,7 @@ protected:
     double calculatePickup(double xWire, double yWire, double zWire);
 
 private:
-    inline double magneticFieldModul(double phi, double rho);
+    inline double magneticFieldModul(double phi, double rho) const;
     double xWire, yWire, zWire, xPickup, yPickup, zPickup, magneticChargeDensity, radiusPickup, previusResult;
 };
 

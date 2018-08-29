@@ -2,10 +2,11 @@
 
 const int PickupSimulator::n = 10;
 
-double PickupSimulator::magneticFieldModul(double phi, double rho) {
+double PickupSimulator::magneticFieldModul(double phi, double rho) const {
     double x = xWire - (xPickup - rho * cos(phi));
     double y = yWire - (yPickup - rho * sin(phi));
     double z = zWire - zPickup;
+
     return (magneticChargeDensity * rho) / (x * x + y * y + z * z);
 }
 
@@ -23,21 +24,16 @@ double PickupSimulator::calculatePickup(double xWire, double yWire, double zWire
 
                 if ((i != 0) || (i != PickupSimulator::n - 1)) field *= 2;
                 if ((j != 0) || (j != PickupSimulator::n - 1)) field *= 2;
+
+                #pragma omp atomic
                 result += field;
-                rho    +=  radiusPickup / PickupSimulator::n;
+
+                rho +=  radiusPickup / PickupSimulator::n;
             }
             phi += 2 * M_PI / PickupSimulator::n;
         }
     }
 
-    double xp = ((-xWire + xPickup) / 2) - zWire;
-    double yp = ((-yWire + yPickup) / 2) - zWire;
-    double zp = ((-zWire + zPickup) / 2) - zWire;
-
-    double aux = xp * xp + yp * yp + zp * zp;
-    result *= ((2 * M_PI / PickupSimulator::n) *
-               (radiusPickup / PickupSimulator::n) / 4) *
-              ((zWire - zp) / (std::sqrt(aux * aux * aux)));
     return result;
 }
 

@@ -56,6 +56,7 @@ void Controller::run() {
 std::vector<double> Controller::runSimulator(const std::vector<Pluck>& plucks,
                                              const std::map<int, Eigen::VectorXd>& notes,
                                              SimulatorManager& simMan) {
+    omp_set_num_threads(4);
     float max = 0;
     for (auto& pluck : plucks) {
         float endNote = pluck.timeDur + pluck.timeStart;
@@ -75,7 +76,7 @@ std::vector<double> Controller::runSimulator(const std::vector<Pluck>& plucks,
             #pragma omp for
             for (unsigned int i = 0; i < waves.size(); ++i) {
                 int x = j + i;
-            #pragma omp atomic
+                #pragma omp atomic
                 sound[x] += waves[i];
             }
         }
