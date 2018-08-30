@@ -1,8 +1,8 @@
 #include "../header/SimulatorManager.h"
 
 const double SimulatorManager::SampleRate = 44100.0;
-const bool   SimulatorManager::pickup     = true;
-const bool   SimulatorManager::resonance  = true;
+const bool   SimulatorManager::pickup     = false;
+const bool   SimulatorManager::resonance  = false;
 
 SimulatorManager::SimulatorManager() : InstrumentSimulator() {}
 
@@ -55,9 +55,9 @@ void SimulatorManager::calculateFrame(Eigen::VectorXd forcesF, double timeF, dou
                 result += this->calculatePickup(x, y, z);
             }
             else {
-                waves[j] += modesOfVibrationZ[i] +
-                            modesOfVibrationZ[i + 1] +
-                            modesOfVibrationZ[i + 2];
+                result += modesOfVibrationZ[i] +
+                          modesOfVibrationZ[i + 1] +
+                          modesOfVibrationZ[i + 2];
             }
         }
 
