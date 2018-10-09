@@ -95,7 +95,7 @@ void InstrumentSimulator::calcuateDeformationModeling() {
     PrecalModel& precalModel = instrument->precalModel;
     Model3D    & model3d     = instrument->model3d;
 
-    Eigen::initParallel(); // Dont work....
+    Eigen::initParallel();
     precalModel.solver       = Eigen::EigenSolver<Eigen::MatrixXd>(precalModel.springK, true);
     precalModel.eigenvalues  = precalModel.solver.eigenvalues();
     precalModel.eigenvectors = precalModel.solver.eigenvectors();
